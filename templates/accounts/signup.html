@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>InfluConnect — Create Account</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --or1: #FF6B1A;
+      --or2: #E8500A;
+      --or3: #C94008;
+      --or-glow: rgba(255,107,26,0.22);
+      --cream: #FBF3EA;
+      --dark: #18100A;
+      --ink: #2C1A0E;
+      --muted: #8A7060;
+      --border: #E8D5C0;
+      --glass: rgba(255,255,255,0.72);
+      --white: #FFFFFF;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      padding: 2rem 1rem;
+      overflow-x: hidden;
+      background: var(--cream);
+      position: relative;
+    }
+
+    /* ── Background scene ── */
+    .bg-scene {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .bg-scene::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 85% 10%, rgba(255,107,26,0.28) 0%, transparent 65%),
+        radial-gradient(ellipse 50% 50% at 10% 90%, rgba(232,80,10,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 80% 40% at 50% 50%, rgba(251,243,234,1) 0%, transparent 100%);
+    }
+    .bg-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(232,96,10,0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(232,96,10,0.045) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+
+    /* 3D floating orbs */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .orb-1 {
+      width: 340px; height: 340px;
+      top: -100px; right: -80px;
+      background: radial-gradient(circle at 35% 35%, #FF8C45 0%, #E8500A 40%, #9B2F02 100%);
+      box-shadow:
+        inset -20px -20px 40px rgba(0,0,0,0.25),
+        inset 10px 10px 30px rgba(255,200,150,0.3),
+        0 30px 80px rgba(232,80,10,0.35);
+      animation: floatOrb1 7s ease-in-out infinite;
+      opacity: .85;
+    }
+    .orb-2 {
+      width: 200px; height: 200px;
+      bottom: -60px; left: -40px;
+      background: radial-gradient(circle at 40% 30%, #FFB27A 0%, #E8600A 50%, #7A2A00 100%);
+      box-shadow:
+        inset -12px -12px 25px rgba(0,0,0,0.2),
+        inset 8px 8px 20px rgba(255,200,150,0.25),
+        0 20px 50px rgba(232,96,10,0.25);
+      animation: floatOrb2 9s ease-in-out infinite;
+      opacity: .7;
+    }
+    .orb-3 {
+      width: 90px; height: 90px;
+      top: 45%; left: 6%;
+      background: radial-gradient(circle at 38% 32%, #FFCF99 0%, #F07830 60%, #9B3800 100%);
+      box-shadow:
+        inset -6px -6px 14px rgba(0,0,0,0.18),
+        inset 4px 4px 10px rgba(255,210,160,0.3),
+        0 10px 30px rgba(240,120,48,0.3);
+      animation: floatOrb3 6s ease-in-out infinite;
+      opacity: .6;
+    }
+
+    @keyframes floatOrb1 {
+      0%,100% { transform: translate(0,0) rotate(0deg); }
+      33%      { transform: translate(-18px, 22px) rotate(8deg); }
+      66%      { transform: translate(12px, -15px) rotate(-5deg); }
+    }
+    @keyframes floatOrb2 {
+      0%,100% { transform: translate(0,0); }
+      50%      { transform: translate(20px,-25px); }
+    }
+    @keyframes floatOrb3 {
+      0%,100% { transform: translate(0,0) scale(1); }
+      50%      { transform: translate(8px,12px) scale(1.1); }
+    }
+
+    /* ── Card ── */
+    .card-wrap {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 500px;
+      animation: riseIn .65s cubic-bezier(.16,1,.3,1) both;
+    }
+    @keyframes riseIn {
+      from { opacity:0; transform: translateY(36px) scale(.97); }
+      to   { opacity:1; transform: translateY(0)    scale(1); }
+    }
+
+    /* 3D stacked shadow layers */
+    .card-shadow-b {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #E8600A, #C94008);
+      border-radius: 30px;
+      transform: translate(7px, 9px);
+      filter: blur(2px);
+      opacity: .35;
+      z-index: -1;
+    }
+    .card-shadow-c {
+      position: absolute;
+      inset: 0;
+      background: #1A1108;
+      border-radius: 30px;
+      transform: translate(14px, 17px);
+      filter: blur(5px);
+      opacity: .12;
+      z-index: -2;
+    }
+
+    .card {
+      background: var(--glass);
+      backdrop-filter: blur(28px) saturate(1.7);
+      -webkit-backdrop-filter: blur(28px) saturate(1.7);
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.88);
+      padding: 2.6rem 2.8rem 2.2rem;
+      box-shadow:
+        0 2px 0 rgba(255,255,255,0.9) inset,
+        0 -1px 0 rgba(0,0,0,0.04) inset,
+        0 32px 72px rgba(200,80,10,0.10),
+        0 8px 24px rgba(0,0,0,0.06);
+      position: relative;
+      overflow: hidden;
+    }
+    /* Glass top highlight */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 10%; right: 10%;
+      height: 1.5px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.95), transparent);
+    }
+    .card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 45%; height: 55%;
+      background: radial-gradient(ellipse at 20% 0%,
+        rgba(255,255,255,0.22) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* ── Brand ── */
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      margin-bottom: 1.5rem;
+    }
+    .brand-icon {
+      width: 48px; height: 48px;
+      border-radius: 14px;
+      background: linear-gradient(145deg, #FF7A2F 0%, #C94008 100%);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      box-shadow:
+        0 1px 0 rgba(255,200,140,0.5) inset,
+        0 -2px 0 rgba(0,0,0,0.2) inset,
+        3px 4px 0 #A83400,
+        6px 8px 0 rgba(168,52,0,0.28),
+        0 14px 30px rgba(201,64,8,0.42);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .brand-icon:hover {
+      transform: translate(-2px,-3px);
+      box-shadow:
+        0 1px 0 rgba(255,200,140,0.5) inset,
+        0 -2px 0 rgba(0,0,0,0.2) inset,
+        5px 7px 0 #A83400,
+        9px 12px 0 rgba(168,52,0,0.22),
+        0 18px 38px rgba(201,64,8,0.48);
+    }
+    .brand-icon svg { width: 22px; height: 22px; }
+    .brand-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -.03em;
+      line-height: 1;
+    }
+    .brand-name .bl { color: var(--ink); }
+    .brand-name .or {
+      color: var(--or1);
+      text-shadow: 2px 2px 0 rgba(201,64,8,0.22);
+    }
+
+    /* ── Badge ── */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      background: linear-gradient(135deg, rgba(255,107,26,0.12), rgba(255,107,26,0.06));
+      border: 1px solid rgba(255,107,26,0.28);
+      border-radius: 30px;
+      padding: .28rem .9rem;
+      font-size: .73rem;
+      font-weight: 600;
+      color: var(--or2);
+      margin-bottom: 1.25rem;
+      letter-spacing: .02em;
+      box-shadow: 0 2px 8px rgba(255,107,26,0.1);
+    }
+    .badge-dot {
+      width: 6px; height: 6px;
+      background: var(--or1);
+      border-radius: 50%;
+      box-shadow: 0 0 6px rgba(255,107,26,0.7);
+      animation: pulse 2s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+    @keyframes pulse {
+      0%,100% { box-shadow: 0 0 4px rgba(255,107,26,0.6); }
+      50%      { box-shadow: 0 0 12px rgba(255,107,26,1); }
+    }
+
+    /* ── Heading ── */
+    .heading {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.95rem;
+      font-weight: 800;
+      color: var(--ink);
+      letter-spacing: -.035em;
+      line-height: 1.12;
+      margin-bottom: .3rem;
+    }
+    .heading span {
+      background: linear-gradient(135deg, var(--or1) 0%, var(--or3) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .subheading {
+      font-size: .87rem;
+      color: var(--muted);
+      font-weight: 400;
+      margin-bottom: 1.5rem;
+      line-height: 1.55;
+    }
+
+    /* ── Stats ── */
+    .stats-row {
+      display: flex;
+      gap: .75rem;
+      margin-bottom: 1.6rem;
+    }
+    .stat {
+      flex: 1;
+      background: rgba(255,107,26,0.07);
+      border: 1px solid rgba(255,107,26,0.14);
+      border-radius: 12px;
+      padding: .55rem .7rem;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(255,107,26,0.06);
+    }
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-size: .98rem;
+      font-weight: 800;
+      color: var(--or2);
+      display: block;
+    }
+    .stat-lbl {
+      font-size: .67rem;
+      color: var(--muted);
+      font-weight: 500;
+      letter-spacing: .02em;
+    }
+
+    /* ── Form fields ── */
+    .form-wrap p {
+      margin-bottom: 1rem;
+    }
+    .form-wrap label {
+      display: block;
+      font-size: .71rem;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      margin-bottom: .38rem;
+    }
+
+    .form-wrap input[type="text"],
+    .form-wrap input[type="email"],
+    .form-wrap input[type="password"],
+    .form-wrap select {
+      width: 100%;
+      padding: .82rem 1.1rem;
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: .93rem;
+      font-weight: 400;
+      color: var(--ink);
+      background: rgba(255,255,255,0.78);
+      backdrop-filter: blur(6px);
+      outline: none;
+      transition: all .22s cubic-bezier(.4,0,.2,1);
+      -webkit-appearance: none;
+      appearance: none;
+      box-shadow:
+        0 1px 0 rgba(255,255,255,0.9) inset,
+        0 2px 6px rgba(0,0,0,0.05);
+    }
+    .form-wrap select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238A7060' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      background-size: 15px;
+      padding-right: 2.8rem;
+      cursor: pointer;
+    }
+    .form-wrap input:focus,
+    .form-wrap select:focus {
+      border-color: var(--or1);
+      background: rgba(255,255,255,0.96);
+      box-shadow:
+        0 0 0 4px rgba(255,107,26,0.14),
+        0 1px 0 rgba(255,255,255,0.9) inset,
+        0 2px 8px rgba(255,107,26,0.08);
+      transform: translateY(-1px);
+    }
+    .form-wrap input::placeholder { color: #C0A898; }
+
+    /* Django errors */
+    .form-wrap ul.errorlist {
+      list-style: none;
+      margin: .25rem 0 0;
+    }
+    .form-wrap ul.errorlist li {
+      font-size: .74rem;
+      color: #D63B00;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: .3rem;
+    }
+    .form-wrap ul.errorlist li::before { content: '⚠ '; }
+
+    /* ── 3D Submit Button ── */
+    .btn-wrap {
+      margin-top: 1.3rem;
+      position: relative;
+      display: block;
+    }
+    .btn-wrap::after {
+      content: '';
+      position: absolute;
+      left: 4px; right: -4px;
+      top: 6px; bottom: -6px;
+      background: var(--or3);
+      border-radius: 16px;
+      z-index: 0;
+      transition: all .18s cubic-bezier(.4,0,.2,1);
+    }
+    .btn-submit {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      padding: .95rem 1rem;
+      background: linear-gradient(160deg, #FF7A2F 0%, #E8500A 55%, #C94008 100%);
+      color: #fff;
+      border: none;
+      border-radius: 16px;
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: .02em;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .55rem;
+      box-shadow:
+        0 1px 0 rgba(255,200,140,0.4) inset,
+        0 -2px 0 rgba(0,0,0,0.15) inset;
+      transition: all .18s cubic-bezier(.4,0,.2,1);
+      overflow: hidden;
+    }
+    .btn-submit::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -120%;
+      width: 60%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent);
+      transform: skewX(-20deg);
+      transition: left .55s ease;
+    }
+    .btn-submit:hover::before { left: 160%; }
+    .btn-submit:hover {
+      background: linear-gradient(160deg, #FF8C3F 0%, #F06020 55%, #D45010 100%);
+      transform: translate(-2px,-3px);
+      box-shadow:
+        0 1px 0 rgba(255,200,140,0.4) inset,
+        0 -2px 0 rgba(0,0,0,0.15) inset,
+        0 14px 30px rgba(232,80,10,0.38);
+    }
+    .btn-wrap:hover::after { transform: translate(2px,3px); }
+    .btn-submit:active { transform: translate(2px,2px); }
+    .btn-wrap:active::after { transform: translate(-1px,-1px); opacity: .5; }
+
+    .btn-arrow {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px; height: 22px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 50%;
+      font-size: .88rem;
+      transition: transform .2s;
+    }
+    .btn-submit:hover .btn-arrow { transform: translateX(4px); }
+
+    /* ── Divider & login ── */
+    .divider-line {
+      display: flex;
+      align-items: center;
+      gap: .8rem;
+      margin: 1.5rem 0 1rem;
+    }
+    .divider-line::before,
+    .divider-line::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+    }
+    .divider-line span {
+      font-size: .71rem;
+      color: var(--muted);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .login-link {
+      text-align: center;
+      font-size: .86rem;
+      color: var(--muted);
+    }
+    .login-link a {
+      color: var(--or2);
+      font-weight: 700;
+      text-decoration: none;
+      position: relative;
+      transition: color .15s;
+    }
+    .login-link a::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: -1px;
+      width: 0; height: 1.5px;
+      background: var(--or1);
+      transition: width .25s ease;
+    }
+    .login-link a:hover { color: var(--or1); }
+    .login-link a:hover::after { width: 100%; }
+
+    @media (max-width: 540px) {
+      .card { padding: 2rem 1.4rem 1.8rem; }
+      .heading { font-size: 1.55rem; }
+      .stats-row { gap: .5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="bg-scene">
+  <div class="bg-grid"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+
+<div class="card-wrap">
+  <div class="card-shadow-c"></div>
+  <div class="card-shadow-b"></div>
+
+  <div class="card">
+
+    <!-- Brand -->
+    <div class="brand">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff"
+             stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"
+             xmlns="http://www.w3.org/2000/svg">
+          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+        </svg>
+      </div>
+      <span class="brand-name">
+        <span class="bl">Influ</span><span class="or">Connect</span>
+      </span>
+    </div>
+
+    <!-- Badge -->
+    <div class="badge">
+      <span class="badge-dot"></span>
+      2,400+ verified influencers ready to promote
+    </div>
+
+    <!-- Heading -->
+    <h1 class="heading">Join the <span>Network</span></h1>
+    <p class="subheading">Connect with nearby creators and supercharge your local business growth.</p>
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat">
+        <span class="stat-num">2.4K+</span>
+        <span class="stat-lbl">Influencers</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">180+</span>
+        <span class="stat-lbl">Cities</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">94%</span>
+        <span class="stat-lbl">Conversion</span>
+      </div>
+    </div>
+
+    <!-- Django Form -->
+    <form method="POST" action="">
+      {% csrf_token %}
+      <div class="form-wrap">
+        {{ form.as_p }}
+      </div>
+      <div class="btn-wrap">
+        <button type="submit" class="btn-submit">
+          Create My Account
+          <span class="btn-arrow">→</span>
+        </button>
+      </div>
+    </form>
+
+    <div class="divider-line"><span>already a member?</span></div>
+    <p class="login-link">Have an account? <a href="/login/">Sign In →</a></p>
+
+  </div>
+</div>
+
+</body>
+</html>

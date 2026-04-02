@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>InfluConnect — Browse Influencers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & BASE ─────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --orange:       #ff6a00;
+  --orange-light: #ff9a4a;
+  --orange-pale:  #fff3ec;
+  --orange-glow:  rgba(255,106,0,.18);
+  --bg:           #f5f3ef;
+  --surface:      rgba(255,255,255,.75);
+  --surface-solid:#ffffff;
+  --border:       rgba(255,106,0,.12);
+  --text:         #1a1208;
+  --muted:        #8a7d6e;
+  --sidebar-w:    240px;
+  --navbar-h:     70px;
+  --radius:       18px;
+  --shadow-sm:    0 2px 12px rgba(0,0,0,.06);
+  --shadow-md:    0 8px 32px rgba(0,0,0,.10);
+  --shadow-lg:    0 20px 60px rgba(0,0,0,.13);
+  --trans:        .3s cubic-bezier(.4,0,.2,1);
+}
+html { font-size: 16px; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  overflow-x: hidden;
+}
+
+/* ── AMBIENT BLOBS ────────────────────────────── */
+.blob-wrap {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
+}
+.blob {
+  position: absolute; border-radius: 50%; filter: blur(80px);
+  animation: drift 14s ease-in-out infinite alternate;
+}
+.blob-1 { width: 420px; height: 420px; top: -100px; right: -80px; background: rgba(255,106,0,.13); animation-delay: 0s; }
+.blob-2 { width: 300px; height: 300px; bottom: 100px; left: 180px; background: rgba(255,154,74,.10); animation-delay: -5s; }
+.blob-3 { width: 200px; height: 200px; top: 40%; right: 15%; background: rgba(255,200,100,.08); animation-delay: -9s; }
+@keyframes drift {
+  from { transform: translate(0,0) scale(1); }
+  to   { transform: translate(30px,40px) scale(1.08); }
+}
+
+/* ── SIDEBAR ──────────────────────────────────── */
+.sidebar {
+  position: fixed; top: 0; left: 0;
+  width: var(--sidebar-w); height: 100vh;
+  background: rgba(255,255,255,.82);
+  backdrop-filter: blur(20px) saturate(160%);
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  z-index: 100; padding: 28px 20px;
+  box-shadow: 4px 0 40px rgba(255,106,0,.06);
+}
+.logo {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 36px; padding: 0 4px;
+}
+.logo-icon {
+  width: 38px; height: 38px; border-radius: 12px;
+  background: linear-gradient(135deg, var(--orange), var(--orange-light));
+  display: grid; place-items: center;
+  box-shadow: 0 4px 16px var(--orange-glow);
+  font-size: 18px;
+}
+.logo-text {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800; font-size: 1.15rem;
+  color: var(--text);
+  letter-spacing: -.5px;
+}
+.logo-text span { color: var(--orange); }
+
+.nav-label {
+  font-size: .67rem; font-weight: 600; letter-spacing: .12em;
+  color: var(--muted); text-transform: uppercase;
+  padding: 0 8px; margin-bottom: 8px;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 14px; border-radius: 12px;
+  cursor: pointer; margin-bottom: 4px;
+  font-size: .9rem; font-weight: 500; color: var(--muted);
+  transition: all var(--trans); position: relative;
+  text-decoration: none;
+}
+.nav-item .icon { font-size: 1.05rem; width: 22px; text-align: center; }
+.nav-item:hover { background: var(--orange-pale); color: var(--orange); }
+.nav-item.active {
+  background: linear-gradient(135deg, var(--orange) 0%, var(--orange-light) 100%);
+  color: #fff;
+  box-shadow: 0 6px 20px var(--orange-glow);
+}
+.nav-item.active::before {
+  content: ''; position: absolute; right: -20px; top: 50%; transform: translateY(-50%);
+  width: 3px; height: 60%; border-radius: 2px 0 0 2px;
+  background: var(--orange);
+}
+.nav-spacer { flex: 1; }
+.nav-item.logout { color: #e05; }
+.nav-item.logout:hover { background: #fff0f3; color: #c00; }
+
+/* ── NAVBAR ───────────────────────────────────── */
+.navbar {
+  position: fixed; top: 0; left: var(--sidebar-w);
+  right: 0; height: var(--navbar-h);
+  background: rgba(255,255,255,.78);
+  backdrop-filter: blur(20px) saturate(160%);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 16px;
+  padding: 0 32px; z-index: 90;
+  box-shadow: 0 2px 20px rgba(255,106,0,.05);
+}
+.search-wrap {
+  flex: 1; max-width: 440px;
+  position: relative;
+}
+.search-wrap input {
+  width: 100%; padding: 10px 16px 10px 42px;
+  background: var(--orange-pale);
+  border: 1.5px solid transparent;
+  border-radius: 50px;
+  font-family: inherit; font-size: .9rem; color: var(--text);
+  outline: none; transition: all var(--trans);
+}
+.search-wrap input::placeholder { color: var(--muted); }
+.search-wrap input:focus {
+  border-color: var(--orange);
+  background: #fff;
+  box-shadow: 0 0 0 4px var(--orange-glow);
+}
+.search-icon {
+  position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+  color: var(--muted); font-size: .9rem; pointer-events: none;
+}
+.nav-actions { margin-left: auto; display: flex; align-items: center; gap: 14px; }
+.icon-btn {
+  width: 40px; height: 40px; border-radius: 12px;
+  background: var(--orange-pale); border: 1.5px solid var(--border);
+  cursor: pointer; display: grid; place-items: center; font-size: 1.1rem;
+  transition: all var(--trans); position: relative;
+}
+.icon-btn:hover { background: var(--orange); color: #fff; transform: translateY(-2px); box-shadow: 0 6px 16px var(--orange-glow); }
+.notif-dot {
+  position: absolute; top: 6px; right: 7px;
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #ff3b30; border: 2px solid #fff;
+}
+.avatar {
+  width: 40px; height: 40px; border-radius: 12px;
+  background: linear-gradient(135deg, #ff6a00, #ffb347);
+  display: grid; place-items: center;
+  font-family: 'Syne', sans-serif; font-weight: 700; font-size: .9rem;
+  color: #fff; cursor: pointer;
+  box-shadow: 0 4px 14px var(--orange-glow);
+  transition: transform var(--trans);
+}
+.avatar:hover { transform: scale(1.08); }
+
+/* ── MAIN CONTENT ─────────────────────────────── */
+.main {
+  margin-left: var(--sidebar-w);
+  margin-top: var(--navbar-h);
+  padding: 36px 32px;
+  flex: 1; position: relative; z-index: 1;
+}
+
+/* ── PAGE HEADER ──────────────────────────────── */
+.page-header {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  margin-bottom: 32px;
+}
+.page-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 2rem; font-weight: 800; letter-spacing: -.6px;
+  line-height: 1.1;
+}
+.page-title span { color: var(--orange); }
+.page-sub { color: var(--muted); font-size: .88rem; margin-top: 6px; }
+
+.filter-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+.pill {
+  padding: 7px 18px; border-radius: 50px; font-size: .82rem; font-weight: 500;
+  border: 1.5px solid var(--border); background: var(--surface);
+  backdrop-filter: blur(10px); cursor: pointer; color: var(--muted);
+  transition: all var(--trans);
+}
+.pill:hover { border-color: var(--orange); color: var(--orange); }
+.pill.active {
+  background: linear-gradient(135deg, var(--orange), var(--orange-light));
+  border-color: transparent; color: #fff;
+  box-shadow: 0 4px 14px var(--orange-glow);
+}
+
+/* ── STATS ROW ────────────────────────────────── */
+.stats-row {
+  display: grid; grid-template-columns: repeat(4,1fr); gap: 16px;
+  margin-bottom: 36px;
+}
+.stat-card {
+  background: var(--surface);
+  backdrop-filter: blur(16px) saturate(150%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 18px 20px;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--trans), box-shadow var(--trans);
+}
+.stat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.stat-label { font-size: .75rem; font-weight: 600; letter-spacing: .08em; color: var(--muted); text-transform: uppercase; }
+.stat-value { font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 800; margin: 4px 0 2px; }
+.stat-delta { font-size: .78rem; color: #22c55e; font-weight: 500; }
+
+/* ── INFLUENCER GRID ──────────────────────────── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+/* ── INFLUENCER CARD ──────────────────────────── */
+.card {
+  background: var(--surface);
+  backdrop-filter: blur(18px) saturate(160%);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  padding: 24px 20px 20px;
+  box-shadow: var(--shadow-sm);
+  transition: transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s ease;
+  cursor: pointer;
+  display: flex; flex-direction: column; gap: 0;
+  position: relative; overflow: hidden;
+}
+.card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--orange), var(--orange-light));
+  opacity: 0; transition: opacity var(--trans);
+}
+.card:hover {
+  transform: translateY(-8px) scale(1.015);
+  box-shadow: 0 24px 60px rgba(255,106,0,.16), 0 8px 24px rgba(0,0,0,.09);
+}
+.card:hover::before { opacity: 1; }
+
+/* avatar */
+.card-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; }
+.av-wrap { position: relative; }
+.av {
+  width: 58px; height: 58px; border-radius: 50%;
+  display: grid; place-items: center;
+  font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.4rem; color: #fff;
+  box-shadow: 0 6px 20px rgba(0,0,0,.18);
+  position: relative;
+}
+.av-verified {
+  position: absolute; bottom: 0; right: 0;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--orange); border: 2px solid #fff;
+  display: grid; place-items: center; font-size: .55rem; color: #fff;
+}
+.cat-tag {
+  padding: 4px 10px; border-radius: 50px; font-size: .72rem; font-weight: 600;
+  letter-spacing: .04em; text-transform: uppercase;
+}
+
+/* name */
+.card-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; margin-bottom: 2px; }
+.card-handle { font-size: .8rem; color: var(--muted); margin-bottom: 14px; }
+
+/* stats */
+.card-stats {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 10px; margin-bottom: 14px;
+}
+.s-item { background: var(--orange-pale); border-radius: 10px; padding: 9px 12px; }
+.s-val { font-family: 'Syne', sans-serif; font-weight: 700; font-size: .95rem; color: var(--text); }
+.s-key { font-size: .7rem; color: var(--muted); margin-top: 1px; }
+
+/* divider */
+.card-div { height: 1px; background: var(--border); margin-bottom: 14px; }
+
+/* price */
+.card-footer { display: flex; align-items: center; justify-content: space-between; }
+.price-wrap {}
+.price-label { font-size: .7rem; color: var(--muted); }
+.price-val { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.05rem; color: var(--orange); }
+
+.btn-book {
+  padding: 9px 20px; border-radius: 50px; border: none; cursor: pointer;
+  font-family: 'Syne', sans-serif; font-weight: 700; font-size: .8rem;
+  background: linear-gradient(135deg, var(--orange) 0%, var(--orange-light) 100%);
+  color: #fff; letter-spacing: .03em;
+  box-shadow: 0 4px 14px var(--orange-glow);
+  transition: all var(--trans);
+  transform-style: preserve-3d;
+}
+.btn-book:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 24px rgba(255,106,0,.4);
+}
+.btn-book:active { transform: translateY(0) scale(.98); }
+
+/* ── CATEGORY COLORS ──────────────────────────── */
+.cat-food        { background: #fff3e0; color: #e65100; }
+.cat-tech        { background: #e8f5e9; color: #1b5e20; }
+.cat-fashion     { background: #fce4ec; color: #880e4f; }
+.cat-travel      { background: #e3f2fd; color: #0d47a1; }
+.cat-fitness     { background: #f3e5f5; color: #4a148c; }
+.cat-lifestyle   { background: #fff9c4; color: #f57f17; }
+.cat-gaming      { background: #e0f2f1; color: #004d40; }
+.cat-beauty      { background: #fce4ec; color: #ad1457; }
+
+.av-g1 { background: linear-gradient(135deg,#f97316,#fb923c); }
+.av-g2 { background: linear-gradient(135deg,#8b5cf6,#a78bfa); }
+.av-g3 { background: linear-gradient(135deg,#ec4899,#f9a8d4); }
+.av-g4 { background: linear-gradient(135deg,#06b6d4,#67e8f9); }
+.av-g5 { background: linear-gradient(135deg,#10b981,#34d399); }
+.av-g6 { background: linear-gradient(135deg,#f59e0b,#fcd34d); }
+.av-g7 { background: linear-gradient(135deg,#3b82f6,#93c5fd); }
+.av-g8 { background: linear-gradient(135deg,#ef4444,#fca5a5); }
+
+/* ── RESPONSIVE ───────────────────────────────── */
+@media (max-width: 1280px) { .grid { grid-template-columns: repeat(3,1fr); } }
+@media (max-width: 960px)  {
+  :root { --sidebar-w: 200px; }
+  .grid { grid-template-columns: repeat(2,1fr); }
+  .stats-row { grid-template-columns: repeat(2,1fr); }
+}
+@media (max-width: 700px)  {
+  .sidebar { transform: translateX(-100%); }
+  .navbar  { left: 0; }
+  .main    { margin-left: 0; }
+  .grid    { grid-template-columns: 1fr; }
+  .page-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+}
+
+/* ── SCROLL ───────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,106,0,.25); border-radius: 99px; }
+
+/* ── STAGGER ANIMATION ────────────────────────── */
+.card { opacity: 0; transform: translateY(24px); animation: fadeUp .55s ease forwards; }
+@keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+.card:nth-child(1)  { animation-delay: .05s; }
+.card:nth-child(2)  { animation-delay: .10s; }
+.card:nth-child(3)  { animation-delay: .15s; }
+.card:nth-child(4)  { animation-delay: .20s; }
+.card:nth-child(5)  { animation-delay: .25s; }
+.card:nth-child(6)  { animation-delay: .30s; }
+.card:nth-child(7)  { animation-delay: .35s; }
+.card:nth-child(8)  { animation-delay: .40s; }
+</style>
+</head>
+<body>
+
+<!-- AMBIENT -->
+<div class="blob-wrap">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+</div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="logo">
+    <div class="logo-icon">⚡</div>
+    <div class="logo-text">Influ<span>Connect</span></div>
+  </div>
+
+  <div class="nav-label">Menu</div>
+
+  <!-- Dashboard -->
+  {% if user.role == 'influencer' %}
+  <a class="nav-item" href="{% url 'influencers:dashboard' %}">
+    <span class="icon">🏠</span> Dashboard
+  </a>
+{% else %}
+  <a class="nav-item" href="{% url 'shopkeepers:shopkeeper_dashboard' %}">
+    <span class="icon">🏠</span> Dashboard
+  </a>
+{% endif %}
+
+  <!-- Browse Influencers -->
+  <a class="nav-item active" href="{% url 'shopkeepers:browse_influencers' %}">
+    <span class="icon">🔍</span> Browse Influencers
+  </a>
+
+  <!-- My Bookings -->
+  <a class="nav-item" href="{% url 'shopkeepers:my_bookings' %}">
+  <span class="icon">📅</span> My Bookings
+</a>
+
+  <!-- Analytics -->
+  <a class="nav-item" href="{% url 'shopkeepers:analytics' %}">
+  <span class="icon">📊</span> Analytics
+</a>
+
+  <div class="nav-spacer"></div>
+
+  <div class="nav-label">Account</div>
+
+  <!-- Logout -->
+  <a class="nav-item logout" href="{% url 'logout' %}">
+    <span class="icon">🚪</span> Logout
+  </a>
+</aside>
+
+<!-- NAVBAR -->
+<header class="navbar">
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input type="text" placeholder="Search influencers…" />
+  </div>
+  <div class="nav-actions">
+    <div class="icon-btn">🔔<span class="notif-dot"></span></div>
+    <div class="icon-btn">💬</div>
+    <div class="avatar">AK</div>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Browse <span>Influencers</span></h1>
+      <p class="page-sub">Discover and book top creators across categories</p>
+    </div>
+    <div class="filter-pills">
+      <div class="pill active">All</div>
+      <div class="pill">Food</div>
+      <div class="pill">Tech</div>
+      <div class="pill">Fashion</div>
+      <div class="pill">Travel</div>
+      <div class="pill">Fitness</div>
+    </div>
+  </div>
+
+  <!-- STATS ROW -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Total Influencers</div>
+      <div class="stat-value">4,820</div>
+      <div class="stat-delta">↑ 12% this month</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Avg Engagement</div>
+      <div class="stat-value">5.4%</div>
+      <div class="stat-delta">↑ 0.8% vs last week</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Active Bookings</div>
+      <div class="stat-value">138</div>
+      <div class="stat-delta">↑ 22 new today</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Avg Price / Post</div>
+      <div class="stat-value">₹8,400</div>
+      <div class="stat-delta">↓ 3% vs last month</div>
+    </div>
+  </div>
+
+  <!-- GRID -->
+  <div class="grid" id="grid"></div>
+</main>
+
+<script>
+const influencers = [
+  { name:"Rahul Kumar",     handle:"@rahul.official",  cat:"Food",      followers:"1.2M", eng:"6.8%",  price:"₹12,000", init:"RK", av:"av-g1", catCls:"cat-food",      verified:true  },
+  { name:"Priya Sharma",    handle:"@priya.creates",   cat:"Fashion",   followers:"890K", eng:"7.2%",  price:"₹9,500",  init:"PS", av:"av-g3", catCls:"cat-fashion",   verified:true  },
+  { name:"Arjun Mehta",     handle:"@arjun.tech",      cat:"Tech",      followers:"540K", eng:"5.1%",  price:"₹7,000",  init:"AM", av:"av-g2", catCls:"cat-tech",      verified:false },
+  { name:"Sneha Patel",     handle:"@sneha.travels",   cat:"Travel",    followers:"2.1M", eng:"4.9%",  price:"₹18,500", init:"SP", av:"av-g4", catCls:"cat-travel",    verified:true  },
+  { name:"Vikram Singh",    handle:"@vikram.fit",       cat:"Fitness",   followers:"310K", eng:"9.3%",  price:"₹5,500",  init:"VS", av:"av-g5", catCls:"cat-fitness",   verified:false },
+  { name:"Ananya Joshi",    handle:"@ananya.beauty",   cat:"Beauty",    followers:"780K", eng:"8.1%",  price:"₹8,200",  init:"AJ", av:"av-g8", catCls:"cat-beauty",    verified:true  },
+  { name:"Rohan Gupta",     handle:"@rohan.games",     cat:"Gaming",    followers:"420K", eng:"11.4%", price:"₹6,000",  init:"RG", av:"av-g7", catCls:"cat-gaming",    verified:false },
+  { name:"Divya Nair",      handle:"@divya.life",      cat:"Lifestyle", followers:"1.5M", eng:"5.6%",  price:"₹14,000", init:"DN", av:"av-g6", catCls:"cat-lifestyle", verified:true  },
+];
+
+const grid = document.getElementById('grid');
+influencers.forEach(inf => {
+  grid.innerHTML += `
+  <div class="card">
+    <div class="card-top">
+      <div class="av-wrap">
+        <div class="av ${inf.av}">${inf.init}
+          ${inf.verified ? '<div class="av-verified">✓</div>' : ''}
+        </div>
+      </div>
+      <span class="cat-tag ${inf.catCls}">${inf.cat}</span>
+    </div>
+    <div class="card-name">${inf.name}</div>
+    <div class="card-handle">${inf.handle}</div>
+    <div class="card-stats">
+      <div class="s-item">
+        <div class="s-val">${inf.followers}</div>
+        <div class="s-key">Followers</div>
+      </div>
+      <div class="s-item">
+        <div class="s-val">${inf.eng}</div>
+        <div class="s-key">Engagement</div>
+      </div>
+    </div>
+    <div class="card-div"></div>
+    <div class="card-footer">
+      <div class="price-wrap">
+        <div class="price-label">Per Post</div>
+        <div class="price-val">${inf.price}</div>
+      </div>
+      <button class="btn-book">Book Now</button>
+    </div>
+  </div>`;
+});
+
+// pill filter interaction
+document.querySelectorAll('.pill').forEach(p => {
+  p.addEventListener('click', () => {
+    document.querySelectorAll('.pill').forEach(x => x.classList.remove('active'));
+    p.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>

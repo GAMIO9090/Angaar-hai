@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>InfluConnect — Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --or1:    #FF6B1A;
+      --or2:    #E8500A;
+      --or3:    #C94008;
+      --cream:  #FBF3EA;
+      --ink:    #2C1A0E;
+      --muted:  #8A7060;
+      --border: #E8D5C0;
+      --glass:  rgba(255,255,255,0.74);
+    }
+
+    /* ════════ BODY ════════ */
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--cream);
+      padding: 2rem 1rem;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* ════════ BG SCENE ════════ */
+    .bg-scene {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    /* Gradient mesh */
+    .bg-scene::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 65% 55% at 15% 10%,  rgba(255,107,26,0.24) 0%, transparent 65%),
+        radial-gradient(ellipse 55% 50% at 90% 88%,  rgba(232,80,10,0.20) 0%, transparent 60%),
+        radial-gradient(ellipse 70% 40% at 50% 50%,  rgba(251,243,234,1)   0%, transparent 100%);
+    }
+
+    /* Grid */
+    .bg-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(232,96,10,0.042) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(232,96,10,0.042) 1px, transparent 1px);
+      background-size: 50px 50px;
+    }
+
+    /* ── Orbs ── */
+    .orb { position: absolute; border-radius: 50%; pointer-events: none; }
+
+    .orb-1 {
+      width: 400px; height: 400px;
+      top: -130px; left: -100px;
+      background: radial-gradient(circle at 38% 35%,
+        #FFAB6E 0%, #E8500A 42%, #8B2800 100%);
+      box-shadow:
+        inset -22px -22px 45px rgba(0,0,0,0.26),
+        inset 12px 12px 32px rgba(255,200,150,0.32),
+        0 35px 90px rgba(232,80,10,0.32);
+      animation: orb1 8s ease-in-out infinite;
+      opacity: .82;
+    }
+    .orb-2 {
+      width: 260px; height: 260px;
+      bottom: -80px; right: -60px;
+      background: radial-gradient(circle at 36% 32%,
+        #FFCF99 0%, #E8600A 48%, #7A2A00 100%);
+      box-shadow:
+        inset -14px -14px 28px rgba(0,0,0,0.22),
+        inset 8px 8px 22px rgba(255,200,150,0.28),
+        0 22px 55px rgba(232,96,10,0.28);
+      animation: orb2 10s ease-in-out infinite;
+      opacity: .72;
+    }
+    .orb-3 {
+      width: 100px; height: 100px;
+      top: 50%; right: 7%;
+      background: radial-gradient(circle at 35% 30%,
+        #FFD4A8 0%, #F07830 58%, #9B3800 100%);
+      box-shadow:
+        inset -6px -6px 14px rgba(0,0,0,0.18),
+        inset 4px 4px 10px rgba(255,210,160,0.3),
+        0 12px 32px rgba(240,120,48,0.28);
+      animation: orb3 7s ease-in-out infinite;
+      opacity: .58;
+    }
+    .orb-4 {
+      width: 55px; height: 55px;
+      top: 20%; right: 22%;
+      background: radial-gradient(circle at 38% 30%,
+        #FFE0C0 0%, #FF7830 60%, #B84000 100%);
+      box-shadow:
+        inset -4px -4px 8px rgba(0,0,0,0.18),
+        inset 3px 3px 8px rgba(255,210,160,0.28),
+        0 8px 20px rgba(240,120,48,0.25);
+      animation: orb4 5s ease-in-out infinite;
+      opacity: .5;
+    }
+
+    @keyframes orb1 {
+      0%,100% { transform: translate(0,0) rotate(0deg); }
+      33%      { transform: translate(20px, 28px) rotate(10deg); }
+      66%      { transform: translate(-14px,-18px) rotate(-6deg); }
+    }
+    @keyframes orb2 {
+      0%,100% { transform: translate(0,0); }
+      50%      { transform: translate(-22px,-28px); }
+    }
+    @keyframes orb3 {
+      0%,100% { transform: translate(0,0) scale(1); }
+      50%      { transform: translate(-10px,14px) scale(1.1); }
+    }
+    @keyframes orb4 {
+      0%,100% { transform: translate(0,0) scale(1); }
+      50%      { transform: translate(8px,-10px) scale(1.15); }
+    }
+
+    /* ════════ CARD ════════ */
+    .card-wrap {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 460px;
+      animation: riseIn .6s cubic-bezier(.16,1,.3,1) both;
+    }
+    @keyframes riseIn {
+      from { opacity:0; transform: translateY(32px) scale(.97); }
+      to   { opacity:1; transform: translateY(0)    scale(1); }
+    }
+
+    /* 3D shadow stack */
+    .shadow-b {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #E8600A, #C94008);
+      border-radius: 32px;
+      transform: translate(7px, 10px);
+      filter: blur(2px);
+      opacity: .32;
+      z-index: -1;
+    }
+    .shadow-c {
+      position: absolute;
+      inset: 0;
+      background: #1A1108;
+      border-radius: 32px;
+      transform: translate(14px, 19px);
+      filter: blur(6px);
+      opacity: .10;
+      z-index: -2;
+    }
+
+    .card {
+      background: var(--glass);
+      backdrop-filter: blur(30px) saturate(1.8);
+      -webkit-backdrop-filter: blur(30px) saturate(1.8);
+      border-radius: 32px;
+      border: 1px solid rgba(255,255,255,0.9);
+      padding: 2.8rem 3rem 2.4rem;
+      box-shadow:
+        0 2px 0 rgba(255,255,255,0.92) inset,
+        0 -1px 0 rgba(0,0,0,0.04) inset,
+        0 36px 80px rgba(200,80,10,0.09),
+        0 8px 24px rgba(0,0,0,0.06);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Glass top shimmer */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 8%; right: 8%;
+      height: 1.5px;
+      background: linear-gradient(90deg,
+        transparent, rgba(255,255,255,.96), transparent);
+    }
+    /* Top-left light bounce */
+    .card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 42%; height: 50%;
+      background: radial-gradient(ellipse at 18% 0%,
+        rgba(255,255,255,0.24) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* ════════ BRAND ════════ */
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      margin-bottom: 2rem;
+    }
+    .brand-icon {
+      width: 50px; height: 50px;
+      border-radius: 15px;
+      background: linear-gradient(145deg, #FF7A2F 0%, #C94008 100%);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      position: relative;
+      box-shadow:
+        0 1px 0 rgba(255,200,140,0.5) inset,
+        0 -2px 0 rgba(0,0,0,0.20) inset,
+        3px 5px 0 #A83400,
+        7px 9px 0 rgba(168,52,0,0.26),
+        0 16px 32px rgba(201,64,8,0.40);
+      transition: transform .22s cubic-bezier(.34,1.56,.64,1),
+                  box-shadow .22s ease;
+    }
+    .brand-icon:hover {
+      transform: translate(-3px,-4px);
+      box-shadow:
+        0 1px 0 rgba(255,200,140,0.5) inset,
+        0 -2px 0 rgba(0,0,0,0.20) inset,
+        6px 9px 0 #A83400,
+        11px 14px 0 rgba(168,52,0,0.20),
+        0 22px 40px rgba(201,64,8,0.46);
+    }
+    .brand-icon svg { width: 23px; height: 23px; }
+
+    .brand-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.65rem;
+      font-weight: 800;
+      letter-spacing: -.03em;
+      line-height: 1;
+    }
+    .brand-name .bl { color: var(--ink); }
+    .brand-name .or {
+      color: var(--or1);
+      text-shadow: 2px 2px 0 rgba(201,64,8,0.20);
+    }
+
+    /* ════════ WELCOME TEXT ════════ */
+    .welcome-wrap { margin-bottom: 2rem; }
+
+    .welcome-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: .42rem;
+      background: linear-gradient(135deg,
+        rgba(255,107,26,0.13), rgba(255,107,26,0.06));
+      border: 1px solid rgba(255,107,26,0.26);
+      border-radius: 30px;
+      padding: .26rem .85rem;
+      font-size: .72rem;
+      font-weight: 600;
+      color: var(--or2);
+      margin-bottom: .9rem;
+      letter-spacing: .03em;
+    }
+    .tag-dot {
+      width: 5px; height: 5px;
+      background: var(--or1);
+      border-radius: 50%;
+      flex-shrink: 0;
+      box-shadow: 0 0 6px rgba(255,107,26,0.75);
+      animation: pulse 2.2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%,100% { box-shadow: 0 0 4px rgba(255,107,26,0.6); }
+      50%      { box-shadow: 0 0 12px rgba(255,107,26,1); }
+    }
+
+    .heading {
+      font-family: 'Syne', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--ink);
+      letter-spacing: -.04em;
+      line-height: 1.1;
+      margin-bottom: .32rem;
+    }
+    .heading span {
+      background: linear-gradient(130deg, var(--or1) 0%, var(--or3) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .subheading {
+      font-size: .87rem;
+      color: var(--muted);
+      font-weight: 400;
+      line-height: 1.55;
+    }
+
+    /* ════════ FIELDS ════════ */
+    .field-group { margin-bottom: 1.1rem; }
+
+    .field-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: .42rem;
+    }
+    .field-label label {
+      font-size: .71rem;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: .07em;
+      text-transform: uppercase;
+    }
+
+    .field-wrap {
+      position: relative;
+    }
+    .field-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #C0A898;
+      display: flex;
+      align-items: center;
+      transition: color .2s;
+      pointer-events: none;
+    }
+    .field-icon svg { width: 17px; height: 17px; }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: .86rem 1.1rem .86rem 2.9rem;
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: .93rem;
+      font-weight: 400;
+      color: var(--ink);
+      background: rgba(255,255,255,0.78);
+      backdrop-filter: blur(6px);
+      outline: none;
+      transition: all .22s cubic-bezier(.4,0,.2,1);
+      box-shadow:
+        0 1px 0 rgba(255,255,255,0.92) inset,
+        0 2px 6px rgba(0,0,0,0.045);
+    }
+    input::placeholder { color: #C0A898; }
+
+    input:focus {
+      border-color: var(--or1);
+      background: rgba(255,255,255,0.97);
+      box-shadow:
+        0 0 0 4px rgba(255,107,26,0.13),
+        0 1px 0 rgba(255,255,255,0.9) inset,
+        0 2px 8px rgba(255,107,26,0.07);
+      transform: translateY(-1px);
+    }
+    /* Icon color follows focus */
+    .field-wrap:focus-within .field-icon { color: var(--or1); }
+
+    /* Password toggle */
+    .toggle-pw {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #C0A898;
+      display: flex;
+      align-items: center;
+      padding: 0;
+      transition: color .2s;
+    }
+    .toggle-pw:hover { color: var(--or2); }
+    .toggle-pw svg { width: 17px; height: 17px; }
+
+    /* Forgot link */
+    .forgot-link {
+      font-size: .75rem;
+      font-weight: 600;
+      color: var(--or2);
+      text-decoration: none;
+      position: relative;
+      transition: color .15s;
+    }
+    .forgot-link::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: -1px;
+      width: 0; height: 1.5px;
+      background: var(--or1);
+      transition: width .22s ease;
+    }
+    .forgot-link:hover { color: var(--or1); }
+    .forgot-link:hover::after { width: 100%; }
+
+    /* ════════ REMEMBER ME ════════ */
+    .remember-row {
+      display: flex;
+      align-items: center;
+      gap: .55rem;
+      margin-bottom: 1.5rem;
+    }
+    .custom-check {
+      width: 18px; height: 18px;
+      border-radius: 6px;
+      border: 1.5px solid var(--border);
+      background: rgba(255,255,255,0.8);
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      flex-shrink: 0;
+      position: relative;
+      transition: all .18s;
+      box-shadow: 0 1px 0 rgba(255,255,255,.9) inset, 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .custom-check:checked {
+      background: linear-gradient(145deg, var(--or1), var(--or3));
+      border-color: var(--or2);
+      box-shadow: 0 3px 10px rgba(232,80,10,0.28);
+    }
+    .custom-check:checked::after {
+      content: '';
+      position: absolute;
+      left: 4px; top: 1.5px;
+      width: 7px; height: 11px;
+      border: 2px solid #fff;
+      border-top: none;
+      border-left: none;
+      transform: rotate(42deg);
+    }
+    .remember-label {
+      font-size: .82rem;
+      color: var(--muted);
+      font-weight: 500;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    /* ════════ 3D BUTTON ════════ */
+    .btn-wrap {
+      position: relative;
+      display: block;
+      margin-bottom: 1.6rem;
+    }
+    /* 3D floor */
+    .btn-wrap::after {
+      content: '';
+      position: absolute;
+      left: 5px; right: -5px;
+      top: 7px; bottom: -7px;
+      background: var(--or3);
+      border-radius: 16px;
+      z-index: 0;
+      transition: transform .18s cubic-bezier(.4,0,.2,1),
+                  opacity .18s;
+    }
+    .btn-login {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      padding: 1rem 1rem;
+      background: linear-gradient(155deg, #FF7A2F 0%, #E8500A 52%, #C94008 100%);
+      color: #fff;
+      border: none;
+      border-radius: 16px;
+      font-family: 'Syne', sans-serif;
+      font-size: 1.02rem;
+      font-weight: 700;
+      letter-spacing: .03em;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .6rem;
+      overflow: hidden;
+      transition: all .18s cubic-bezier(.4,0,.2,1);
+      box-shadow:
+        0 1px 0 rgba(255,200,140,0.4) inset,
+        0 -2px 0 rgba(0,0,0,0.16) inset;
+    }
+    /* Shimmer sweep */
+    .btn-login::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -130%;
+      width: 60%; height: 100%;
+      background: linear-gradient(90deg,
+        transparent, rgba(255,255,255,0.24), transparent);
+      transform: skewX(-20deg);
+      transition: left .55s ease;
+    }
+    .btn-login:hover::before { left: 160%; }
+    .btn-login:hover {
+      background: linear-gradient(155deg, #FF8C40 0%, #F06522 52%, #D45012 100%);
+      transform: translate(-3px,-4px);
+      box-shadow:
+        0 1px 0 rgba(255,200,140,0.4) inset,
+        0 -2px 0 rgba(0,0,0,0.16) inset,
+        0 16px 32px rgba(232,80,10,0.36);
+    }
+    .btn-wrap:hover::after { transform: translate(3px,4px); }
+    .btn-login:active {
+      transform: translate(2px,2px);
+      box-shadow: 0 1px 0 rgba(255,200,140,0.3) inset;
+    }
+    .btn-wrap:active::after { transform: translate(-1px,-1px); opacity: .5; }
+
+    .btn-arrow {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px; height: 24px;
+      background: rgba(255,255,255,0.18);
+      border-radius: 50%;
+      font-size: .92rem;
+      transition: transform .22s cubic-bezier(.34,1.56,.64,1);
+    }
+    .btn-login:hover .btn-arrow { transform: translateX(5px); }
+
+    /* ════════ DIVIDER ════════ */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: .8rem;
+      margin-bottom: 1.2rem;
+    }
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg,
+        transparent, var(--border), transparent);
+    }
+    .divider span {
+      font-size: .7rem;
+      color: var(--muted);
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    /* ════════ SIGNUP LINK ════════ */
+    .signup-link {
+      text-align: center;
+      font-size: .87rem;
+      color: var(--muted);
+    }
+    .signup-link a {
+      color: var(--or2);
+      font-weight: 700;
+      text-decoration: none;
+      position: relative;
+      transition: color .15s;
+    }
+    .signup-link a::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: -1px;
+      width: 0; height: 1.5px;
+      background: var(--or1);
+      transition: width .25s ease;
+    }
+    .signup-link a:hover { color: var(--or1); }
+    .signup-link a:hover::after { width: 100%; }
+
+    /* ════════ RESPONSIVE ════════ */
+    @media (max-width: 520px) {
+      .card { padding: 2.2rem 1.5rem 2rem; }
+      .heading { font-size: 1.65rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Background -->
+<div class="bg-scene">
+  <div class="bg-grid"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="orb orb-4"></div>
+</div>
+
+<!-- Card -->
+<div class="card-wrap">
+  <div class="shadow-c"></div>
+  <div class="shadow-b"></div>
+
+  <div class="card">
+
+    <!-- Brand -->
+    <div class="brand">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff"
+             stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"
+             xmlns="http://www.w3.org/2000/svg">
+          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+        </svg>
+      </div>
+      <span class="brand-name">
+        <span class="bl">Influ</span><span class="or">Connect</span>
+      </span>
+    </div>
+
+    <!-- Welcome text -->
+    <div class="welcome-wrap">
+      <div class="welcome-tag">
+        <span class="tag-dot"></span>
+        Welcome back
+      </div>
+      <h1 class="heading">Sign in to your<br><span>Account</span></h1>
+      <p class="subheading">Connect with nearby creators and grow your business today.</p>
+    </div>
+
+    <!-- Django form -->
+    <form method="POST" action="">
+      {% csrf_token %}
+
+      <!-- Username -->
+      <div class="field-group">
+        <div class="field-label">
+          <label for="username">Username</label>
+        </div>
+        <div class="field-wrap">
+          <span class="field-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </span>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            placeholder="Enter your username"
+            autocomplete="username"
+            required
+          />
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="field-group">
+        <div class="field-label">
+          <label for="password">Password</label>
+          <a href="/forgot-password/" class="forgot-link">Forgot password?</a>
+        </div>
+        <div class="field-wrap">
+          <span class="field-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+          </span>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Enter your password"
+            autocomplete="current-password"
+            required
+          />
+          <button type="button" class="toggle-pw" onclick="togglePw()" aria-label="Show password">
+            <!-- Eye icon -->
+            <svg id="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Remember me -->
+      <div class="remember-row">
+        <input type="checkbox" id="remember" name="remember" class="custom-check"/>
+        <label for="remember" class="remember-label">Keep me signed in</label>
+      </div>
+
+      <!-- 3D Login button -->
+      <div class="btn-wrap">
+        <button type="submit" class="btn-login">
+          Sign In
+          <span class="btn-arrow">→</span>
+        </button>
+      </div>
+
+    </form>
+
+    <div class="divider"><span>new here?</span></div>
+
+    <p class="signup-link">
+      Don't have an account? <a href="/signup/">Create one →</a>
+    </p>
+
+  </div><!-- /card -->
+</div><!-- /card-wrap -->
+
+<script>
+  function togglePw() {
+    const inp  = document.getElementById('password');
+    const icon = document.getElementById('eye-icon');
+    const show = inp.type === 'password';
+    inp.type = show ? 'text' : 'password';
+    icon.innerHTML = show
+      ? /* eye-off */
+        `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>`
+      : /* eye */
+        `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>`;
+  }
+</script>
+
+</body>
+</html>

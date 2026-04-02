@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>InfluConnect — Create Booking</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --or1:       #FF6B1A;
+      --or2:       #E8500A;
+      --or3:       #C94008;
+      --or-pale:   #FFF3EB;
+      --or-glow:   rgba(255,107,26,0.16);
+      --violet:    #7C3AED;
+      --v-pale:    #F5F3FF;
+      --cream:     #FBF4EC;
+      --white:     #FFFFFF;
+      --ink:       #1E130A;
+      --ink2:      #3D2810;
+      --muted:     #8A7060;
+      --border:    #EAD9C8;
+      --glass:     rgba(255,255,255,0.78);
+      --teal:      #0EA878;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--cream);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2.5rem 1rem;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    .bg {
+      position: fixed; inset: 0; z-index: 0;
+      pointer-events: none; overflow: hidden;
+    }
+    .bg::before {
+      content: ''; position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 52% at 10% 12%, rgba(124,58,237,0.16) 0%, transparent 65%),
+        radial-gradient(ellipse 58% 48% at 92% 88%, rgba(255,107,26,0.20) 0%, transparent 60%),
+        radial-gradient(ellipse 70% 42% at 50% 50%, rgba(251,244,236,1)   0%, transparent 100%);
+    }
+    .bg::after {
+      content: ''; position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(124,58,237,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(124,58,237,0.035) 1px, transparent 1px);
+      background-size: 54px 54px;
+    }
+
+    .orb { position: absolute; border-radius: 50%; pointer-events: none; }
+    .orb-1 {
+      width: 320px; height: 320px; top: -100px; right: -80px;
+      background: radial-gradient(circle at 36% 33%, #FFAB6E 0%, #E8500A 42%, #8B2800 100%);
+      box-shadow: inset -18px -18px 36px rgba(0,0,0,0.24), inset 10px 10px 26px rgba(255,200,150,0.28), 0 28px 72px rgba(232,80,10,0.3);
+      animation: floatA 8s ease-in-out infinite; opacity: .78;
+    }
+    .orb-2 {
+      width: 220px; height: 220px; bottom: -65px; left: -50px;
+      background: radial-gradient(circle at 38% 32%, #B57BFF 0%, #7C3AED 44%, #4A1D96 100%);
+      box-shadow: inset -12px -12px 26px rgba(0,0,0,0.22), inset 8px 8px 18px rgba(200,160,255,0.28), 0 20px 52px rgba(124,58,237,0.28);
+      animation: floatB 10s ease-in-out infinite; opacity: .68;
+    }
+    .orb-3 {
+      width: 80px; height: 80px; top: 40%; left: 5%;
+      background: radial-gradient(circle at 36% 30%, #FFD4A8 0%, #F07830 58%, #9B3800 100%);
+      box-shadow: inset -5px -5px 12px rgba(0,0,0,0.18), inset 3px 3px 8px rgba(255,210,160,0.28), 0 10px 28px rgba(240,120,48,0.28);
+      animation: floatC 7s ease-in-out infinite; opacity: .52;
+    }
+
+    @keyframes floatA { 0%,100% { transform: translate(0,0) rotate(0deg); } 33% { transform: translate(-16px,20px) rotate(7deg); } 66% { transform: translate(10px,-14px) rotate(-4deg); } }
+    @keyframes floatB { 0%,100% { transform: translate(0,0); } 50% { transform: translate(18px,-22px); } }
+    @keyframes floatC { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(7px,10px) scale(1.1); } }
+
+    .page-wrap {
+      position: relative; z-index: 10;
+      width: 100%; max-width: 560px;
+      animation: riseIn .6s cubic-bezier(.16,1,.3,1) both;
+    }
+    @keyframes riseIn { from { opacity:0; transform: translateY(30px) scale(.97); } to { opacity:1; transform: translateY(0) scale(1); } }
+
+    .back-link {
+      display: inline-flex; align-items: center; gap: .45rem;
+      font-size: .8rem; font-weight: 600; color: var(--muted);
+      text-decoration: none; margin-bottom: 1.3rem;
+      transition: color .18s, gap .18s;
+    }
+    .back-link:hover { color: var(--or2); gap: .65rem; }
+    .back-link svg { width: 15px; height: 15px; }
+
+    .card-wrap { position: relative; }
+    .shadow-c {
+      position: absolute; inset: 0; background: #1A0A00; border-radius: 30px;
+      transform: translate(13px,17px); filter: blur(6px); opacity: .08; z-index: -2;
+    }
+    .shadow-b {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, var(--or2), var(--violet));
+      border-radius: 30px; transform: translate(6px,8px);
+      filter: blur(2px); opacity: .26; z-index: -1;
+    }
+
+    .card {
+      background: var(--glass);
+      backdrop-filter: blur(28px) saturate(1.8);
+      -webkit-backdrop-filter: blur(28px) saturate(1.8);
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.9);
+      padding: 2.8rem 3rem 2.5rem;
+      box-shadow:
+        0 2px 0 rgba(255,255,255,0.92) inset,
+        0 -1px 0 rgba(0,0,0,0.04) inset,
+        0 28px 64px rgba(120,50,10,0.08),
+        0 6px 20px rgba(0,0,0,0.05);
+      position: relative; overflow: hidden;
+    }
+    .card::before {
+      content: ''; position: absolute; top: 0; left: 8%; right: 8%; height: 1.5px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.95), transparent);
+    }
+    .card::after {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 44%; height: 48%;
+      background: radial-gradient(ellipse at 18% 0%, rgba(255,255,255,0.22) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .card-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1.8rem; gap: 1rem;
+    }
+    .brand-row { display: flex; align-items: center; gap: .72rem; }
+    .brand-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: linear-gradient(145deg, #FF7A2F, #C94008);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      box-shadow: 0 1px 0 rgba(255,200,140,0.45) inset, 0 -1px 0 rgba(0,0,0,0.18) inset, 2px 3px 0 #A83400, 5px 6px 0 rgba(168,52,0,0.22), 0 10px 22px rgba(201,64,8,0.34);
+    }
+    .brand-icon svg { width: 20px; height: 20px; }
+    .brand-name { font-family: 'Syne', sans-serif; font-size: 1.25rem; font-weight: 800; letter-spacing: -.03em; line-height: 1; }
+    .brand-name .bl { color: var(--ink); }
+    .brand-name .or { color: var(--or1); text-shadow: 1.5px 1.5px 0 rgba(201,64,8,0.18); }
+
+    .step-badge {
+      display: inline-flex; align-items: center; gap: .38rem;
+      background: var(--or-pale); border: 1px solid rgba(255,107,26,0.24);
+      border-radius: 20px; padding: .24rem .8rem;
+      font-size: .7rem; font-weight: 700; letter-spacing: .04em; color: var(--or2); flex-shrink: 0;
+    }
+    .step-dot {
+      width: 5px; height: 5px; background: var(--or1); border-radius: 50%;
+      box-shadow: 0 0 6px rgba(255,107,26,0.75);
+      animation: sdPulse 2s ease-in-out infinite;
+    }
+    @keyframes sdPulse { 0%,100% { box-shadow: 0 0 4px rgba(255,107,26,0.6); } 50% { box-shadow: 0 0 10px rgba(255,107,26,1); } }
+
+    .hero { margin-bottom: 2rem; }
+    .hero-title {
+      font-family: 'Syne', sans-serif; font-size: 1.85rem; font-weight: 800;
+      color: var(--ink); letter-spacing: -.04em; line-height: 1.12; margin-bottom: .3rem;
+    }
+    .hero-title span {
+      background: linear-gradient(130deg, var(--or1) 0%, var(--violet) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hero-sub { font-size: .87rem; color: var(--muted); line-height: 1.55; }
+
+    .form-divider {
+      display: flex; align-items: center; gap: .8rem; margin: 0 0 1.6rem;
+    }
+    .form-divider::before, .form-divider::after {
+      content: ''; flex: 1; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+    }
+    .form-divider span { font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+
+    .field-group { margin-bottom: 1.15rem; }
+    .field-label { display: flex; align-items: center; justify-content: space-between; margin-bottom: .42rem; }
+    .field-label label { font-size: .71rem; font-weight: 700; color: var(--ink); letter-spacing: .07em; text-transform: uppercase; }
+    .field-required { font-size: .68rem; color: var(--or2); font-weight: 600; }
+
+    .input-wrap { position: relative; }
+    .field-icon {
+      position: absolute; left: 1rem; top: 50%; transform: translateY(-50%);
+      color: #C0A898; display: flex; align-items: center; pointer-events: none; transition: color .2s;
+    }
+    .field-icon svg { width: 16px; height: 16px; }
+
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      padding: .84rem 1.1rem .84rem 2.85rem;
+      border: 1.5px solid var(--border); border-radius: 14px;
+      font-family: 'Plus Jakarta Sans', sans-serif; font-size: .92rem; font-weight: 400;
+      color: var(--ink); background: rgba(255,255,255,0.82); backdrop-filter: blur(6px);
+      outline: none; transition: all .22s cubic-bezier(.4,0,.2,1); -webkit-appearance: none; appearance: none;
+      box-shadow: 0 1px 0 rgba(255,255,255,.9) inset, 0 2px 6px rgba(0,0,0,0.042);
+    }
+    input::placeholder { color: #C0A898; }
+    input:hover:not(:focus) {
+      border-color: #D4B8A0;
+      box-shadow: 0 1px 0 rgba(255,255,255,.9) inset, 0 4px 14px rgba(0,0,0,0.065);
+    }
+    input:focus {
+      border-color: var(--or1); background: rgba(255,255,255,0.97);
+      box-shadow: 0 0 0 4px rgba(255,107,26,0.12), 0 1px 0 rgba(255,255,255,0.9) inset, 0 2px 8px rgba(255,107,26,0.07);
+      transform: translateY(-1px);
+    }
+    input[readonly] {
+      color: var(--ink2); cursor: default;
+      background: rgba(255,248,242,0.90) !important;
+      border-color: rgba(255,107,26,0.22) !important;
+    }
+    input[readonly]:focus { transform: none; box-shadow: 0 0 0 3px rgba(255,107,26,0.08), 0 1px 0 rgba(255,255,255,0.9) inset; }
+    .input-wrap:focus-within .field-icon { color: var(--or1); }
+
+    /* Readonly influencer card */
+    .influencer-locked {
+      display: flex; align-items: center; gap: .85rem;
+      background: var(--or-pale);
+      border: 1.5px solid rgba(255,107,26,0.28);
+      border-radius: 14px; padding: .78rem 1.1rem;
+      box-shadow: 0 1px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(255,107,26,0.07);
+    }
+    .locked-avatar {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: linear-gradient(135deg, #FF7A2F, #C94008);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Syne', sans-serif; font-size: .9rem; font-weight: 800; color: #fff;
+      flex-shrink: 0;
+      box-shadow: 0 4px 10px rgba(232,80,10,0.28), 2px 2px 0 #A83400;
+    }
+    .locked-info { flex: 1; min-width: 0; }
+    .locked-name { font-family: 'Syne', sans-serif; font-size: .95rem; font-weight: 800; color: var(--ink); line-height: 1.2; }
+    .locked-meta { font-size: .75rem; color: var(--muted); font-weight: 500; margin-top: 2px; }
+    .locked-badge {
+      display: inline-flex; align-items: center; gap: .3rem;
+      background: rgba(255,107,26,0.12); border: 1px solid rgba(255,107,26,0.20);
+      border-radius: 20px; padding: .2rem .65rem;
+      font-size: .68rem; font-weight: 700; color: var(--or2);
+      flex-shrink: 0;
+    }
+    .locked-badge svg { width: 11px; height: 11px; }
+
+    /* Prefix ₹ */
+    .prefix-wrap { position: relative; }
+    .prefix-symbol {
+      position: absolute; left: 1rem; top: 50%; transform: translateY(-50%);
+      font-family: 'Syne', sans-serif; font-size: .95rem; font-weight: 700;
+      color: #C0A898; pointer-events: none; transition: color .2s; z-index: 1;
+    }
+    .prefix-wrap:focus-within .prefix-symbol { color: var(--or1); }
+    .prefix-wrap input { padding-left: 2.2rem; }
+
+    .field-helper { font-size: .7rem; color: var(--muted); margin-top: .28rem; font-weight: 500; }
+
+    /* Submit button */
+    .btn-wrap { position: relative; margin-top: 1.8rem; display: block; }
+    .btn-wrap::after {
+      content: ''; position: absolute; left: 5px; right: -5px; top: 7px; bottom: -7px;
+      background: linear-gradient(135deg, var(--violet), var(--or3));
+      border-radius: 16px; z-index: 0; transition: transform .18s cubic-bezier(.4,0,.2,1), opacity .18s;
+    }
+    .btn-submit {
+      position: relative; z-index: 1; width: 100%; padding: 1rem 1.2rem;
+      background: linear-gradient(155deg, #FF7A2F 0%, #E8500A 50%, #C94008 100%);
+      background-size: 200% 200%; background-position: left;
+      color: #fff; border: none; border-radius: 16px;
+      font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; letter-spacing: .03em;
+      cursor: pointer; display: flex; align-items: center; justify-content: center; gap: .65rem;
+      overflow: hidden;
+      transition: background-position .45s ease, transform .18s cubic-bezier(.4,0,.2,1), box-shadow .18s ease;
+      box-shadow: 0 1px 0 rgba(255,200,140,0.38) inset, 0 -2px 0 rgba(0,0,0,0.15) inset, 0 8px 24px rgba(232,80,10,0.28);
+    }
+    .btn-submit::before {
+      content: ''; position: absolute; top: 0; left: -130%; width: 60%; height: 100%;
+      background: linear-gradient(90deg,transparent,rgba(255,255,255,0.24),transparent);
+      transform: skewX(-20deg); transition: left .55s ease;
+    }
+    .btn-submit:hover::before { left: 160%; }
+    .btn-submit:hover {
+      background-position: right; transform: translate(-3px,-4px);
+      box-shadow: 0 1px 0 rgba(255,200,140,0.38) inset, 0 -2px 0 rgba(0,0,0,0.15) inset, 0 16px 36px rgba(232,80,10,0.36);
+    }
+    .btn-wrap:hover::after { transform: translate(3px,4px); }
+    .btn-submit:active { transform: translate(1px,1px); }
+    .btn-wrap:active::after { transform: translate(-1px,-1px); opacity: .5; }
+    .btn-icon {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 26px; height: 26px; background: rgba(255,255,255,0.18); border-radius: 50%;
+      transition: transform .22s cubic-bezier(.34,1.56,.64,1); flex-shrink: 0;
+    }
+    .btn-icon svg { width: 14px; height: 14px; }
+    .btn-submit:hover .btn-icon { transform: translateX(4px); }
+
+    /* Trust row */
+    .trust-row { display: flex; align-items: center; justify-content: center; gap: 1.4rem; margin-top: 1.3rem; flex-wrap: wrap; }
+    .trust-item { display: flex; align-items: center; gap: .35rem; font-size: .73rem; color: var(--muted); font-weight: 500; }
+    .trust-item svg { width: 13px; height: 13px; color: var(--teal); }
+
+    /* Footer links */
+    .form-footer { display: flex; align-items: center; justify-content: center; gap: 1.3rem; margin-top: 1.5rem; flex-wrap: wrap; }
+    .footer-link {
+      font-size: .79rem; font-weight: 600; color: var(--muted);
+      text-decoration: none; display: flex; align-items: center; gap: .3rem;
+      position: relative; transition: color .15s;
+    }
+    .footer-link::after { content: ''; position: absolute; left: 0; bottom: -1px; width: 0; height: 1.5px; background: var(--or1); transition: width .22s ease; }
+    .footer-link:hover { color: var(--or2); }
+    .footer-link:hover::after { width: 100%; }
+    .footer-link svg { width: 13px; height: 13px; }
+    .footer-sep { width: 4px; height: 4px; background: var(--border); border-radius: 50%; }
+
+    @media (max-width: 600px) {
+      .card { padding: 2rem 1.5rem 1.8rem; }
+      .hero-title { font-size: 1.5rem; }
+      .card-header { flex-wrap: wrap; }
+    }
+    @media (max-width: 400px) {
+      .card { padding: 1.6rem 1.1rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="bg">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+
+<div class="page-wrap">
+
+  <a href="{% url 'bookings:dashboard' %}" class="back-link">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="19" y1="12" x2="5" y2="12"/>
+      <polyline points="12 19 5 12 12 5"/>
+    </svg>
+    Back to Dashboard
+  </a>
+
+  <div class="card-wrap">
+    <div class="shadow-c"></div>
+    <div class="shadow-b"></div>
+
+    <div class="card">
+
+      <div class="card-header">
+        <div class="brand-row">
+          <div class="brand-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+            </svg>
+          </div>
+          <span class="brand-name">
+            <span class="bl">Influ</span><span class="or">Connect</span>
+          </span>
+        </div>
+        <div class="step-badge">
+          <span class="step-dot"></span>
+          New Request
+        </div>
+      </div>
+
+      <div class="hero">
+        <h1 class="hero-title">Create <span>Booking</span></h1>
+        <p class="hero-sub">Send a collaboration request to your preferred local influencer.</p>
+      </div>
+
+      <div class="form-divider"><span>Booking Details</span></div>
+
+      <form method="POST" action="">
+        {% csrf_token %}
+
+        <!-- 1. Business Name -->
+        <div class="field-group">
+          <div class="field-label">
+            <label for="business_name">Business Name</label>
+            <span class="field-required">Required</span>
+          </div>
+          <div class="input-wrap">
+            <span class="field-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                <polyline points="9 22 9 12 15 12 15 22"/>
+              </svg>
+            </span>
+            <input type="text" id="business_name" name="business_name" placeholder="e.g. Spice & Style Café" required/>
+          </div>
+          <p class="field-helper">Enter your shop or business name as it should appear to the influencer.</p>
+        </div>
+
+        <!-- 2. Message -->
+        <div class="field-group">
+          <div class="field-label">
+            <label for="message">Collaboration Message</label>
+            <span class="field-required">Required</span>
+          </div>
+          <div class="input-wrap">
+            <span class="field-icon" style="top:1rem; transform:none;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              </svg>
+            </span>
+            <textarea
+              id="message" name="message" rows="3" required
+              placeholder="Describe what you need — e.g. a reel featuring our new menu, a story post, product review…"
+              style="width:100%;padding:.84rem 1.1rem .84rem 2.85rem;border:1.5px solid var(--border);border-radius:14px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.92rem;color:var(--ink);background:rgba(255,255,255,0.82);outline:none;resize:vertical;transition:all .22s cubic-bezier(.4,0,.2,1);box-shadow:0 1px 0 rgba(255,255,255,.9) inset,0 2px 6px rgba(0,0,0,0.042);line-height:1.6;-webkit-appearance:none;"
+            ></textarea>
+          </div>
+        </div>
+
+        <!-- 3. Amount -->
+        <div class="field-group">
+          <div class="field-label">
+            <label for="amount">Offer Amount (₹)</label>
+            <span class="field-required">Required</span>
+          </div>
+          <div class="prefix-wrap">
+            <span class="prefix-symbol">₹</span>
+            <input type="number" id="amount" name="amount" placeholder="5000" min="0" step="100" required/>
+          </div>
+          <p class="field-helper">Amount you are willing to pay per post / collaboration.</p>
+        </div>
+
+        <!-- 4. Influencer — READ-ONLY (pre-filled from view context) -->
+        <div class="field-group">
+          <div class="field-label">
+            <label>Influencer</label>
+            <span class="locked-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+              Pre-selected
+            </span>
+          </div>
+
+          <!-- Visual locked card -->
+          <div class="influencer-locked">
+            <div class="locked-avatar">{{ influencer.user.username|first|upper }}</div>
+            <div class="locked-info">
+              <div class="locked-name">@{{ influencer.user.username }}</div>
+              <div class="locked-meta">
+                {% if influencer.category %}{{ influencer.category }}{% endif %}
+                {% if influencer.location %} · {{ influencer.location }}{% endif %}
+              </div>
+            </div>
+            <div class="locked-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                <polyline points="22 4 12 14.01 9 11.01"/>
+              </svg>
+              Verified
+            </div>
+          </div>
+
+          <!-- Hidden field carries the actual value -->
+          <input type="hidden" name="influencer" value="{{ influencer.id }}"/>
+
+          <p class="field-helper">You are booking directly from this influencer's profile page.</p>
+        </div>
+
+        <!-- Submit -->
+        <div class="btn-wrap">
+          <button type="submit" class="btn-submit">
+            Send Booking Request
+            <span class="btn-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13"/>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+              </svg>
+            </span>
+          </button>
+        </div>
+
+      </form>
+
+      <div class="trust-row">
+        <div class="trust-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Secure &amp; Encrypted
+        </div>
+        <div class="trust-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          Verified Influencers
+        </div>
+        <div class="trust-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Avg. 4hr Response
+        </div>
+      </div>
+
+      <div class="form-footer">
+        <a href="{% url 'bookings:dashboard' %}" class="footer-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </a>
+        <span class="footer-sep"></span>
+        <a href="/influencers/" class="footer-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Browse Influencers
+        </a>
+        <span class="footer-sep"></span>
+        <a href="{% url 'bookings:all_bookings' %}" class="footer-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          My Bookings
+        </a>
+      </div>
+
+    </div><!-- /card -->
+  </div><!-- /card-wrap -->
+</div><!-- /page-wrap -->
+
+<script>
+  const ta = document.querySelector('textarea');
+  if (ta) {
+    ta.addEventListener('focus', () => {
+      ta.style.borderColor = 'var(--or1)';
+      ta.style.background  = 'rgba(255,255,255,0.97)';
+      ta.style.boxShadow   = '0 0 0 4px rgba(255,107,26,0.12), 0 1px 0 rgba(255,255,255,0.9) inset';
+      ta.style.transform   = 'translateY(-1px)';
+    });
+    ta.addEventListener('blur', () => {
+      ta.style.borderColor = 'var(--border)';
+      ta.style.background  = 'rgba(255,255,255,0.82)';
+      ta.style.boxShadow   = '0 1px 0 rgba(255,255,255,.9) inset, 0 2px 6px rgba(0,0,0,0.042)';
+      ta.style.transform   = '';
+    });
+  }
+</script>
+
+</body>
+</html>

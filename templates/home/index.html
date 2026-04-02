@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>InfluConnect – Find Local Influencers</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #fdf6ec;
+      --orange: #f26419;
+      --orange-light: #ff8c42;
+      --dark: #1a1208;
+      --mid: #5a3e28;
+      --card-bg: #ffffff;
+      --border: #f0e2d0;
+      --shadow: 0 4px 24px rgba(242,100,25,0.10);
+      --radius: 18px;
+    }
+
+    body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--dark); min-height: 100vh; }
+
+    /* NAV */
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 48px; height: 70px;
+      background: var(--cream); border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-icon {
+      width: 38px; height: 38px; background: var(--orange); border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-text { font-family: 'Syne', sans-serif; font-size: 1.35rem; font-weight: 800; color: var(--dark); letter-spacing: -0.5px; }
+    .logo-text span { color: var(--orange); }
+    .nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
+    .nav-links a { text-decoration: none; color: var(--mid); font-size: 0.95rem; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--orange); }
+    .nav-cta { background: var(--dark); color: #fff !important; padding: 10px 22px; border-radius: 50px; font-weight: 600 !important; }
+    .nav-cta:hover { background: var(--orange) !important; }
+
+    /* HERO */
+    .hero { text-align: center; padding: 72px 24px 60px; background: linear-gradient(160deg, #fff8f0 0%, var(--cream) 60%); }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #fff; border: 1px solid var(--border); border-radius: 50px;
+      padding: 8px 18px; font-size: 0.85rem; font-weight: 600; color: var(--orange);
+      margin-bottom: 28px; box-shadow: 0 2px 12px rgba(242,100,25,0.08);
+    }
+    .hero-badge .dot { width: 8px; height: 8px; background: var(--orange); border-radius: 50%; animation: pulse 1.6s infinite; }
+    @keyframes pulse { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:.5; transform:scale(1.3); } }
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.6rem, 6vw, 5rem); font-weight: 800;
+      line-height: 1.05; letter-spacing: -2px; color: var(--dark);
+    }
+    .hero h1 .accent { color: var(--orange); display: block; }
+    .hero > p { color: var(--mid); font-size: 1.1rem; max-width: 520px; margin: 16px auto 40px; line-height: 1.6; }
+
+    /* MAP WIDGET */
+    .map-widget {
+      max-width: 660px; margin: 0 auto;
+      background: #fff; border: 1px solid var(--border);
+      border-radius: 22px; overflow: hidden;
+      box-shadow: 0 8px 40px rgba(242,100,25,0.13);
+    }
+    .map-bg { position: relative; height: 156px; overflow: hidden; }
+    .map-svg { width: 100%; height: 100%; display: block; }
+
+    /* Bouncing pin */
+    .map-pin {
+      position: absolute; top: 50%; left: 50%;
+      width: 42px; height: 42px;
+      background: var(--orange);
+      border-radius: 50% 50% 50% 0;
+      transform: translate(-50%, -55%) rotate(-45deg);
+      box-shadow: 0 4px 18px rgba(242,100,25,0.45);
+      display: flex; align-items: center; justify-content: center;
+      animation: pinBounce 2s ease-in-out infinite;
+    }
+    .map-pin svg { width: 20px; height: 20px; transform: rotate(45deg); }
+    @keyframes pinBounce { 0%,100% { top:50%; } 50% { top:44%; } }
+    .map-glow {
+      position: absolute; top: 50%; left: 50%;
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(242,100,25,0.20) 0%, transparent 70%);
+      transform: translate(-50%,-50%);
+      pointer-events: none;
+    }
+
+    /* Controls */
+    .map-controls { padding: 18px 22px 22px; }
+    .map-city-wrap {
+      display: flex; align-items: center; gap: 10px;
+      background: var(--cream); border: 1.5px solid var(--border);
+      border-radius: 12px; padding: 0 14px; margin-bottom: 12px;
+      transition: border-color 0.2s;
+    }
+    .map-city-wrap:focus-within { border-color: var(--orange); }
+    .map-loc-icon { width: 18px; height: 18px; flex-shrink: 0; }
+    .map-city-input {
+      flex: 1; border: none; background: transparent;
+      padding: 13px 0; font-size: 0.97rem;
+      font-family: 'DM Sans', sans-serif; color: var(--dark); outline: none;
+    }
+    .map-city-input::placeholder { color: #bbb; }
+    .gps-btn {
+      display: flex; align-items: center; gap: 6px;
+      background: none; border: none; cursor: pointer;
+      color: var(--orange); font-size: 0.82rem; font-weight: 700;
+      font-family: 'DM Sans', sans-serif; white-space: nowrap;
+      padding: 6px 2px; transition: opacity 0.2s;
+    }
+    .gps-btn:hover { opacity: 0.7; }
+    .gps-btn svg { width: 16px; height: 16px; }
+    .gps-btn.spinning svg { animation: spin 0.9s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* GPS toast */
+    .gps-toast {
+      display: none; align-items: center; gap: 8px;
+      background: #fff4ec; border: 1px solid #fcd9bc;
+      border-radius: 8px; padding: 8px 14px;
+      font-size: 0.82rem; color: var(--orange); font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .gps-toast.show { display: flex; }
+
+    .map-bottom-row { display: flex; align-items: center; gap: 12px; }
+    .map-niche-wrap {
+      flex: 1; display: flex; align-items: center; gap: 8px;
+      background: var(--cream); border: 1.5px solid var(--border);
+      border-radius: 12px; padding: 0 14px;
+    }
+    .map-niche-select {
+      flex: 1; appearance: none; border: none; background: transparent;
+      padding: 13px 0; font-size: 0.95rem;
+      font-family: 'DM Sans', sans-serif; color: var(--dark); cursor: pointer; outline: none;
+    }
+    .map-find-btn {
+      background: var(--orange); color: #fff; border: none;
+      border-radius: 12px; padding: 13px 28px;
+      font-size: 0.95rem; font-weight: 700;
+      font-family: 'DM Sans', sans-serif; cursor: pointer; white-space: nowrap;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .map-find-btn:hover { background: #d4510f; transform: translateY(-1px); }
+
+    /* SECTION HEADER */
+    .section-header {
+      max-width: 1200px; margin: 56px auto 0; padding: 0 28px;
+      display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+    }
+    .section-header h2 { font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px; }
+    .count-badge { background: var(--orange); color: #fff; border-radius: 50px; padding: 3px 12px; font-size: 0.8rem; font-weight: 700; }
+
+    /* GRID */
+    .influencer-grid {
+      max-width: 1200px; margin: 24px auto 80px; padding: 0 28px;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px;
+    }
+
+    /* CARD */
+    .card {
+      background: var(--card-bg); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 28px 24px 22px;
+      box-shadow: var(--shadow); transition: transform 0.22s, box-shadow 0.22s;
+      display: flex; flex-direction: column; position: relative; overflow: hidden;
+    }
+    .card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg, var(--orange), var(--orange-light));
+    }
+    .card:hover { transform: translateY(-5px); box-shadow: 0 12px 36px rgba(242,100,25,0.15); }
+    .card-avatar {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--orange-light), var(--orange));
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 800; color: #fff;
+      margin-bottom: 16px;
+    }
+    .card-username { font-family: 'Syne', sans-serif; font-size: 1.15rem; font-weight: 800; letter-spacing: -0.3px; margin-bottom: 6px; }
+    .card-username a { text-decoration: none; color: var(--dark); }
+    .card-username a:hover { color: var(--orange); }
+    .card-category {
+      display: inline-block; background: #fff4ec; color: var(--orange);
+      border: 1px solid #fcd9bc; border-radius: 6px; padding: 3px 10px;
+      font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px;
+    }
+    .card-stats { display: flex; gap: 18px; margin-bottom: 18px; padding: 14px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .stat { display: flex; flex-direction: column; gap: 2px; }
+    .stat-value { font-family: 'Syne', sans-serif; font-size: 1.05rem; font-weight: 800; }
+    .stat-label { font-size: 0.75rem; color: var(--mid); font-weight: 500; }
+    .card-rating { display: flex; align-items: center; gap: 5px; margin-bottom: 20px; }
+    .stars { color: #f5a623; font-size: 0.95rem; letter-spacing: 1px; }
+    .rating-val { font-weight: 700; font-size: 0.9rem; }
+    .rating-na { color: #bbb; font-size: 0.85rem; }
+    .card-actions { display: flex; gap: 10px; margin-top: auto; }
+    .btn-outline {
+      flex: 1; padding: 10px 0; border: 1.5px solid var(--dark); border-radius: 10px;
+      background: transparent; color: var(--dark); font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem; font-weight: 700; cursor: pointer; text-align: center;
+      text-decoration: none; transition: background 0.18s, color 0.18s;
+    }
+    .btn-outline:hover { background: var(--dark); color: #fff; }
+    .btn-fill {
+      flex: 1; padding: 10px 0; border: none; border-radius: 10px;
+      background: var(--orange); color: #fff; font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem; font-weight: 700; cursor: pointer; text-align: center;
+      text-decoration: none; transition: background 0.18s;
+    }
+    .btn-fill:hover { background: #d4510f; }
+
+    /* EMPTY */
+    .empty-state { grid-column: 1/-1; text-align: center; padding: 72px 20px; }
+    .empty-icon { font-size: 4rem; margin-bottom: 16px; opacity: .6; }
+    .empty-state h3 { font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 800; margin-bottom: 8px; }
+    .empty-state p { color: var(--mid); }
+
+    /* FOOTER */
+    footer { text-align: center; padding: 28px 20px; border-top: 1px solid var(--border); color: var(--mid); font-size: 0.85rem; }
+    footer span { color: var(--orange); font-weight: 700; }
+
+    @media (max-width: 640px) {
+      nav { padding: 0 20px; }
+      .map-bottom-row { flex-direction: column; }
+      .map-find-btn { width: 100%; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <a class="logo" href="{% url 'home' %}">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="22" height="22">
+        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+      </svg>
+    </div>
+    <span class="logo-text">Influ<span>Connect</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="{% url 'home' %}">Home</a></li>
+    <li><a href="{% url 'influencers:influencers_list' %}">Explore Influencers</a></li>
+    <li><a href="#how-it-works">How it Works</a></li>
+    <li><a href="{% url 'login' %}">Login</a></li>
+
+    {% if user.is_authenticated %}
+        <li><a href="{% url 'shopkeepers:shopkeeper_dashboard' %}">Get Started</a></li>
+    {% else %}
+        <li><a href="{% url 'login' %}">Get Started</a></li>
+    {% endif %}
+</ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge"><span class="dot"></span> 2,400+ verified local influencers ready to promote</div>
+  <h1>Find Local Influencers<span class="accent">Near Your Shop</span></h1>
+  <p>Connect with nearby creators and boost your business with targeted, hyper-local promotions that actually convert.</p>
+
+  <!-- MAP SEARCH WIDGET -->
+  <div class="map-widget">
+
+    <!-- Illustrated map -->
+    <div class="map-bg">
+      <svg class="map-svg" viewBox="0 0 660 156" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+        <rect width="660" height="156" fill="#f9ede0"/>
+        <!-- Roads -->
+        <line x1="0" y1="52"  x2="660" y2="52"  stroke="#e8d5bf" stroke-width="9"/>
+        <line x1="0" y1="104" x2="660" y2="104" stroke="#e8d5bf" stroke-width="9"/>
+        <line x1="105" y1="0" x2="105" y2="156" stroke="#e8d5bf" stroke-width="9"/>
+        <line x1="260" y1="0" x2="260" y2="156" stroke="#e8d5bf" stroke-width="9"/>
+        <line x1="400" y1="0" x2="400" y2="156" stroke="#e8d5bf" stroke-width="9"/>
+        <line x1="545" y1="0" x2="545" y2="156" stroke="#e8d5bf" stroke-width="9"/>
+        <!-- Blocks -->
+        <rect x="8"   y="6"   width="89" height="38" rx="7" fill="#c6ead6" opacity=".7"/>
+        <rect x="113" y="6"   width="139" height="38" rx="7" fill="#c6ead6" opacity=".5"/>
+        <rect x="268" y="6"   width="124" height="38" rx="7" fill="#fde4c0" opacity=".65"/>
+        <rect x="408" y="6"   width="129" height="38" rx="7" fill="#c6ead6" opacity=".45"/>
+        <rect x="553" y="6"   width="99"  height="38" rx="7" fill="#fde4c0" opacity=".5"/>
+        <rect x="8"   y="60"  width="89" height="36" rx="7" fill="#fde4c0" opacity=".55"/>
+        <rect x="113" y="60"  width="139" height="36" rx="7" fill="#c6ead6" opacity=".65"/>
+        <rect x="268" y="60"  width="124" height="36" rx="7" fill="#fde4c0" opacity=".75"/>
+        <rect x="408" y="60"  width="129" height="36" rx="7" fill="#c6ead6" opacity=".5"/>
+        <rect x="553" y="60"  width="99"  height="36" rx="7" fill="#fde4c0" opacity=".4"/>
+        <rect x="8"   y="112" width="89" height="36" rx="7" fill="#c6ead6" opacity=".6"/>
+        <rect x="113" y="112" width="139" height="36" rx="7" fill="#fde4c0" opacity=".5"/>
+        <rect x="268" y="112" width="124" height="36" rx="7" fill="#c6ead6" opacity=".4"/>
+        <rect x="408" y="112" width="129" height="36" rx="7" fill="#fde4c0" opacity=".6"/>
+        <rect x="553" y="112" width="99"  height="36" rx="7" fill="#c6ead6" opacity=".5"/>
+        <!-- Influencer dots -->
+        <circle cx="55"  cy="78"  r="5" fill="#f26419" opacity=".5"/>
+        <circle cx="185" cy="128" r="5" fill="#f26419" opacity=".5"/>
+        <circle cx="475" cy="26"  r="5" fill="#f26419" opacity=".55"/>
+        <circle cx="600" cy="130" r="4" fill="#f26419" opacity=".45"/>
+        <circle cx="75"  cy="26"  r="4" fill="#f26419" opacity=".4"/>
+      </svg>
+      <div class="map-glow"></div>
+      <div class="map-pin">
+        <svg viewBox="0 0 24 24" fill="white">
+          <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Search form -->
+    <form method="GET" action="#" class="map-controls" id="locationForm">
+
+      <!-- City input + GPS button -->
+      <div class="map-city-wrap">
+        <svg class="map-loc-icon" viewBox="0 0 24 24" fill="none" stroke="#f26419" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+          <circle cx="12" cy="10" r="3"/>
+        </svg>
+        <input type="text" name="city" id="cityInput"
+               placeholder="Enter your city or area..."
+               value="{{ request.GET.city }}"
+               class="map-city-input" autocomplete="off"/>
+        <button type="button" class="gps-btn" id="gpsBtn" onclick="getGPS()">
+          <svg id="gpsIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>
+            <circle cx="12" cy="12" r="7" opacity=".25"/>
+          </svg>
+          <span id="gpsTxt">Use my location</span>
+        </button>
+      </div>
+
+      <!-- GPS result toast -->
+      <div class="gps-toast" id="gpsToast">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        <span id="gpsMsg">Location detected!</span>
+      </div>
+
+      <!-- Niche dropdown + Find button -->
+      <div class="map-bottom-row">
+        <div class="map-niche-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#bbb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+          <select name="category" class="map-niche-select">
+            <option value="">All Niches</option>
+            <option value="Food"    {% if request.GET.category == 'Food' %}selected{% endif %}>🍔 Food</option>
+            <option value="Fashion" {% if request.GET.category == 'Fashion' %}selected{% endif %}>👗 Fashion</option>
+            <option value="Tech"    {% if request.GET.category == 'Tech' %}selected{% endif %}>💻 Tech</option>
+            <option value="Fitness" {% if request.GET.category == 'Fitness' %}selected{% endif %}>💪 Fitness</option>
+            <option value="Travel"  {% if request.GET.category == 'Travel' %}selected{% endif %}>✈️ Travel</option>
+            <option value="Beauty"  {% if request.GET.category == 'Beauty' %}selected{% endif %}>💄 Beauty</option>
+          </select>
+        </div>
+        <button type="submit" class="map-find-btn">Find Influencers</button>
+      </div>
+
+      <!-- Hidden GPS lat/lng -->
+      <input type="hidden" id="gpsLat" name="lat"/>
+      <input type="hidden" id="gpsLng" name="lng"/>
+    </form>
+  </div><!-- /map-widget -->
+</section>
+
+<!-- SECTION HEADER -->
+<div class="section-header">
+  <h2>Available Influencers</h2>
+  <span class="count-badge">{{ influencers|length }} found</span>
+</div>
+
+<!-- INFLUENCER GRID -->
+<div class="influencer-grid">
+
+  {% for influencer in influencers %}
+  <div class="card">
+    <div class="card-avatar">{{ influencer.user.username|first|upper }}</div>
+    <div class="card-username"><a href="#">@{{ influencer.user.username }}</a></div>
+    <span class="card-category">{{ influencer.category }}</span>
+
+    <div class="card-stats">
+      <div class="stat">
+        <span class="stat-value">{{ influencer.followers }}</span>
+        <span class="stat-label">Followers</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">{{ influencer.category }}</span>
+        <span class="stat-label">Niche</span>
+      </div>
+    </div>
+
+    <div class="card-rating">
+      {% if influencer.rating %}
+        <span class="stars">
+          {% if influencer.rating >= 1 %}★{% else %}☆{% endif %}
+          {% if influencer.rating >= 2 %}★{% else %}☆{% endif %}
+          {% if influencer.rating >= 3 %}★{% else %}☆{% endif %}
+          {% if influencer.rating >= 4 %}★{% else %}☆{% endif %}
+          {% if influencer.rating >= 5 %}★{% else %}☆{% endif %}
+        </span>
+        <span class="rating-val">{{ influencer.rating }}/5</span>
+      {% else %}
+        <span class="rating-na">No rating yet</span>
+      {% endif %}
+    </div>
+
+    <div class="card-actions">
+      <a href="#" class="btn-outline">View Profile</a>
+      <a href="#" class="btn-fill">Book Now</a>
+    </div>
+  </div>
+  {% empty %}
+  <div class="empty-state">
+    <div class="empty-icon">🔍</div>
+    <h3>No influencers found</h3>
+    <p>Try changing your filters or check back later for new creators.</p>
+  </div>
+  {% endfor %}
+
+</div>
+
+<!-- FOOTER -->
+<footer>© 2026 <span>InfluConnect</span> · Built to connect local shops with local creators.</footer>
+
+<!-- GPS SCRIPT -->
+<script>
+function getGPS() {
+  const btn   = document.getElementById('gpsBtn');
+  const icon  = document.getElementById('gpsIcon');
+  const txt   = document.getElementById('gpsTxt');
+  const toast = document.getElementById('gpsToast');
+  const msg   = document.getElementById('gpsMsg');
+
+  if (!navigator.geolocation) {
+    msg.textContent = 'Geolocation not supported.';
+    toast.classList.add('show'); return;
+  }
+
+  btn.classList.add('spinning');
+  txt.textContent = 'Detecting...';
+  toast.classList.remove('show');
+
+  navigator.geolocation.getCurrentPosition(
+    function(pos) {
+      const lat = pos.coords.latitude.toFixed(5);
+      const lng = pos.coords.longitude.toFixed(5);
+      document.getElementById('gpsLat').value = lat;
+      document.getElementById('gpsLng').value = lng;
+
+      // Reverse geocode with Nominatim (free, no key needed)
+      fetch('https://nominatim.openstreetmap.org/reverse?lat=' + lat + '&lon=' + lng + '&format=json')
+        .then(function(r){ return r.json(); })
+        .then(function(data) {
+          var a = data.address;
+          var city = a.city || a.town || a.village || a.county || '';
+          var state = a.state || '';
+          var place = city ? (state ? city + ', ' + state : city) : (lat + ', ' + lng);
+          document.getElementById('cityInput').value = place;
+          msg.textContent = '📍 ' + place;
+        })
+        .catch(function() {
+          document.getElementById('cityInput').value = lat + ', ' + lng;
+          msg.textContent = '📍 Lat: ' + lat + ', Lng: ' + lng;
+        })
+        .finally(function() {
+          btn.classList.remove('spinning');
+          txt.textContent = '✓ Located';
+          toast.classList.add('show');
+        });
+    },
+    function(err) {
+      btn.classList.remove('spinning');
+      txt.textContent = 'Use my location';
+      var errs = {1:'Permission denied.', 2:'Position unavailable.', 3:'Request timed out.'};
+      msg.textContent = '⚠️ ' + (errs[err.code] || 'Could not get location.');
+      toast.classList.add('show');
+    },
+    { timeout: 10000, maximumAge: 60000 }
+  );
+}
+</script>
+
+</body>
+</html>
