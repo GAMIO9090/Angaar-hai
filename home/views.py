@@ -5,15 +5,21 @@ def home(request):
     
     if request.user.is_authenticated:
         if request.user.role == 'shopkeeper':
-            return redirect('shopkeepers:dashboard')
+            return redirect('shopkeepers:shopkeeper_dashboard')
         elif request.user.role == 'influencer':
             return redirect('influencers:dashboard')
 
-    
     influencers = InfluencerProfile.objects.all()
+    
+    
     category = request.GET.get('category')
     if category:
         influencers = influencers.filter(category=category)
+
+    
+    city = request.GET.get('city')
+    if city:
+        influencers = influencers.filter(location__icontains=city)
 
     context = {
         'influencers': influencers

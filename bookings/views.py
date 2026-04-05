@@ -93,8 +93,7 @@ def create_booking(request, influencer_id):
     if request.method == 'POST':
         business_name = request.POST.get('business_name')
         message = request.POST.get('message')
-        # ✅ FIXED: category aur location influencer profile se lo
-        # Form mein yeh fields nahi hain isliye POST se None aata tha
+        
         category = influencer.category or 'General'
         location = influencer.location or ''
         amount = request.POST.get('amount')
