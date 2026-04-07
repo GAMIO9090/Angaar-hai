@@ -2,26 +2,33 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from influencers.models import InfluencerProfile
-from bookings.models import Booking
+from bookings.models import Booking, Notification
 from .forms import ShopkeeperProfileForm
 
 
 @login_required
 def shopkeeper_dashboard(request):
-    bookings = Booking.objects.filter(
+    recent_bookings = Booking.objects.filter(
         shopkeeper=request.user
     ).order_by('-created_at')[:5]
 
-    total_bookings = Booking.objects.filter(
-        shopkeeper=request.user
-    ).count()
+    total_bookings    = Booking.objects.filter(shopkeeper=request.user).count()
+    active_bookings   = Booking.objects.filter(shopkeeper=request.user, status='pending').count()
+    completed_collabs = Booking.objects.filter(shopkeeper=request.user, status='approved').count()
+    total_influencers = InfluencerProfile.objects.count()
 
-    influencers = InfluencerProfile.objects.all()
+    recommended_influencers = InfluencerProfile.objects.all()[:4]
+
+    unread_count = Notification.objects.filter(recipient=request.user, is_read=False).count()
 
     context = {
-        'bookings': bookings,
-        'total_bookings': total_bookings,
-        'recommended_influencers': influencers  
+        'recent_bookings':         recent_bookings,
+        'total_bookings':          total_bookings,
+        'active_bookings':         active_bookings,
+        'completed_collabs':       completed_collabs,
+        'total_influencers':       total_influencers,
+        'recommended_influencers': recommended_influencers,
+        'unread_count':            unread_count,
     }
 
     return render(request, 'shopkeepers/dashboard.html', context)
@@ -30,7 +37,6 @@ def shopkeeper_dashboard(request):
 @login_required
 def browse_influencers(request):
     influencers = InfluencerProfile.objects.all()
-
     return render(request, 'shopkeepers/browse_influencers.html', {
         'influencers': influencers
     })
@@ -59,7 +65,6 @@ def view_booking(request, booking_id):
         id=booking_id,
         shopkeeper=request.user
     )
-
     return render(request, 'shopkeepers/booking_detail.html', {
         'booking': booking
     })
@@ -67,10 +72,7 @@ def view_booking(request, booking_id):
 
 @login_required
 def create_booking(request, influencer_id):
-    influencer = get_object_or_404(
-        InfluencerProfile,
-        id=influencer_id
-    )
+    influencer = get_object_or_404(InfluencerProfile, id=influencer_id)
 
     if request.method == 'POST':
         date = request.POST.get('date')
@@ -83,12 +85,8 @@ def create_booking(request, influencer_id):
             time=time
         )
 
-        messages.success(
-            request,
-            f"Booking created for {influencer.user.username}"
-        )
-
-        return redirect('shopkeepers:my_bookings') 
+        messages.success(request, f"Booking created for {influencer.user.username}")
+        return redirect('shopkeepers:my_bookings')
 
     return render(request, 'bookings/create_booking.html', {
         'influencer': influencer
@@ -101,7 +99,6 @@ def my_bookings(request):
         shopkeeper=request.user
     ).order_by('-created_at')
 
-   
     return render(request, 'bookings/all_bookings.html', {
         'bookings': bookings
     })
@@ -110,8 +107,7 @@ def my_bookings(request):
 @login_required
 def analytics(request):
     bookings = Booking.objects.filter(shopkeeper=request.user)
-
-    total = bookings.count()
+    total    = bookings.count()
 
     return render(request, 'shopkeepers/analytics.html', {
         'total_bookings': total

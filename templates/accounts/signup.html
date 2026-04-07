@@ -324,7 +324,10 @@
     .form-wrap input[type="text"],
     .form-wrap input[type="email"],
     .form-wrap input[type="password"],
-    .form-wrap select {
+    .form-wrap input[type="url"],
+    .form-wrap input[type="number"],
+    .form-wrap select,
+    .form-wrap textarea {
       width: 100%;
       padding: .82rem 1.1rem;
       border: 1.5px solid var(--border);
@@ -343,6 +346,11 @@
         0 1px 0 rgba(255,255,255,0.9) inset,
         0 2px 6px rgba(0,0,0,0.05);
     }
+    .form-wrap textarea {
+      resize: vertical;
+      min-height: 80px;
+      line-height: 1.5;
+    }
     .form-wrap select {
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238A7060' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
@@ -352,7 +360,8 @@
       cursor: pointer;
     }
     .form-wrap input:focus,
-    .form-wrap select:focus {
+    .form-wrap select:focus,
+    .form-wrap textarea:focus {
       border-color: var(--or1);
       background: rgba(255,255,255,0.96);
       box-shadow:
@@ -361,7 +370,8 @@
         0 2px 8px rgba(255,107,26,0.08);
       transform: translateY(-1px);
     }
-    .form-wrap input::placeholder { color: #C0A898; }
+    .form-wrap input::placeholder,
+    .form-wrap textarea::placeholder { color: #C0A898; }
 
     /* Django errors */
     .form-wrap ul.errorlist {
@@ -377,6 +387,91 @@
       gap: .3rem;
     }
     .form-wrap ul.errorlist li::before { content: '⚠ '; }
+
+    /* ── Influencer Extra Section ── */
+    #influencer-extra {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height 0.5s cubic-bezier(.4,0,.2,1), opacity 0.35s ease;
+    }
+    #influencer-extra.open {
+      max-height: 1200px;
+      opacity: 1;
+    }
+    .influencer-divider {
+      display: flex;
+      align-items: center;
+      gap: .7rem;
+      margin: .4rem 0 1.1rem;
+    }
+    .influencer-divider::before,
+    .influencer-divider::after {
+      content: '';
+      flex: 1;
+      height: 1.5px;
+      background: linear-gradient(90deg, transparent, rgba(255,107,26,0.3), transparent);
+    }
+    .influencer-divider span {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      background: linear-gradient(135deg, rgba(255,107,26,0.12), rgba(255,107,26,0.06));
+      border: 1px solid rgba(255,107,26,0.28);
+      border-radius: 20px;
+      padding: .22rem .85rem;
+      font-size: .68rem;
+      font-weight: 700;
+      color: var(--or2);
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .influencer-divider span::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--or1);
+      border-radius: 50%;
+      box-shadow: 0 0 6px rgba(255,107,26,0.7);
+      animation: pulse 2s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+    .row-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .85rem;
+    }
+    .platform-tabs {
+      display: flex;
+      gap: .5rem;
+      margin-bottom: .75rem;
+      flex-wrap: wrap;
+    }
+    .ptab {
+      padding: .32rem .85rem;
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: .75rem;
+      font-weight: 600;
+      color: var(--muted);
+      background: rgba(255,255,255,0.6);
+      cursor: pointer;
+      transition: all .18s ease;
+      letter-spacing: .02em;
+    }
+    .ptab:hover {
+      border-color: rgba(255,107,26,0.4);
+      color: var(--or2);
+    }
+    .ptab.active {
+      border-color: var(--or1);
+      background: rgba(255,107,26,0.08);
+      color: var(--or2);
+      box-shadow: 0 0 0 3px rgba(255,107,26,0.1);
+    }
+    .platform-input-wrap { display: none; }
+    .platform-input-wrap.visible { display: block; }
 
     /* ── 3D Submit Button ── */
     .btn-wrap {
@@ -496,10 +591,60 @@
     .login-link a:hover { color: var(--or1); }
     .login-link a:hover::after { width: 100%; }
 
+    /* ── Shopkeeper Extra Section ── */
+    #shopkeeper-extra {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height 0.5s cubic-bezier(.4,0,.2,1), opacity 0.35s ease;
+    }
+    #shopkeeper-extra.open {
+      max-height: 1200px;
+      opacity: 1;
+    }
+    .shopkeeper-divider {
+      display: flex;
+      align-items: center;
+      gap: .7rem;
+      margin: .4rem 0 1.1rem;
+    }
+    .shopkeeper-divider::before,
+    .shopkeeper-divider::after {
+      content: '';
+      flex: 1;
+      height: 1.5px;
+      background: linear-gradient(90deg, transparent, rgba(255,107,26,0.3), transparent);
+    }
+    .shopkeeper-divider span {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      background: linear-gradient(135deg, rgba(255,107,26,0.12), rgba(255,107,26,0.06));
+      border: 1px solid rgba(255,107,26,0.28);
+      border-radius: 20px;
+      padding: .22rem .85rem;
+      font-size: .68rem;
+      font-weight: 700;
+      color: var(--or2);
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .shopkeeper-divider span::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--or1);
+      border-radius: 50%;
+      box-shadow: 0 0 6px rgba(255,107,26,0.7);
+      animation: pulse 2s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+
     @media (max-width: 540px) {
       .card { padding: 2rem 1.4rem 1.8rem; }
       .heading { font-size: 1.55rem; }
       .stats-row { gap: .5rem; }
+      .row-2col { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -564,7 +709,151 @@
       {% csrf_token %}
       <div class="form-wrap">
         {{ form.as_p }}
+
+        <!-- ── Influencer Extra Fields (hidden until role=influencer) ── -->
+        <div id="influencer-extra">
+          <div class="influencer-divider">
+            <span>Influencer Profile</span>
+          </div>
+
+          <div class="row-2col">
+            <p>
+              <label for="id_followers_count">Followers Count</label>
+              <input type="number" id="id_followers_count" name="followers_count" placeholder="e.g. 50000" min="0">
+            </p>
+            <p>
+              <label for="id_niche">Niche / Category</label>
+              <input type="text" id="id_niche" name="niche" placeholder="Fashion, Tech, Food…">
+            </p>
+          </div>
+
+          <div class="row-2col">
+            <p>
+              <label for="id_city">City</label>
+              <input type="text" id="id_city" name="city" placeholder="Mumbai">
+            </p>
+            <p>
+              <label for="id_state">State</label>
+              <input type="text" id="id_state" name="state" placeholder="Maharashtra">
+            </p>
+          </div>
+
+          <p>
+            <label for="id_country">Country</label>
+            <select id="id_country" name="country">
+              <option value="">Select Country</option>
+              <option value="IN">India</option>
+              <option value="US">United States</option>
+              <option value="GB">United Kingdom</option>
+              <option value="AE">UAE</option>
+              <option value="SG">Singapore</option>
+              <option value="AU">Australia</option>
+              <option value="CA">Canada</option>
+            </select>
+          </p>
+
+          <p style="margin-bottom:.5rem;">
+            <label>Social Platform Links</label>
+          </p>
+          <div class="platform-tabs">
+            <button type="button" class="ptab active" data-target="instagram">Instagram</button>
+            <button type="button" class="ptab" data-target="youtube">YouTube</button>
+            <button type="button" class="ptab" data-target="twitter">X / Twitter</button>
+          </div>
+
+          <div class="platform-input-wrap visible" id="wrap-instagram">
+            <p>
+              <input type="url" id="id_instagram_url" name="instagram_url"
+                     placeholder="https://instagram.com/yourhandle">
+            </p>
+          </div>
+          <div class="platform-input-wrap" id="wrap-youtube">
+            <p>
+              <input type="url" id="id_youtube_url" name="youtube_url"
+                     placeholder="https://youtube.com/@yourchannel">
+            </p>
+          </div>
+          <div class="platform-input-wrap" id="wrap-twitter">
+            <p>
+              <input type="url" id="id_twitter_url" name="twitter_url"
+                     placeholder="https://x.com/yourhandle">
+            </p>
+          </div>
+
+          <p>
+            <label for="id_bio">Bio / About You</label>
+            <textarea id="id_bio" name="bio" placeholder="Tell brands a little about yourself…"></textarea>
+          </p>
+        </div>
+        <!-- ── /Influencer Extra Fields ── -->
+
+        <!-- ── Shopkeeper Extra Fields (hidden until role=shopkeeper) ── -->
+        <div id="shopkeeper-extra">
+          <div class="shopkeeper-divider">
+            <span>Shop Details</span>
+          </div>
+
+          <p>
+            <label for="id_shop_name">Shop Name</label>
+            <input type="text" id="id_shop_name" name="shop_name" placeholder="e.g. Sharma Electronics">
+          </p>
+
+          <p>
+            <label for="id_shop_category">Shop Category / Product Type</label>
+            <select id="id_shop_category" name="shop_category">
+              <option value="">Select Category</option>
+              <option value="electronics">Electronics & Gadgets</option>
+              <option value="fashion">Fashion & Clothing</option>
+              <option value="food">Food & Beverages</option>
+              <option value="grocery">Grocery & Supermarket</option>
+              <option value="beauty">Beauty & Cosmetics</option>
+              <option value="furniture">Furniture & Home Decor</option>
+              <option value="pharmacy">Pharmacy & Health</option>
+              <option value="sports">Sports & Fitness</option>
+              <option value="jewellery">Jewellery & Accessories</option>
+              <option value="books">Books & Stationery</option>
+              <option value="toys">Toys & Kids</option>
+              <option value="automotive">Automotive & Spares</option>
+              <option value="other">Other</option>
+            </select>
+          </p>
+
+          <div class="row-2col">
+            <p>
+              <label for="id_shop_city">Shop City</label>
+              <input type="text" id="id_shop_city" name="shop_city" placeholder="e.g. Delhi">
+            </p>
+            <p>
+              <label for="id_shop_state">State</label>
+              <input type="text" id="id_shop_state" name="shop_state" placeholder="e.g. Delhi NCR">
+            </p>
+          </div>
+
+          <p>
+            <label for="id_shop_address">Full Shop Address</label>
+            <textarea id="id_shop_address" name="shop_address" placeholder="Shop no., Street, Area, Pincode…"></textarea>
+          </p>
+
+          <div class="row-2col">
+            <p>
+              <label for="id_shop_pincode">Pincode</label>
+              <input type="text" id="id_shop_pincode" name="shop_pincode" placeholder="e.g. 110001" maxlength="10">
+            </p>
+            <p>
+              <label for="id_shop_phone">Shop Contact No.</label>
+              <input type="text" id="id_shop_phone" name="shop_phone" placeholder="e.g. 9876543210">
+            </p>
+          </div>
+
+          <p>
+            <label for="id_shop_gstin">GSTIN (Optional)</label>
+            <input type="text" id="id_shop_gstin" name="shop_gstin" placeholder="e.g. 22AAAAA0000A1Z5" maxlength="15">
+          </p>
+        </div>
+        <!-- ── /Shopkeeper Extra Fields ── -->
+
       </div>
+
       <div class="btn-wrap">
         <button type="submit" class="btn-submit">
           Create My Account
@@ -574,10 +863,55 @@
     </form>
 
     <div class="divider-line"><span>already a member?</span></div>
-    <p class="login-link">Have an account? <a href="{% url 'accounts:login' %}">Sign In →</a>
+    <p class="login-link">Have an account? <a href="{% url 'accounts:login' %}">Sign In →</a></p>
 
   </div>
 </div>
+
+<script>
+  (function () {
+    // ── Role field detect (Django renders id="id_role" by default) ──
+    var roleField = document.getElementById('id_role');
+    var influencerSection = document.getElementById('influencer-extra');
+    var shopkeeperSection = document.getElementById('shopkeeper-extra');
+
+    function checkRole() {
+      if (!roleField) return;
+      var val = roleField.value;
+
+      if (val === 'influencer') {
+        influencerSection.classList.add('open');
+      } else {
+        influencerSection.classList.remove('open');
+      }
+
+      if (val === 'shopkeeper') {
+        shopkeeperSection.classList.add('open');
+      } else {
+        shopkeeperSection.classList.remove('open');
+      }
+    }
+
+    if (roleField) {
+      roleField.addEventListener('change', checkRole);
+      checkRole(); // run once on page load (useful on validation errors / back button)
+    }
+
+    // ── Platform tabs ──
+    var tabs = document.querySelectorAll('.ptab');
+    tabs.forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        tabs.forEach(function (t) { t.classList.remove('active'); });
+        document.querySelectorAll('.platform-input-wrap').forEach(function (w) {
+          w.classList.remove('visible');
+        });
+        tab.classList.add('active');
+        var target = document.getElementById('wrap-' + tab.dataset.target);
+        if (target) target.classList.add('visible');
+      });
+    });
+  })();
+</script>
 
 </body>
 </html>

@@ -1,927 +1,455 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>InfluConnect — Edit Profile</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --or1:       #FF6B1A;
-      --or2:       #E8500A;
-      --or3:       #C94008;
-      --or-pale:   #FFF3EB;
-      --or-glow:   rgba(255,107,26,0.18);
-      --violet:    #7C3AED;
-      --violet2:   #6D28D9;
-      --v-pale:    #F5F3FF;
-      --cream:     #FBF4EC;
-      --white:     #FFFFFF;
-      --ink:       #1E130A;
-      --ink2:      #3D2810;
-      --muted:     #8A7060;
-      --border:    #EAD9C8;
-      --glass:     rgba(255,255,255,0.76);
-    }
-
-    body {
-      min-height: 100vh;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2.5rem 1rem;
-      background: var(--cream);
-      position: relative;
-      overflow-x: hidden;
-    }
-
-    .bg {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-      overflow: hidden;
-    }
-    .bg::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 65% 55% at 8%  12%,  rgba(124,58,237,0.18)  0%, transparent 65%),
-        radial-gradient(ellipse 60% 50% at 92% 85%,  rgba(255,107,26,0.22)  0%, transparent 60%),
-        radial-gradient(ellipse 75% 45% at 50% 50%,  rgba(251,244,236,1)    0%, transparent 100%);
-    }
-    .bg::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(124,58,237,0.038) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(124,58,237,0.038) 1px, transparent 1px);
-      background-size: 52px 52px;
-    }
-
-    .orb {
-      position: absolute;
-      border-radius: 50%;
-      pointer-events: none;
-    }
-    .orb-1 {
-      width: 360px; height: 360px;
-      top: -120px; left: -90px;
-      background: radial-gradient(circle at 38% 34%,
-        #B57BFF 0%, #7C3AED 42%, #4A1D96 100%);
-      box-shadow:
-        inset -20px -20px 42px rgba(0,0,0,0.24),
-        inset 12px 12px 30px rgba(200,160,255,0.28),
-        0 30px 80px rgba(124,58,237,0.28);
-      animation: floatA 8s ease-in-out infinite;
-      opacity: .75;
-    }
-    .orb-2 {
-      width: 240px; height: 240px;
-      bottom: -70px; right: -55px;
-      background: radial-gradient(circle at 36% 32%,
-        #FFAB6E 0%, #E8500A 48%, #8B2800 100%);
-      box-shadow:
-        inset -14px -14px 28px rgba(0,0,0,0.22),
-        inset 8px 8px 22px rgba(255,200,150,0.28),
-        0 22px 56px rgba(232,80,10,0.3);
-      animation: floatB 10s ease-in-out infinite;
-      opacity: .72;
-    }
-    .orb-3 {
-      width: 88px; height: 88px;
-      top: 42%; right: 6%;
-      background: radial-gradient(circle at 36% 30%,
-        #FFD4A8 0%, #F07830 58%, #9B3800 100%);
-      box-shadow:
-        inset -5px -5px 12px rgba(0,0,0,0.18),
-        inset 4px 4px 10px rgba(255,210,160,0.28),
-        0 10px 28px rgba(240,120,48,0.3);
-      animation: floatC 7s ease-in-out infinite;
-      opacity: .55;
-    }
-    .orb-4 {
-      width: 52px; height: 52px;
-      top: 18%; right: 20%;
-      background: radial-gradient(circle at 38% 30%,
-        #D4B0FF 0%, #8B5CF6 58%, #5B21B6 100%);
-      box-shadow:
-        inset -4px -4px 8px rgba(0,0,0,0.18),
-        inset 3px 3px 8px rgba(200,160,255,0.28),
-        0 8px 20px rgba(124,58,237,0.28);
-      animation: floatD 5.5s ease-in-out infinite;
-      opacity: .5;
-    }
-
-    @keyframes floatA {
-      0%,100% { transform: translate(0,0) rotate(0deg); }
-      33%      { transform: translate(18px,24px) rotate(8deg); }
-      66%      { transform: translate(-12px,-16px) rotate(-5deg); }
-    }
-    @keyframes floatB {
-      0%,100% { transform: translate(0,0); }
-      50%      { transform: translate(-20px,-26px); }
-    }
-    @keyframes floatC {
-      0%,100% { transform: translate(0,0) scale(1); }
-      50%      { transform: translate(-8px,12px) scale(1.1); }
-    }
-    @keyframes floatD {
-      0%,100% { transform: translate(0,0) scale(1); }
-      50%      { transform: translate(7px,-10px) scale(1.12); }
-    }
-
-    .page-wrap {
-      position: relative;
-      z-index: 10;
-      width: 100%;
-      max-width: 620px;
-      animation: riseIn .6s cubic-bezier(.16,1,.3,1) both;
-    }
-    @keyframes riseIn {
-      from { opacity:0; transform: translateY(32px) scale(.97); }
-      to   { opacity:1; transform: translateY(0)    scale(1); }
-    }
-
-    .back-link {
-      display: inline-flex;
-      align-items: center;
-      gap: .45rem;
-      font-size: .8rem;
-      font-weight: 600;
-      color: var(--muted);
-      text-decoration: none;
-      margin-bottom: 1.3rem;
-      transition: color .18s, gap .18s;
-    }
-    .back-link:hover { color: var(--or2); gap: .65rem; }
-    .back-link svg { width: 15px; height: 15px; }
-
-    .card-wrap { position: relative; }
-
-    .shadow-c {
-      position: absolute;
-      inset: 0;
-      background: #1A0A00;
-      border-radius: 30px;
-      transform: translate(14px,18px);
-      filter: blur(6px);
-      opacity: .09;
-      z-index: -2;
-    }
-    .shadow-b {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, #7C3AED, #E8500A);
-      border-radius: 30px;
-      transform: translate(6px,9px);
-      filter: blur(2px);
-      opacity: .28;
-      z-index: -1;
-    }
-
-    .card {
-      background: var(--glass);
-      backdrop-filter: blur(30px) saturate(1.8);
-      -webkit-backdrop-filter: blur(30px) saturate(1.8);
-      border-radius: 30px;
-      border: 1px solid rgba(255,255,255,0.9);
-      padding: 2.8rem 3rem 2.6rem;
-      box-shadow:
-        0 2px 0 rgba(255,255,255,0.92) inset,
-        0 -1px 0 rgba(0,0,0,0.04) inset,
-        0 32px 72px rgba(100,40,10,0.08),
-        0 8px 24px rgba(0,0,0,0.055);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 8%; right: 8%;
-      height: 1.5px;
-      background: linear-gradient(90deg,
-        transparent, rgba(255,255,255,.95), transparent);
-    }
-    .card::after {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 44%; height: 50%;
-      background: radial-gradient(ellipse at 18% 0%,
-        rgba(255,255,255,0.22) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .card-header {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      margin-bottom: 2rem;
-      gap: 1rem;
-    }
-    .header-left { display: flex; align-items: center; gap: .85rem; }
-
-    .brand-icon {
-      width: 46px; height: 46px;
-      border-radius: 13px;
-      background: linear-gradient(145deg, #FF7A2F, #C94008);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-      box-shadow:
-        0 1px 0 rgba(255,200,140,0.45) inset,
-        0 -1px 0 rgba(0,0,0,0.18) inset,
-        2px 3px 0 #A83400,
-        5px 6px 0 rgba(168,52,0,0.22),
-        0 12px 26px rgba(201,64,8,0.36);
-    }
-    .brand-icon svg { width: 21px; height: 21px; }
-    .brand-name {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.28rem;
-      font-weight: 800;
-      letter-spacing: -.03em;
-      line-height: 1;
-    }
-    .brand-name .bl { color: var(--ink); }
-    .brand-name .or { color: var(--or1); text-shadow: 1.5px 1.5px 0 rgba(201,64,8,0.18); }
-
-    .role-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: .38rem;
-      background: var(--v-pale);
-      border: 1px solid rgba(124,58,237,0.22);
-      border-radius: 20px;
-      padding: .24rem .78rem;
-      font-size: .68rem;
-      font-weight: 700;
-      letter-spacing: .06em;
-      text-transform: uppercase;
-      color: var(--violet);
-      flex-shrink: 0;
-    }
-    .role-chip::before {
-      content: '';
-      width: 5px; height: 5px;
-      background: var(--violet);
-      border-radius: 50%;
-      flex-shrink: 0;
-      box-shadow: 0 0 5px rgba(124,58,237,0.65);
-      animation: vcPulse 2.2s ease-in-out infinite;
-    }
-    @keyframes vcPulse {
-      0%,100% { box-shadow: 0 0 4px rgba(124,58,237,0.55); }
-      50%      { box-shadow: 0 0 12px rgba(124,58,237,1); }
-    }
-
-    .hero {
-      text-align: center;
-      margin-bottom: 2rem;
-      position: relative;
-    }
-
-    .avatar-wrap {
-      position: relative;
-      display: inline-block;
-      margin-bottom: 1rem;
-    }
-    .avatar-circle {
-      width: 88px; height: 88px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 50%, #4A1D96 100%);
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Syne', sans-serif;
-      font-size: 1.8rem;
-      font-weight: 800;
-      color: #fff;
-      margin: 0 auto;
-      box-shadow:
-        0 1px 0 rgba(200,160,255,0.4) inset,
-        0 -2px 0 rgba(0,0,0,0.2) inset,
-        0 16px 36px rgba(109,40,217,0.32);
-      cursor: pointer;
-      transition: transform .22s cubic-bezier(.34,1.56,.64,1), box-shadow .22s;
-    }
-    .avatar-circle:hover {
-      transform: translateY(-3px) scale(1.04);
-      box-shadow:
-        0 1px 0 rgba(200,160,255,0.4) inset,
-        0 -2px 0 rgba(0,0,0,0.2) inset,
-        0 22px 44px rgba(109,40,217,0.38);
-    }
-    .avatar-edit-btn {
-      position: absolute;
-      bottom: 2px; right: 2px;
-      width: 28px; height: 28px;
-      background: linear-gradient(135deg, var(--or1), var(--or3));
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      border: 2.5px solid var(--white);
-      cursor: pointer;
-      box-shadow: 0 4px 10px rgba(232,80,10,0.32);
-      transition: transform .2s cubic-bezier(.34,1.56,.64,1);
-    }
-    .avatar-edit-btn:hover { transform: scale(1.15); }
-    .avatar-edit-btn svg { width: 12px; height: 12px; color: #fff; }
-
-    .hero-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.75rem;
-      font-weight: 800;
-      color: var(--ink);
-      letter-spacing: -.04em;
-      margin-bottom: .28rem;
-    }
-    .hero-title span {
-      background: linear-gradient(130deg, var(--or1) 0%, var(--violet) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .hero-sub {
-      font-size: .86rem;
-      color: var(--muted);
-      line-height: 1.55;
-    }
-
-    .profile-progress {
-      margin: 1.2rem 0 0;
-    }
-    .progress-hdr {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: .38rem;
-    }
-    .progress-lbl { font-size: .73rem; font-weight: 600; color: var(--muted); }
-    .progress-pct { font-size: .73rem; font-weight: 700; color: var(--or2); }
-    .progress-track {
-      height: 6px;
-      background: var(--border);
-      border-radius: 20px;
-      overflow: hidden;
-    }
-    .progress-fill {
-      height: 100%;
-      width: 72%;
-      background: linear-gradient(90deg, var(--violet), var(--or1));
-      border-radius: 20px;
-      position: relative;
-      animation: fillBar .9s cubic-bezier(.16,1,.3,1) .4s both;
-    }
-    @keyframes fillBar {
-      from { width: 0; }
-      to   { width: 72%; }
-    }
-    .progress-fill::after {
-      content: '';
-      position: absolute;
-      top: 0; right: 0;
-      width: 18px; height: 100%;
-      background: rgba(255,255,255,0.45);
-      filter: blur(3px);
-      border-radius: 20px;
-    }
-
-    .form-divider {
-      display: flex;
-      align-items: center;
-      gap: .8rem;
-      margin: 1.8rem 0 1.6rem;
-    }
-    .form-divider::before,
-    .form-divider::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--border), transparent);
-    }
-    .form-divider span {
-      font-size: .68rem;
-      font-weight: 700;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      color: var(--muted);
-      white-space: nowrap;
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.1rem;
-    }
-    .field-full { grid-column: 1 / -1; }
-
-    .field-group { display: flex; flex-direction: column; gap: .4rem; }
-
-    .field-label {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .field-label label {
-      font-size: .71rem;
-      font-weight: 700;
-      color: var(--ink);
-      letter-spacing: .07em;
-      text-transform: uppercase;
-    }
-    .field-hint {
-      font-size: .69rem;
-      color: var(--muted);
-      font-weight: 500;
-    }
-
-    .input-wrap { position: relative; }
-    .input-icon {
-      position: absolute;
-      left: 1rem;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #C0A898;
-      display: flex; align-items: center;
-      pointer-events: none;
-      transition: color .2s;
-    }
-    .textarea-icon { top: 1rem; transform: none; }
-    .input-icon svg { width: 16px; height: 16px; }
-
-    .char-count {
-      font-size: .68rem;
-      color: var(--muted);
-      font-weight: 500;
-      text-align: right;
-      margin-top: .2rem;
-      transition: color .2s;
-    }
-
-    input[type="text"],
-    input[type="number"],
-    textarea {
-      width: 100%;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: .9rem;
-      font-weight: 400;
-      color: var(--ink);
-      background: rgba(255,255,255,0.82);
-      border: 1.5px solid var(--border);
-      border-radius: 14px;
-      outline: none;
-      transition: all .22s cubic-bezier(.4,0,.2,1);
-      -webkit-appearance: none;
-      appearance: none;
-      box-shadow:
-        0 1px 0 rgba(255,255,255,.9) inset,
-        0 2px 6px rgba(0,0,0,0.045);
-    }
-
-    .has-icon input,
-    .has-icon textarea { padding-left: 2.9rem; }
-
-    input[type="text"],
-    input[type="number"] {
-      padding-top: .82rem;
-      padding-right: 1.1rem;
-      padding-bottom: .82rem;
-    }
-    input[type="number"] { padding-left: 2.9rem; }
-
-    .price-suffix {
-      position: absolute;
-      right: 1rem;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: .75rem;
-      font-weight: 600;
-      color: var(--muted);
-      pointer-events: none;
-    }
-
-    textarea {
-      padding: .9rem 1.1rem .9rem 2.9rem;
-      resize: vertical;
-      min-height: 110px;
-      line-height: 1.6;
-    }
-
-    input::placeholder,
-    textarea::placeholder { color: #C0A898; }
-
-    input:focus,
-    textarea:focus {
-      border-color: var(--or1);
-      background: rgba(255,255,255,0.98);
-      box-shadow:
-        0 0 0 4px rgba(255,107,26,0.13),
-        0 1px 0 rgba(255,255,255,0.9) inset,
-        0 4px 12px rgba(255,107,26,0.08);
-      transform: translateY(-1px);
-    }
-    .input-wrap:focus-within .input-icon { color: var(--or1); }
-
-    input:hover:not(:focus),
-    textarea:hover:not(:focus) {
-      border-color: #D4B8A0;
-      box-shadow:
-        0 1px 0 rgba(255,255,255,.9) inset,
-        0 4px 14px rgba(0,0,0,0.07);
-    }
-
-    .btn-wrap {
-      position: relative;
-      margin-top: 1.8rem;
-      display: block;
-    }
-    .btn-wrap::after {
-      content: '';
-      position: absolute;
-      left: 5px; right: -5px;
-      top: 7px; bottom: -7px;
-      background: linear-gradient(135deg, var(--violet2), var(--or3));
-      border-radius: 16px;
-      z-index: 0;
-      transition: transform .18s cubic-bezier(.4,0,.2,1), opacity .18s;
-    }
-    .btn-submit {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      padding: 1rem 1rem;
-      background: linear-gradient(155deg, #FF7A2F 0%, #D65CE0 45%, #7C3AED 100%);
-      background-size: 200% 200%;
-      background-position: left;
-      color: #fff;
-      border: none;
-      border-radius: 16px;
-      font-family: 'Syne', sans-serif;
-      font-size: 1rem;
-      font-weight: 700;
-      letter-spacing: .03em;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: .6rem;
-      overflow: hidden;
-      transition:
-        background-position .5s ease,
-        transform .18s cubic-bezier(.4,0,.2,1),
-        box-shadow .18s ease;
-      box-shadow:
-        0 1px 0 rgba(255,255,255,0.22) inset,
-        0 -2px 0 rgba(0,0,0,0.15) inset,
-        0 8px 24px rgba(180,60,200,0.25);
-    }
-    .btn-submit::before {
-      content: '';
-      position: absolute;
-      top: 0; left: -130%;
-      width: 60%; height: 100%;
-      background: linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent);
-      transform: skewX(-20deg);
-      transition: left .55s ease;
-    }
-    .btn-submit:hover::before { left: 160%; }
-    .btn-submit:hover {
-      background-position: right;
-      transform: translate(-3px,-4px);
-      box-shadow:
-        0 1px 0 rgba(255,255,255,0.22) inset,
-        0 -2px 0 rgba(0,0,0,0.15) inset,
-        0 16px 36px rgba(180,60,200,0.32);
-    }
-    .btn-wrap:hover::after { transform: translate(3px,4px); }
-    .btn-submit:active { transform: translate(1px,1px); }
-    .btn-wrap:active::after { transform: translate(-1px,-1px); opacity: .5; }
-
-    .btn-icon {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 24px; height: 24px;
-      background: rgba(255,255,255,0.18);
-      border-radius: 50%;
-      font-size: .9rem;
-      transition: transform .22s cubic-bezier(.34,1.56,.64,1);
-    }
-    .btn-submit:hover .btn-icon { transform: rotate(20deg) scale(1.15); }
-
-    .form-footer {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 1.4rem;
-      margin-top: 1.4rem;
-      flex-wrap: wrap;
-    }
-    .footer-link {
-      font-size: .8rem;
-      font-weight: 600;
-      color: var(--muted);
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: .3rem;
-      transition: color .15s;
-    }
-    .footer-link:hover { color: var(--or2); }
-    .footer-link svg { width: 13px; height: 13px; }
-    .footer-sep {
-      width: 4px; height: 4px;
-      background: var(--border);
-      border-radius: 50%;
-    }
-
-    .toast {
-      position: fixed;
-      bottom: 2rem; right: 2rem;
-      background: var(--white);
-      border: 1px solid #D1FAE5;
-      border-left: 4px solid #10B981;
-      border-radius: 14px;
-      padding: .9rem 1.3rem;
-      display: flex;
-      align-items: center;
-      gap: .7rem;
-      box-shadow: 0 16px 40px rgba(0,0,0,0.1);
-      font-size: .88rem;
-      font-weight: 600;
-      color: var(--ink2);
-      z-index: 1000;
-      transform: translateX(140%);
-      transition: transform .4s cubic-bezier(.16,1,.3,1);
-    }
-    .toast.show { transform: translateX(0); }
-    .toast-icon {
-      width: 32px; height: 32px;
-      background: #ECFDF5;
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-    }
-    .toast-icon svg { width: 16px; height: 16px; color: #10B981; }
-
-    @media (max-width: 600px) {
-      .card { padding: 2rem 1.5rem 1.8rem; }
-      .form-grid { grid-template-columns: 1fr; }
-      .hero-title { font-size: 1.45rem; }
-      .card-header { flex-direction: column; align-items: flex-start; }
-    }
-    @media (max-width: 400px) {
-      .card { padding: 1.6rem 1.1rem 1.6rem; }
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>InfluConnect – Edit Profile</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Sora', sans-serif;
+    background: linear-gradient(135deg, #f5f0ff 0%, #fff5f0 50%, #f0f5ff 100%);
+    min-height: 100vh;
+    padding-bottom: 2rem;
+  }
+  .header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 1.5rem;
+  }
+  .logo { display: flex; align-items: center; gap: 10px; }
+  .logo-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    background: linear-gradient(135deg, #f97316, #ec4899);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; color: white;
+  }
+  .logo-text { font-size: 18px; font-weight: 600; color: #1a1a1a; }
+  .logo-text span { color: #f97316; }
+  .badge {
+    background: white; border: 1.5px solid #e0d0ff;
+    border-radius: 999px; padding: 4px 14px;
+    font-size: 12px; font-weight: 600; color: #7c3aed;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .badge-dot { width: 7px; height: 7px; border-radius: 50%; background: #a78bfa; }
+  .avatar-section {
+    display: flex; flex-direction: column; align-items: center;
+    padding: 1rem 0 0.5rem;
+  }
+  .avatar-wrap { position: relative; cursor: pointer; }
+  .avatar {
+    width: 88px; height: 88px; border-radius: 50%;
+    background: linear-gradient(135deg, #7c3aed, #a78bfa);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px; font-weight: 600; color: white;
+    border: 3px solid white; overflow: hidden;
+  }
+  .avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .avatar-edit-btn {
+    position: absolute; bottom: 2px; right: 2px;
+    width: 26px; height: 26px; border-radius: 50%;
+    background: linear-gradient(135deg, #f97316, #ec4899);
+    display: flex; align-items: center; justify-content: center;
+    border: 2px solid white; cursor: pointer; font-size: 12px; color: white;
+  }
+  .page-title { font-size: 22px; font-weight: 600; margin-top: 10px; color: #1a1a1a; }
+  .page-title span { color: #f97316; }
+  .page-sub { font-size: 13px; color: #888; margin-top: 4px; }
+  .progress-bar-wrap { width: 90%; margin: 14px auto 0; }
+  .progress-label {
+    display: flex; justify-content: space-between;
+    font-size: 12px; color: #888; margin-bottom: 5px;
+  }
+  .progress-label span:last-child { color: #f97316; font-weight: 600; }
+  .progress-track { height: 7px; background: #ede9fe; border-radius: 999px; overflow: hidden; }
+  .progress-fill {
+    height: 100%; border-radius: 999px;
+    background: linear-gradient(90deg, #7c3aed, #f97316);
+    width: 72%; transition: width 0.5s ease;
+  }
+  .card {
+    background: white; border-radius: 20px;
+    margin: 1.2rem 1rem 0; padding: 1.2rem;
+    box-shadow: 0 2px 16px rgba(120,60,220,0.07);
+  }
+  .section-label {
+    font-size: 11px; font-weight: 600; letter-spacing: 1px;
+    color: #aaa; text-align: center; margin-bottom: 1rem;
+  }
+  .field { margin-bottom: 1rem; }
+  .field-label {
+    font-size: 11px; font-weight: 600; color: #888;
+    letter-spacing: 0.5px; margin-bottom: 5px;
+    display: flex; justify-content: space-between;
+  }
+  .field-hint { font-weight: 400; color: #bbb; }
+  .input-wrap {
+    display: flex; align-items: center;
+    border: 1.5px solid #ede9fe; border-radius: 12px;
+    background: #faf8ff; padding: 0 12px; transition: border 0.2s;
+  }
+  .input-wrap:focus-within { border-color: #a78bfa; background: white; }
+  .input-icon { font-size: 15px; margin-right: 8px; color: #a78bfa; flex-shrink: 0; }
+  .input-wrap input,
+  .input-wrap textarea,
+  .input-wrap select {
+    border: none; background: transparent; outline: none;
+    font-family: 'Sora', sans-serif; font-size: 13.5px;
+    color: #333; width: 100%; padding: 11px 0;
+  }
+  .input-wrap textarea { resize: vertical; min-height: 80px; padding: 10px 0; }
+  .input-wrap select { cursor: pointer; }
+  .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .char-count { text-align: right; font-size: 11px; color: #bbb; margin-top: 3px; }
+  .social-row {
+    display: flex; align-items: center;
+    border: 1.5px solid #ede9fe; border-radius: 12px;
+    background: #faf8ff; padding: 0 12px; margin-bottom: 10px;
+    transition: border 0.2s;
+  }
+  .social-row:focus-within { border-color: #a78bfa; background: white; }
+  .social-badge {
+    font-size: 11px; font-weight: 600; padding: 3px 8px;
+    border-radius: 6px; margin-right: 10px; white-space: nowrap;
+  }
+  .ig { background: #fce7f3; color: #db2777; }
+  .yt { background: #fee2e2; color: #dc2626; }
+  .tw { background: #eff6ff; color: #2563eb; }
+  .social-row input {
+    border: none; background: transparent; outline: none;
+    font-family: 'Sora', sans-serif; font-size: 13px;
+    color: #333; width: 100%; padding: 11px 0;
+  }
+  .save-btn {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    width: calc(100% - 2rem); margin: 1.5rem 1rem 0;
+    padding: 15px; border: none; border-radius: 14px; cursor: pointer;
+    background: linear-gradient(135deg, #7c3aed 0%, #f97316 100%);
+    color: white; font-family: 'Sora', sans-serif;
+    font-size: 15px; font-weight: 600; letter-spacing: 0.3px;
+    transition: opacity 0.2s, transform 0.1s;
+  }
+  .save-btn:hover { opacity: 0.93; }
+  .save-btn:active { transform: scale(0.98); }
+  .toast {
+    position: fixed; bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: #7c3aed; color: white; font-size: 13px; font-weight: 500;
+    padding: 10px 22px; border-radius: 999px;
+    box-shadow: 0 4px 20px rgba(124,58,237,0.3);
+    transition: transform 0.35s ease; z-index: 999; white-space: nowrap;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  @media (max-width: 480px) {
+    .row-2 { grid-template-columns: 1fr; }
+  }
+</style>
 </head>
 <body>
 
-<div class="bg">
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-  <div class="orb orb-3"></div>
-  <div class="orb orb-4"></div>
+<!-- HEADER -->
+<div class="header">
+  <div class="logo">
+    <div class="logo-icon">&#128279;</div>
+    <div class="logo-text">Influ<span>Connect</span></div>
+  </div>
+  <div class="badge"><div class="badge-dot"></div> INFLUENCER</div>
 </div>
 
-<div class="page-wrap">
+<!-- AVATAR + TITLE -->
+<div class="avatar-section">
+  <div class="avatar-wrap" onclick="document.getElementById('photoInput').click()">
+    <div class="avatar" id="avatarCircle">
+      {% if profile.photo %}
+        <img id="avatarImg" src="{{ profile.photo.url }}" style="display:block;" alt="profile photo" />
+        <span id="avatarInitials" style="display:none;">{{ request.user.first_name|first|upper }}{{ request.user.last_name|first|upper }}</span>
+      {% else %}
+        <span id="avatarInitials">{{ request.user.first_name|first|upper }}{{ request.user.last_name|first|upper }}</span>
+        <img id="avatarImg" src="" style="display:none;" alt="profile photo" />
+      {% endif %}
+    </div>
+    <div class="avatar-edit-btn">&#9998;</div>
+  </div>
+  <input type="file" id="photoInput" accept="image/*" style="display:none;" onchange="previewPhoto(event)" />
 
-  <!-- ✅ FIX 1: '/dashboard/' → Django URL tag -->
-  <a href="{% url 'influencers:dashboard' %}" class="back-link">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-         stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-      <line x1="19" y1="12" x2="5" y2="12"/>
-      <polyline points="12 19 5 12 12 5"/>
-    </svg>
-    Back to Dashboard
-  </a>
+  <h2 class="page-title">Edit Your <span>Profile</span></h2>
+  <p class="page-sub">Keep your profile fresh — brands discover you through this info.</p>
 
-  <div class="card-wrap">
-    <div class="shadow-c"></div>
-    <div class="shadow-b"></div>
-
-    <div class="card">
-
-      <div class="card-header">
-        <div class="header-left">
-          <div class="brand-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#fff"
-                 stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
-              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
-            </svg>
-          </div>
-          <span class="brand-name">
-            <span class="bl">Influ</span><span class="or">Connect</span>
-          </span>
-        </div>
-        <span class="role-chip">⚡ Influencer</span>
-      </div>
-
-      <div class="hero">
-        <div class="avatar-wrap">
-          <div class="avatar-circle">{{ request.user.username|slice:":2"|upper }}</div>
-          <div class="avatar-edit-btn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                 stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-            </svg>
-          </div>
-        </div>
-
-        <h1 class="hero-title">Edit Your <span>Profile</span></h1>
-        <p class="hero-sub">Keep your profile fresh — brands discover you through this info.</p>
-
-        <div class="profile-progress">
-          <div class="progress-hdr">
-            <span class="progress-lbl">Profile Completion</span>
-            <span class="progress-pct">72%</span>
-          </div>
-          <div class="progress-track">
-            <div class="progress-fill"></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="form-divider"><span>Profile Details</span></div>
-
-      <form method="POST" action="" id="editForm">
-        {% csrf_token %}
-
-        <div class="form-grid">
-
-          <div class="field-group field-full">
-            <div class="field-label">
-              <label for="bio">Bio</label>
-              <span class="field-hint">Tell brands who you are</span>
-            </div>
-            <div class="input-wrap has-icon">
-              <span class="input-icon textarea-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                  <polyline points="14 2 14 8 20 8"/>
-                  <line x1="16" y1="13" x2="8" y2="13"/>
-                  <line x1="16" y1="17" x2="8" y2="17"/>
-                  <polyline points="10 9 9 9 8 9"/>
-                </svg>
-              </span>
-              <textarea
-                id="bio"
-                name="bio"
-                placeholder="e.g. Delhi-based food & lifestyle creator with 84K+ followers…"
-                maxlength="300"
-                oninput="updateChar(this,'bioCount')"
-              >{{ profile.bio }}</textarea>
-            </div>
-            <div class="char-count" id="bioCount">0 / 300</div>
-          </div>
-
-          <div class="field-group">
-            <div class="field-label">
-              <label for="category">Category / Niche</label>
-            </div>
-            <div class="input-wrap has-icon">
-              <span class="input-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
-                  <line x1="7" y1="7" x2="7.01" y2="7"/>
-                </svg>
-              </span>
-              <input
-                type="text"
-                id="category"
-                name="category"
-                placeholder="e.g. Food & Lifestyle"
-                value="{{ profile.category }}"
-              />
-            </div>
-          </div>
-
-          <div class="field-group">
-            <div class="field-label">
-              <label for="location">Location</label>
-            </div>
-            <div class="input-wrap has-icon">
-              <span class="input-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                  <circle cx="12" cy="10" r="3"/>
-                </svg>
-              </span>
-              <input
-                type="text"
-                id="location"
-                name="location"
-                placeholder="e.g. New Delhi, India"
-                value="{{ profile.location }}"
-              />
-            </div>
-          </div>
-
-          <div class="field-group field-full">
-            <div class="field-label">
-              <label for="price">Price Per Post (₹)</label>
-              <span class="field-hint">Brands see this when browsing</span>
-            </div>
-            <div class="input-wrap">
-              <span class="input-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <line x1="12" y1="1" x2="12" y2="23"/>
-                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-                </svg>
-              </span>
-              <input
-                type="number"
-                id="price"
-                name="price_per_post"
-                placeholder="e.g. 5000"
-                value="{{ profile.price_per_post }}"
-                min="0"
-              />
-              <span class="price-suffix">per post</span>
-            </div>
-          </div>
-
-        </div>
-
-        <div class="btn-wrap">
-          <button type="submit" class="btn-submit">
-            <span class="btn-icon">✦</span>
-            Save Changes
-          </button>
-        </div>
-
-      </form>
-
-      <div class="form-footer">
-        <!-- ✅ FIX 2: '/dashboard/' → Django URL tag -->
-        <a href="{% url 'influencers:dashboard' %}" class="footer-link">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-               stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="3" width="7" height="7" rx="1"/>
-            <rect x="14" y="3" width="7" height="7" rx="1"/>
-            <rect x="3" y="14" width="7" height="7" rx="1"/>
-            <rect x="14" y="14" width="7" height="7" rx="1"/>
-          </svg>
-          Dashboard
-        </a>
-        <span class="footer-sep"></span>
-        <!-- ✅ FIX 3: '/profile/' → Django URL tag -->
-        <a href="{% url 'influencers:edit_profile' %}" class="footer-link">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-               stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-            <circle cx="12" cy="7" r="4"/>
-          </svg>
-          View Profile
-        </a>
-        <span class="footer-sep"></span>
-        <!-- ✅ FIX 4: '/logout/' → Django URL tag -->
-        <a href="{% url 'logout' %}" class="footer-link">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-               stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-            <polyline points="16 17 21 12 16 7"/>
-            <line x1="21" y1="12" x2="9" y2="12"/>
-          </svg>
-          Logout
-        </a>
-      </div>
-
+  <div class="progress-bar-wrap">
+    <div class="progress-label">
+      <span>Profile Completion</span>
+      <span id="pctLabel">0%</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill" style="width:0%"></div>
     </div>
   </div>
 </div>
+<!-- FORM -->
+<form id="profileForm" method="POST" enctype="multipart/form-data" action="/influencers/edit-profile/">
+  {% csrf_token %}
 
-<div class="toast" id="toast">
-  <div class="toast-icon">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-         stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-      <polyline points="20 6 9 17 4 12"/>
-    </svg>
+  <!-- PERSONAL INFO -->
+  <div class="card">
+    <div class="section-label">PERSONAL INFORMATION</div>
+
+    <div class="row-2">
+      <div class="field">
+        <div class="field-label">FIRST NAME</div>
+        <div class="input-wrap">
+          <span class="input-icon">&#128100;</span>
+          <input type="text" name="first_name" placeholder="Rahul" id="fname"
+            value="{{ request.user.first_name }}" oninput="updateInitials()" />
+        </div>
+      </div>
+      <div class="field">
+        <div class="field-label">LAST NAME</div>
+        <div class="input-wrap">
+          <span class="input-icon">&#128100;</span>
+          <input type="text" name="last_name" placeholder="Arora" id="lname"
+            value="{{ request.user.last_name }}" oninput="updateInitials()" />
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">EMAIL ADDRESS</div>
+      <div class="input-wrap">
+        <span class="input-icon">&#9993;</span>
+        <input type="email" name="email" placeholder="rahul@example.com"
+          value="{{ request.user.email }}" />
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">PHONE NUMBER</div>
+      <div class="input-wrap">
+        <span class="input-icon">&#128241;</span>
+        <input type="tel" name="phone" placeholder="+91 98765 43210"
+          value="{{ profile.phone }}" />
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">DATE OF BIRTH</div>
+      <div class="input-wrap">
+        <span class="input-icon">&#127874;</span>
+        <input type="date" name="date_of_birth"
+          value="{{ profile.date_of_birth|date:'Y-m-d' }}" />
+      </div>
+    </div>
+
+    <!-- Photo Upload (hidden, triggered by avatar click) -->
+    <input type="file" name="photo" id="photoFormInput" accept="image/*" style="display:none;" />
   </div>
-  Profile updated successfully!
-</div>
+
+  <!-- ADDRESS -->
+  <div class="card">
+    <div class="section-label">ADDRESS</div>
+
+    <div class="field">
+      <div class="field-label">STREET / LOCALITY</div>
+      <div class="input-wrap">
+        <span class="input-icon">&#127968;</span>
+        <input type="text" name="street" placeholder="e.g. Sector 12, Rohini"
+          value="{{ profile.street }}" />
+      </div>
+    </div>
+
+    <div class="row-2">
+      <div class="field">
+        <div class="field-label">CITY</div>
+        <div class="input-wrap">
+          <span class="input-icon">&#127970;</span>
+          <input type="text" name="city" placeholder="New Delhi"
+            value="{{ profile.city }}" />
+        </div>
+      </div>
+      <div class="field">
+        <div class="field-label">STATE</div>
+        <div class="input-wrap">
+          <span class="input-icon">&#128205;</span>
+          <select name="state">
+            <option value="">Select</option>
+            {% for s in states %}
+              <option value="{{ s }}" {% if profile.state == s %}selected{% endif %}>{{ s }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="row-2">
+      <div class="field">
+        <div class="field-label">PINCODE</div>
+        <div class="input-wrap">
+          <span class="input-icon">&#128238;</span>
+          <input type="text" name="pincode" placeholder="110001" maxlength="6"
+            value="{{ profile.pincode }}" />
+        </div>
+      </div>
+      <div class="field">
+        <div class="field-label">COUNTRY</div>
+        <div class="input-wrap">
+          <span class="input-icon">&#127759;</span>
+          <input type="text" name="country" value="{{ profile.country|default:'India' }}" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROFILE DETAILS -->
+  <div class="card">
+    <div class="section-label">PROFILE DETAILS</div>
+
+    <div class="field">
+      <div class="field-label">BIO <span class="field-hint">Tell brands who you are</span></div>
+      <div class="input-wrap">
+        <textarea name="bio" id="bioText" maxlength="300"
+          placeholder="e.g. Delhi-based food &amp; lifestyle creator with 84K+ followers..."
+          oninput="countChars()">{{ profile.bio }}</textarea>
+      </div>
+      <div class="char-count"><span id="charCount">{{ profile.bio|length }}</span> / 300</div>
+    </div>
+
+    <div class="row-2">
+      <div class="field">
+        <div class="field-label">CATEGORY / NICHE</div>
+        <div class="input-wrap">
+          <span class="input-icon">&#127991;</span>
+          <select name="category">
+            <option value="">Select niche</option>
+            {% for cat in categories %}
+              <option value="{{ cat }}" {% if profile.category == cat %}selected{% endif %}>{{ cat }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <div class="field-label">LOCATION</div>
+        <div class="input-wrap">
+          <span class="input-icon">&#128204;</span>
+          <input type="text" name="location" placeholder="New Delhi, India"
+            value="{{ profile.location }}" />
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">PRICE PER POST (&#8377;) <span class="field-hint">Brands see this</span></div>
+      <div class="input-wrap">
+        <span class="input-icon">&#128176;</span>
+        <input type="number" name="price_per_post" placeholder="e.g. 5000" min="0"
+          value="{{ profile.price_per_post }}" />
+      </div>
+    </div>
+  </div>
+
+  <!-- SOCIAL LINKS -->
+  <div class="card">
+    <div class="section-label">SOCIAL MEDIA LINKS</div>
+
+    <div class="social-row">
+      <span class="social-badge ig">IG</span>
+      <input type="url" name="instagram" placeholder="https://instagram.com/yourhandle"
+        value="{{ profile.instagram }}" />
+    </div>
+    <div class="social-row">
+      <span class="social-badge yt">YT</span>
+      <input type="url" name="youtube" placeholder="https://youtube.com/yourchannel"
+        value="{{ profile.youtube }}" />
+    </div>
+    <div class="social-row">
+      <span class="social-badge tw">TW</span>
+      <input type="url" name="twitter" placeholder="https://twitter.com/yourhandle"
+        value="{{ profile.twitter }}" />
+    </div>
+  </div>
+
+  <!-- SUCCESS / ERROR MESSAGES -->
+  {% if messages %}
+  <div style="margin: 1rem 1rem 0;">
+    {% for message in messages %}
+    <div style="padding: 10px 16px; border-radius: 12px; font-size: 13px; font-weight: 500;
+      background: {% if message.tags == 'success' %}#f0fdf4{% else %}#fef2f2{% endif %};
+      color: {% if message.tags == 'success' %}#16a34a{% else %}#dc2626{% endif %};
+      border: 1px solid {% if message.tags == 'success' %}#bbf7d0{% else %}#fecaca{% endif %};">
+      {{ message }}
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <button type="submit" class="save-btn">&#10022; Save Changes</button>
+
+</form>
+
+<div class="toast" id="toast">&#10003; Profile saved successfully!</div>
 
 <script>
-  function updateChar(el, counterId) {
-    const max = el.getAttribute('maxlength');
-    const len = el.value.length;
-    const el2 = document.getElementById(counterId);
-    el2.textContent = len + ' / ' + max;
-    el2.style.color = len > max * 0.85 ? '#D97706' : '';
+  function updateInitials() {
+    var f = document.getElementById('fname').value;
+    var l = document.getElementById('lname').value;
+    var initials = ((f[0] || '') + (l[0] || '')).toUpperCase() || '??';
+    var el = document.getElementById('avatarInitials');
+    if (el) el.textContent = initials;
   }
-  // Initialize count on load
-  const bioEl = document.getElementById('bio');
-  if (bioEl) updateChar(bioEl, 'bioCount');
+
+  function countChars() {
+    var len = document.getElementById('bioText').value.length;
+    document.getElementById('charCount').textContent = len;
+  }
+
+  function updateProgress() {
+    var fields = [
+      '{{ request.user.first_name }}',
+      '{{ request.user.last_name }}',
+      '{{ request.user.email }}',
+      '{{ profile.phone }}',
+      '{{ profile.city }}',
+      '{{ profile.bio }}',
+      '{{ profile.category }}',
+      '{{ profile.instagram }}',
+      '{% if profile.photo %}yes{% endif %}',
+    ];
+    var filled = fields.filter(function(f){ return f.trim() !== ''; }).length;
+    var pct = Math.round((filled / fields.length) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('pctLabel').textContent = pct + '%';
+  }
+
+  function previewPhoto(e) {
+    var file = e.target.files[0];
+    if (!file) return;
+    var dt = new DataTransfer();
+    dt.items.add(file);
+    document.getElementById('photoFormInput').files = dt.files;
+
+    var reader = new FileReader();
+    reader.onload = function(ev) {
+      var img = document.getElementById('avatarImg');
+      img.src = ev.target.result;
+      img.style.display = 'block';
+      var initEl = document.getElementById('avatarInitials');
+      if (initEl) initEl.style.display = 'none';
+    };
+    reader.readAsDataURL(file);
+  }
+
+  {% if messages %}{% for message in messages %}{% if message.tags == 'success' %}
+  window.addEventListener('DOMContentLoaded', function() {
+    var toast = document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(function() { toast.classList.remove('show'); }, 2800);
+  });
+  {% endif %}{% endfor %}{% endif %}
+
+  window.addEventListener('DOMContentLoaded', function() {
+    countChars();
+    updateInitials();
+    updateProgress();
+  });
 </script>
 
 </body>
