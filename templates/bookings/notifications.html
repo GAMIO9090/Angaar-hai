@@ -23,13 +23,11 @@
     .back-btn svg{width:16px;height:16px;}
     .page-title{font-family:'Syne',sans-serif;font-size:1.55rem;font-weight:800;color:var(--ink);letter-spacing:-.03em;}
 
-    /* ═══ BELL WITH BADGE (top-row ke andar) ═══ */
     .bell-wrap{margin-left:auto;position:relative;cursor:pointer;}
     .bell-btn{width:40px;height:40px;border-radius:12px;background:var(--white);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.05);transition:all .2s;}
     .bell-btn svg{width:20px;height:20px;color:var(--muted);transition:color .2s;}
     .bell-badge{position:absolute;top:-5px;right:-5px;min-width:18px;height:18px;padding:0 4px;background:var(--or1);color:#fff;border-radius:9px;font-size:10px;font-weight:700;font-family:'Syne',sans-serif;display:none;align-items:center;justify-content:center;border:2px solid var(--cream);}
 
-    /* BLINK animation - jab nai notification aaye */
     .bell-btn.ringing{border-color:var(--or1);background:var(--or-pale);animation:bellShake .4s ease-in-out infinite;}
     .bell-btn.ringing svg{color:var(--or2);}
     @keyframes bellShake{
@@ -40,7 +38,7 @@
       80%{transform:rotate(12deg);}
     }
 
-    /* ═══ ACCEPT / REJECT BUTTONS (influencer ke liye) ═══ */
+    /* ═══ ACCEPT / REJECT BUTTONS ═══ */
     .action-row{display:flex;gap:.5rem;margin-top:.65rem;}
     .btn-accept{display:inline-flex;align-items:center;gap:.38rem;padding:.38rem .9rem;background:linear-gradient(135deg,#0EA878,#0A8A60);color:#fff;border:none;border-radius:10px;font-family:'Syne',sans-serif;font-size:.74rem;font-weight:700;cursor:pointer;box-shadow:1px 2px 0 #086644,0 4px 10px rgba(14,168,120,0.24);transition:all .18s cubic-bezier(.34,1.56,.64,1);}
     .btn-accept:hover{transform:translateY(-2px);box-shadow:2px 3px 0 #086644,0 8px 16px rgba(14,168,120,0.32);}
@@ -66,11 +64,9 @@
     .notif-icon.default svg{color:var(--or2);}
     .notif-body{flex:1;}
     .notif-msg{font-size:.9rem;color:var(--ink2);font-weight:500;line-height:1.55;margin-bottom:.4rem;}
-    .notif-time{font-size:.72rem;color:var(--muted);margin-bottom:.65rem;display:flex;align-items:center;gap:.3rem;}
+    .notif-time{font-size:.72rem;color:var(--muted);display:flex;align-items:center;gap:.3rem;}
     .notif-time svg{width:11px;height:11px;}
-    .btn-chat{display:inline-flex;align-items:center;gap:.38rem;padding:.4rem .95rem;background:linear-gradient(135deg,#FF7A2F,#C94008);color:#fff;border-radius:10px;font-family:'Syne',sans-serif;font-size:.76rem;font-weight:700;text-decoration:none;box-shadow:1px 2px 0 #A83400,0 4px 12px rgba(201,64,8,0.24);transition:all .18s cubic-bezier(.34,1.56,.64,1);}
-    .btn-chat:hover{transform:translateY(-2px);box-shadow:2px 3px 0 #A83400,0 8px 18px rgba(201,64,8,0.32);}
-    .btn-chat svg{width:13px;height:13px;}
+    /* ✅ btn-chat CSS REMOVED — chat ab dashboard se access hoga */
     .unread-dot{position:absolute;top:14px;right:14px;width:8px;height:8px;border-radius:50%;background:var(--or1);box-shadow:0 0 0 3px rgba(255,107,26,0.18);animation:pulse 2s infinite;}
     @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,107,26,0.4);}50%{box-shadow:0 0 0 5px rgba(255,107,26,0);}}
     @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
@@ -90,7 +86,7 @@
     .toast-icon.rejected svg{color:var(--rose);}
     .toast-msg{font-size:.82rem;color:var(--ink2);font-weight:500;line-height:1.4;}
 
-    /* ═══ EMPTY STATE (original se same) ═══ */
+    /* ═══ EMPTY STATE ═══ */
     .empty-scene{position:relative;width:100%;height:320px;background:linear-gradient(160deg,#FFF8F3 0%,#FFF3EB 50%,#FFF8F3 100%);border-radius:24px;border:1px solid var(--border);overflow:hidden;}
     .ground{position:absolute;bottom:0;left:0;right:0;height:46px;background:#F0E6D8;border-top:1.5px solid #E0CDB8;}
     .ground-line{position:absolute;top:10px;left:0;right:0;height:2px;background:repeating-linear-gradient(90deg,#E0CDB8 0,#E0CDB8 18px,transparent 18px,transparent 34px);}
@@ -236,8 +232,6 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
     </a>
     <h1 class="page-title">Notifications</h1>
-
-    <!-- Bell with badge -->
     <div class="bell-wrap">
       <div class="bell-btn" id="bellBtn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -273,21 +267,13 @@
           {% endif %}
         </div>
 
-        <!-- Body -->
+        <!-- Body — ✅ Open Chat button REMOVED, sirf message aur time -->
         <div class="notif-body">
           <div class="notif-msg">{{ notif.message }}</div>
           <div class="notif-time">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
             {{ notif.created_at|timesince }} ago
           </div>
-
-          <!-- Chat button (agar booking linked hai) -->
-          {% if notif.booking %}
-          <a href="{% url 'bookings:chat_room' notif.booking.id %}" class="btn-chat">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-            Open Chat
-          </a>
-          {% endif %}
 
           <!-- INFLUENCER ke liye Accept/Reject buttons (sirf booking_request pe) -->
           {% if notif.notification_type == 'booking_request' and is_influencer %}
@@ -307,7 +293,7 @@
       {% endfor %}
 
     {% else %}
-    <!-- EMPTY STATE - original se same -->
+    <!-- EMPTY STATE -->
     <div class="empty-scene" id="emptyScene">
       <div class="spark sp1"></div><div class="spark sp2"></div><div class="spark sp3"></div><div class="spark sp4"></div>
       <div class="shopkeeper">
@@ -396,25 +382,16 @@
   </div><!-- /notif-list -->
 </div><!-- /wrap -->
 
-
 <script>
-// ══════════════════════════════════════════════════
-// CONFIG
-// ══════════════════════════════════════════════════
 const IS_INFLUENCER = "{{ is_influencer }}" === "True";
 const CSRF = '{{ csrf_token }}';
 let lastCount = {{ notifications|length }};
 
-// Page load pe badge set karo
 updateBell(lastCount);
 
-// ══════════════════════════════════════════════════
-// BELL UPDATE
-// ══════════════════════════════════════════════════
 function updateBell(count) {
   const bell = document.getElementById('bellBtn');
   const badge = document.getElementById('bellBadge');
-
   if (count > 0) {
     bell.classList.add('ringing');
     badge.style.display = 'flex';
@@ -425,81 +402,51 @@ function updateBell(count) {
   }
 }
 
-// ══════════════════════════════════════════════════
-// TOAST
-// ══════════════════════════════════════════════════
 function showToast(msg, type) {
   const toast = document.getElementById('toast');
   const toastMsg = document.getElementById('toastMsg');
   const toastIcon = document.getElementById('toastIcon');
-
   toastMsg.textContent = msg;
   toastIcon.className = 'toast-icon ' + type;
-
-  // Icon svg
   const icons = {
     booking: '<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>',
     accepted: '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>',
     rejected: '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>'
   };
   toastIcon.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${icons[type] || icons.booking}</svg>`;
-
   toast.classList.add('show');
   setTimeout(() => toast.classList.remove('show'), 4000);
 }
 
-// ══════════════════════════════════════════════════
-// POLLING - har 6 second mein check karo
-// ══════════════════════════════════════════════════
 setInterval(async () => {
   try {
     const res = await fetch('/api/notifications/');
     if (!res.ok) return;
     const data = await res.json();
     const newCount = data.count;
-
-    // Nai notification aayi?
     if (newCount > lastCount) {
       const newest = data.notifications[0];
-
-      // Bell blink
       updateBell(newCount);
-
-      // Toast dikhao
       let toastType = 'booking';
       if (newest.type === 'deal_accepted') toastType = 'accepted';
       else if (newest.type === 'deal_rejected') toastType = 'rejected';
       showToast(newest.message, toastType);
-
-      // Card inject karo (agar abhi list mein nahi hai)
-      if (!document.getElementById('card-' + newest.id)) {
-        injectCard(newest);
-      }
-    } else {
-      updateBell(newCount);
-    }
-
+      if (!document.getElementById('card-' + newest.id)) { injectCard(newest); }
+    } else { updateBell(newCount); }
     lastCount = newCount;
-  } catch(e) { /* network error - ignore */ }
+  } catch(e) {}
 }, 6000);
 
-// ══════════════════════════════════════════════════
-// CARD INJECT (polling se aane wala card)
-// ══════════════════════════════════════════════════
 function injectCard(n) {
   const list = document.getElementById('notifList');
-
-  // Empty scene hata do
   const empty = document.getElementById('emptyScene');
   if (empty) empty.remove();
-
   const typeIcons = {
     booking_request: `<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>`,
     deal_accepted:   `<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>`,
     deal_rejected:   `<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>`
   };
   const typeClass = n.type === 'deal_accepted' ? 'accepted' : n.type === 'deal_rejected' ? 'rejected' : 'default';
-
   const actionBtns = (IS_INFLUENCER && n.type === 'booking_request')
     ? `<div class="action-row" id="actions-${n.id}">
         <button class="btn-accept" onclick="respondRequest(${n.id},'accept')">
@@ -509,7 +456,6 @@ function injectCard(n) {
           <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Reject
         </button>
        </div>` : '';
-
   const card = document.createElement('div');
   card.className = 'notif-card unread';
   card.id = 'card-' + n.id;
@@ -526,13 +472,9 @@ function injectCard(n) {
       </div>
       ${actionBtns}
     </div>`;
-
   list.prepend(card);
 }
 
-// ══════════════════════════════════════════════════
-// INFLUENCER - Accept / Reject
-// ══════════════════════════════════════════════════
 async function respondRequest(notifId, action) {
   try {
     const res = await fetch(`/api/respond-to-request/${notifId}/`, {
@@ -540,10 +482,7 @@ async function respondRequest(notifId, action) {
       headers: { 'Content-Type': 'application/json', 'X-CSRFToken': CSRF },
       body: JSON.stringify({ action })
     });
-
     if (!res.ok) return;
-
-    // Buttons ko status pill se replace karo
     const actionRow = document.getElementById('actions-' + notifId);
     if (actionRow) {
       const pill = document.createElement('span');
@@ -553,26 +492,14 @@ async function respondRequest(notifId, action) {
         : `<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Rejected`;
       actionRow.replaceWith(pill);
     }
-
-    // Card unread class hata do
     const card = document.getElementById('card-' + notifId);
-    if (card) {
-      card.classList.remove('unread');
-      const dot = card.querySelector('.unread-dot');
-      if (dot) dot.remove();
-      const bar = card.querySelector('::before'); // CSS se
-    }
-
-    // Toast
+    if (card) { card.classList.remove('unread'); const dot = card.querySelector('.unread-dot'); if (dot) dot.remove(); }
     showToast(
       action === 'accept' ? 'Request accept kar li! Shopkeeper ko notification gayi.' : 'Request reject kar di.',
       action === 'accept' ? 'accepted' : 'rejected'
     );
-
-    // Count update
     lastCount = Math.max(0, lastCount - 1);
     updateBell(lastCount);
-
   } catch(e) { console.error(e); }
 }
 </script>

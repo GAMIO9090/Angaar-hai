@@ -271,3 +271,90 @@ def chat_room(request, booking_id):
         'room': room,
         'booking': booking
     })
+
+
+@login_required
+def api_my_bookings(request):
+    """
+    FAB chat bubble ke liye bookings list.
+    ChatRoom model use karta hai (ChatMessage nahi).
+    """
+    is_influencer = hasattr(request.user, 'influencerprofile')
+
+    if is_influencer:
+        
+        try:
+            profile = request.user.influencerprofile
+            bookings = Booking.objects.filter(
+                influencer=profile
+            ).select_related('shopkeeper').order_by('-created_at')[:20]
+
+            data = []
+            for b in bookings:
+                data.append({
+                    'id': b.id,
+                    'name': b.business_name or b.shopkeeper.username,
+                    'status': b.status,
+                    'unread': False,  
+                })
+        except Exception:
+            data = []
+    else:
+        
+        bookings = Booking.objects.filter(
+            shopkeeper=request.user
+        ).select_related('influencer__user').order_by('-created_at')[:20]
+
+        data = []
+        for b in bookings:
+            data.append({
+                'id': b.id,
+                'name': b.influencer.user.username,
+                'status': b.status,
+                'unread': False,
+            })
+
+    return JsonResponse({'bookings': data})
+
+
+@login_required
+def api_chat_messages(request, booking_id):
+    """
+    FAB chat bubble ke liye messages.
+    ChatRoom ke through messages fetch karta hai.
+    """
+    try:
+        booking = get_object_or_404(Booking, id=booking_id)
+
+        
+        is_shopkeeper = (booking.shopkeeper == request.user)
+        is_influencer = (
+            hasattr(request.user, 'influencerprofile') and
+            booking.influencer == request.user.influencerprofile
+        )
+
+        if not (is_shopkeeper or is_influencer):
+            return JsonResponse({'error': 'Unauthorized'}, status=403)
+
+        
+        try:
+            room = ChatRoom.objects.get(booking=booking)
+        
+            msgs = room.messages.select_related('sender').order_by('created_at')[:50]
+
+            data = [{
+                'sender': m.sender.username,
+                'message': m.content,  
+                'created_at': m.created_at.strftime('%H:%M') if m.created_at else '',
+            } for m in msgs]
+
+        except ChatRoom.DoesNotExist:
+            data = []
+
+        return JsonResponse({
+            'messages': data,
+            'current_user': request.user.username,
+        })
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)

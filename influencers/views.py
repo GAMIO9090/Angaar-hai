@@ -67,6 +67,9 @@ def edit_profile(request):
         if 'photo' in request.FILES:
             profile.photo = request.FILES['photo']
 
+        if 'banner_image' in request.FILES:
+            profile.banner_image = request.FILES['banner_image']
+
         profile.save()
         messages.success(request, 'Profile saved successfully!')
         return redirect('influencers:edit_profile')
@@ -85,4 +88,18 @@ def influencers_list(request):
 
 def influencer_detail(request, id):
     influencer = get_object_or_404(InfluencerProfile, id=id)
-    return render(request, 'influencers/detail.html', {'influencer': influencer})
+    
+    booking_id = None
+    if request.user.is_authenticated:
+        booking = Booking.objects.filter(
+            shopkeeper=request.user,
+            influencer=influencer
+        ).first()
+        if booking:
+            booking_id = booking.id
+ 
+    return render(request, 'influencers/detail.html', {
+        'influencer': influencer,
+        'booking_id': booking_id,
+    })
+ 

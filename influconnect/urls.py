@@ -20,7 +20,7 @@ urlpatterns = [
          
          ),
 
-    path('', include('bookings.urls')),
+    path('bookings/', include('bookings.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
 
 

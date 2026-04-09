@@ -34,4 +34,8 @@ urlpatterns = [
 
     
     path('logout/', views.logout_view, name='logout'),
+
+
+    path('api/my-bookings/', views.api_my_bookings, name='api_my_bookings'),
+    path('api/chat-messages/<int:booking_id>/', views.api_chat_messages, name='api_chat_messages'),
 ]

@@ -3,493 +3,497 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>{{ influencer.user.username }} – InfluConnect</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
+  <title>InfluConnect — {{ influencer.user.username }} Profile</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --cream:   #fdf6ec;
-      --orange:  #f26419;
-      --orange2: #ff8c42;
-      --dark:    #1a1208;
-      --mid:     #5a3e28;
-      --border:  #f0e2d0;
-      --white:   #ffffff;
-      --card:    #ffffff;
-      --radius:  22px;
-      --shadow-sm:  0 2px 8px  rgba(242,100,25,0.10);
-      --shadow-md:  0 8px 32px rgba(242,100,25,0.14);
-      --shadow-3d:  0 20px 60px rgba(26,18,8,0.18), 0 4px 16px rgba(242,100,25,0.12);
+      --or1:#FF6B1A;--or2:#E8500A;--or3:#C94008;--or-pale:#FFF3EB;--or-soft:rgba(255,107,26,0.10);
+      --cream:#F9F4EE;--white:#FFFFFF;--ink:#1E130A;--ink2:#3D2810;--muted:#8A7060;--border:#EAD9C8;
+      --sidebar-w:248px;--teal:#0EA878;--teal-pale:#E6FAF4;--blue:#2563EB;--blue-pale:#EEF3FF;
+      --violet:#7C3AED;--violet-pale:#F5F3FF;--amber:#D97706;--amber-pale:#FEF6E4;
     }
+    html,body{height:100%;}
+    body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--cream);color:var(--ink);display:flex;min-height:100vh;overflow-x:hidden;}
 
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--cream);
-      color: var(--dark);
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
+    /* ── Sidebar ── */
+    .sidebar{width:var(--sidebar-w);min-height:100vh;background:var(--white);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;left:0;top:0;bottom:0;z-index:100;box-shadow:4px 0 24px rgba(232,80,10,0.06);transition:transform .3s cubic-bezier(.16,1,.3,1);}
+    .sidebar-brand{padding:1.6rem 1.4rem 1.4rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.65rem;text-decoration:none;}
+    .brand-icon{width:40px;height:40px;border-radius:11px;background:linear-gradient(145deg,#FF7A2F,#C94008);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 1px 0 rgba(255,200,140,0.45) inset,0 -1px 0 rgba(0,0,0,0.18) inset,2px 3px 0 #A83400,0 10px 22px rgba(201,64,8,0.35);}
+    .brand-icon svg{width:19px;height:19px;}
+    .brand-name{font-family:'Syne',sans-serif;font-size:1.25rem;font-weight:800;letter-spacing:-.03em;line-height:1;}
+    .brand-name .bl{color:var(--ink);}.brand-name .or{color:var(--or1);}
+    .nav-section-label{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:1.4rem 1.4rem .4rem;}
+    .nav-menu{list-style:none;padding:0 .7rem;flex:1;}.nav-item{margin-bottom:.2rem;}
+    .nav-link{display:flex;align-items:center;gap:.75rem;padding:.7rem .85rem;border-radius:12px;text-decoration:none;color:var(--muted);font-size:.88rem;font-weight:500;transition:all .18s ease;}
+    .nav-link:hover{background:var(--or-soft);color:var(--or2);}
+    .nav-link.active{background:linear-gradient(135deg,rgba(255,107,26,0.14) 0%,rgba(255,107,26,0.07) 100%);color:var(--or2);font-weight:600;box-shadow:inset 3px 0 0 var(--or1);}
+    .nav-icon{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;background:transparent;transition:all .18s;flex-shrink:0;}
+    .nav-link:hover .nav-icon,.nav-link.active .nav-icon{background:rgba(255,107,26,0.12);}
+    .nav-icon svg{width:17px;height:17px;}
+    .sidebar-footer{padding:1rem .7rem 1.4rem;border-top:1px solid var(--border);}
+    .logout-btn{display:flex;align-items:center;gap:.75rem;padding:.7rem .85rem;border-radius:12px;color:#C0392B;font-size:.88rem;font-weight:500;background:transparent;border:none;width:100%;cursor:pointer;transition:all .18s;}
+    .logout-btn:hover{background:rgba(192,57,43,0.08);}
+    .logout-icon{width:34px;height:34px;border-radius:9px;background:rgba(192,57,43,0.08);display:flex;align-items:center;justify-content:center;}
+    .logout-icon svg{width:17px;height:17px;}
 
-    /* ── SCENE BACKGROUND ── */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 60% 50% at 80% 10%, rgba(255,140,66,0.18) 0%, transparent 60%),
-        radial-gradient(ellipse 50% 40% at 10% 80%, rgba(242,100,25,0.10) 0%, transparent 55%);
-      pointer-events: none;
-      z-index: 0;
-    }
+    /* ── Main ── */
+    .main-wrap{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-height:100vh;}
+    .topbar{height:68px;background:rgba(255,255,255,0.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 2rem;position:sticky;top:0;z-index:50;box-shadow:0 2px 12px rgba(0,0,0,0.045);}
+    .topbar-left{display:flex;align-items:center;gap:.9rem;}
+    .topbar-text{display:flex;flex-direction:column;}
+    .topbar-greeting{font-size:.72rem;color:var(--muted);font-weight:500;letter-spacing:.04em;text-transform:uppercase;}
+    .topbar-name{font-family:'Syne',sans-serif;font-size:1.08rem;font-weight:700;color:var(--ink);letter-spacing:-.02em;}
+    .topbar-name span{color:var(--or1);}
+    .topbar-right{display:flex;align-items:center;gap:1rem;}
+    .notif-btn{width:38px;height:38px;border-radius:10px;background:var(--cream);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;transition:all .18s;text-decoration:none;}
+    .notif-btn:hover{background:var(--or-soft);border-color:rgba(255,107,26,0.25);}
+    .notif-btn svg{width:17px;height:17px;color:var(--muted);}
+    .notif-dot{position:absolute;top:6px;right:6px;width:7px;height:7px;background:var(--or1);border-radius:50%;border:1.5px solid var(--white);}
+    .avatar{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#FF7A2F,#C94008);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:800;color:#fff;cursor:pointer;box-shadow:2px 3px 0 #A83400,0 8px 20px rgba(201,64,8,0.3);}
+    .hamburger{display:none;width:38px;height:38px;border-radius:10px;background:var(--cream);border:1.5px solid var(--border);align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;}
+    .hamburger svg{width:18px;height:18px;color:var(--ink);}
 
-    /* ── NAV ── */
-    nav {
-      position: sticky; top: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 48px; height: 68px;
-      background: rgba(253,246,236,0.88);
-      backdrop-filter: blur(14px);
-      border-bottom: 1px solid var(--border);
-    }
-    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-    .logo-icon {
-      width: 36px; height: 36px; background: var(--orange);
-      border-radius: 9px; display: flex; align-items: center; justify-content: center;
-    }
-    .logo-text { font-family: 'Syne', sans-serif; font-size: 1.25rem; font-weight: 800; color: var(--dark); letter-spacing: -.4px; }
-    .logo-text span { color: var(--orange); }
-    .nav-back {
-      display: flex; align-items: center; gap: 8px;
-      text-decoration: none; color: var(--mid);
-      font-size: 0.9rem; font-weight: 600;
-      padding: 8px 16px; border-radius: 50px;
-      border: 1.5px solid var(--border);
-      transition: all 0.2s;
-    }
-    .nav-back:hover { border-color: var(--orange); color: var(--orange); }
+    /* ── Page Content ── */
+    .page-content{padding:2rem 2rem 3rem;flex:1;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
 
-    /* ── PAGE WRAPPER ── */
-    .page {
-      position: relative; z-index: 1;
-      max-width: 900px; margin: 0 auto;
-      padding: 60px 24px 100px;
-    }
+    /* Breadcrumb */
+    .breadcrumb{display:flex;align-items:center;gap:.5rem;font-size:.8rem;color:var(--muted);margin-bottom:1.5rem;animation:fadeUp .4s ease both;}
+    .breadcrumb a{color:var(--muted);text-decoration:none;transition:color .18s;}
+    .breadcrumb a:hover{color:var(--or2);}
+    .breadcrumb svg{width:12px;height:12px;}
 
-    /* ── 3D PROFILE CARD ── */
-    .profile-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-3d);
-      overflow: hidden;
-      animation: cardRise 0.7s cubic-bezier(.22,.68,0,1.2) both;
-      transform-style: preserve-3d;
-      perspective: 1000px;
-    }
-    @keyframes cardRise {
-      from { opacity: 0; transform: translateY(40px) rotateX(6deg); }
-      to   { opacity: 1; transform: translateY(0)   rotateX(0deg); }
-    }
+    /* Profile Hero */
+    .profile-hero{background:var(--white);border-radius:24px;border:1px solid var(--border);overflow:hidden;margin-bottom:1.8rem;animation:fadeUp .45s .05s ease both;box-shadow:0 4px 24px rgba(0,0,0,0.05);}
+    .hero-banner{height:140px;background:linear-gradient(135deg,#FF7A2F 0%,#C94008 40%,#9B2D00 100%);position:relative;overflow:hidden;}
+    .hero-banner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(255,255,255,0.12),transparent 60%);}
+    .hero-banner-pattern{position:absolute;inset:0;opacity:.08;background-image:radial-gradient(circle,#fff 1px,transparent 1px);background-size:28px 28px;}
+    .hero-body{padding:0 2rem 2rem;position:relative;}
+    .hero-avatar-wrap{position:relative;display:inline-block;margin-top:-44px;margin-bottom:1rem;}
+    .hero-avatar{width:88px;height:88px;border-radius:22px;background:linear-gradient(135deg,#FF7A2F,#C94008);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:#fff;border:4px solid var(--white);box-shadow:0 8px 24px rgba(201,64,8,0.3),2px 3px 0 #A83400;}
+    .hero-verified{position:absolute;bottom:-4px;right:-4px;width:26px;height:26px;background:var(--teal);border-radius:8px;border:3px solid var(--white);display:flex;align-items:center;justify-content:center;}
+    .hero-verified svg{width:11px;height:11px;color:#fff;}
+    .hero-info-row{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
+    .hero-name{font-family:'Syne',sans-serif;font-size:1.55rem;font-weight:800;color:var(--ink);letter-spacing:-.03em;line-height:1;}
+    .hero-handle{font-size:.84rem;color:var(--muted);margin-top:.25rem;}
+    .hero-category-chip{display:inline-flex;align-items:center;gap:.38rem;background:var(--or-pale);border:1px solid rgba(255,107,26,0.2);border-radius:20px;padding:.28rem .8rem;font-size:.72rem;font-weight:700;color:var(--or2);margin-top:.5rem;letter-spacing:.04em;text-transform:uppercase;}
+    .hero-actions{display:flex;gap:.75rem;align-items:center;flex-wrap:wrap;}
 
-    /* ── HERO BANNER ── */
-    .card-banner {
-      position: relative;
-      height: 200px;
-      background: linear-gradient(135deg, #1a1208 0%, #3d2006 40%, #f26419 100%);
-      overflow: hidden;
-    }
-    /* 3D grid lines on banner */
-    .card-banner::before {
-      content: '';
-      position: absolute; inset: 0;
-      background-image:
-        linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px);
-      background-size: 40px 40px;
-      transform: perspective(300px) rotateX(30deg) scaleY(1.6);
-      transform-origin: bottom;
-    }
-    /* Glow orb */
-    .card-banner::after {
-      content: '';
-      position: absolute;
-      width: 280px; height: 280px;
-      background: radial-gradient(circle, rgba(242,100,25,0.55) 0%, transparent 70%);
-      top: -60px; right: -40px;
-      pointer-events: none;
-    }
-    .banner-tag {
-      position: absolute; bottom: 16px; left: 28px;
-      background: rgba(255,255,255,0.12);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(255,255,255,0.18);
-      border-radius: 50px; padding: 5px 14px;
-      font-size: 0.78rem; font-weight: 700; color: #fff;
-      text-transform: uppercase; letter-spacing: 1px;
-    }
+    /* CTA Buttons */
+    .btn-book{display:inline-flex;align-items:center;gap:.5rem;padding:.7rem 1.4rem;border-radius:13px;background:linear-gradient(155deg,#FF7A2F,#C94008);color:#fff;font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;border:none;cursor:pointer;text-decoration:none;box-shadow:2px 3px 0 #A83400,0 8px 20px rgba(201,64,8,0.3);transition:all .2s cubic-bezier(.34,1.56,.64,1);}
+    .btn-book:hover{transform:translate(-1px,-3px);box-shadow:4px 5px 0 #A83400,0 14px 28px rgba(201,64,8,0.36);color:#fff;}
+    .btn-book svg{width:16px;height:16px;}
 
-    /* ── AVATAR AREA ── */
-    .avatar-row {
-      display: flex; align-items: flex-end; justify-content: space-between;
-      padding: 0 32px; margin-top: -44px; margin-bottom: 8px;
-    }
-    .avatar-wrap {
-      position: relative;
-      width: 90px; height: 90px;
-      flex-shrink: 0;
-    }
-    .avatar {
-      width: 90px; height: 90px; border-radius: 50%;
-      background: linear-gradient(135deg, var(--orange2), var(--orange));
-      border: 4px solid var(--white);
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Syne', sans-serif;
-      font-size: 2.2rem; font-weight: 800; color: #fff;
-      box-shadow: 0 8px 24px rgba(242,100,25,0.35),
-                  0 2px 0 rgba(255,255,255,0.6) inset;
-      position: relative; z-index: 2;
-      animation: avatarPop 0.6s 0.3s cubic-bezier(.34,1.56,.64,1) both;
-    }
-    @keyframes avatarPop {
-      from { transform: scale(0.6); opacity: 0; }
-      to   { transform: scale(1);   opacity: 1; }
-    }
-    /* Ring glow behind avatar */
-    .avatar-wrap::before {
-      content: '';
-      position: absolute; inset: -6px;
-      border-radius: 50%;
-      background: conic-gradient(var(--orange), var(--orange2), var(--orange));
-      z-index: 1;
-      animation: spin 4s linear infinite;
-    }
-    .avatar-wrap::after {
-      content: '';
-      position: absolute; inset: -2px;
-      border-radius: 50%;
-      background: var(--white);
-      z-index: 1;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
+    /* ─── CHAT BUTTON on profile page ─── */
+    .btn-chat-profile{display:inline-flex;align-items:center;gap:.5rem;padding:.7rem 1.4rem;border-radius:13px;background:var(--white);color:var(--or2);font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;border:2px solid var(--or1);cursor:pointer;text-decoration:none;transition:all .2s cubic-bezier(.34,1.56,.64,1);position:relative;}
+    .btn-chat-profile:hover{background:var(--or-pale);transform:translateY(-2px);box-shadow:0 8px 22px rgba(255,107,26,0.18);}
+    .btn-chat-profile svg{width:16px;height:16px;}
+    .btn-chat-profile .chat-online-dot{width:8px;height:8px;background:#22C55E;border-radius:50%;position:absolute;top:8px;right:8px;border:2px solid var(--white);animation:onlinePulse 2s ease-in-out infinite;}
+    @keyframes onlinePulse{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,0.5);}50%{box-shadow:0 0 0 4px rgba(34,197,94,0);}}
 
-    /* Book button top-right of avatar row */
-    .book-btn {
-      background: var(--orange); color: #fff;
-      border: none; border-radius: 12px;
-      padding: 12px 26px; font-size: 0.92rem; font-weight: 700;
-      font-family: 'DM Sans', sans-serif; cursor: pointer;
-      box-shadow: 0 4px 16px rgba(242,100,25,0.35),
-                  0 -2px 0 rgba(0,0,0,0.15) inset;
-      transition: transform 0.15s, box-shadow 0.15s;
-      text-decoration: none;
-      display: inline-block;
-      margin-bottom: 8px;
-      animation: cardRise 0.7s 0.2s both;
-    }
-    .book-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(242,100,25,0.45), 0 -2px 0 rgba(0,0,0,0.15) inset;
-    }
-    .book-btn:active { transform: translateY(0); }
+    /* Stats Row */
+    .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.8rem;animation:fadeUp .45s .1s ease both;}
+    .stat-mini{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:1.1rem 1.2rem;text-align:center;transition:transform .2s cubic-bezier(.34,1.56,.64,1);}
+    .stat-mini:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,0,0,0.07);}
+    .stat-mini-val{font-family:'Syne',sans-serif;font-size:1.35rem;font-weight:800;color:var(--ink);letter-spacing:-.03em;display:block;margin-bottom:.25rem;}
+    .stat-mini-lbl{font-size:.71rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em;}
 
-    /* ── PROFILE INFO ── */
-    .profile-info { padding: 6px 32px 32px; }
+    /* Details Grid */
+    .details-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem;margin-bottom:1.8rem;animation:fadeUp .45s .15s ease both;}
+    .detail-card{background:var(--white);border:1px solid var(--border);border-radius:20px;padding:1.5rem;}
+    .detail-card-title{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;color:var(--ink);margin-bottom:1.1rem;display:flex;align-items:center;gap:.5rem;}
+    .detail-card-title svg{width:16px;height:16px;color:var(--or2);}
+    .detail-item{display:flex;justify-content:space-between;align-items:center;padding:.6rem 0;border-bottom:1px solid rgba(234,217,200,0.5);font-size:.84rem;}
+    .detail-item:last-child{border-bottom:none;}
+    .detail-item-lbl{color:var(--muted);font-weight:500;}
+    .detail-item-val{color:var(--ink2);font-weight:600;}
+    .platform-tags{display:flex;gap:.5rem;flex-wrap:wrap;}
+    .platform-tag{display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .7rem;border-radius:8px;font-size:.72rem;font-weight:700;border:1px solid var(--border);}
+    .platform-tag.insta{background:#FFF0F5;color:#E1306C;border-color:rgba(225,48,108,0.2);}
+    .platform-tag.yt{background:#FFF3F0;color:#FF0000;border-color:rgba(255,0,0,0.15);}
+    .platform-tag.fb{background:#EEF3FF;color:#1877F2;border-color:rgba(24,119,242,0.2);}
+    .platform-tag.twitter{background:#F0F8FF;color:#1DA1F2;border-color:rgba(29,161,242,0.2);}
 
-    .profile-name {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.9rem; font-weight: 800;
-      letter-spacing: -1px; color: var(--dark);
-      line-height: 1.1; margin-bottom: 4px;
-    }
-    .profile-handle {
-      font-size: 0.95rem; color: var(--orange);
-      font-weight: 600; margin-bottom: 16px;
-    }
+    /* ── INLINE CHAT PANEL on profile page ── */
+    .chat-panel-section{animation:fadeUp .45s .2s ease both;}
+    .chat-panel{background:var(--white);border:1px solid var(--border);border-radius:20px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.05);}
+    .chat-panel-header{background:linear-gradient(135deg,#FF7A2F,#C94008);padding:1.1rem 1.4rem;display:flex;align-items:center;gap:.85rem;}
+    .chat-panel-avatar{width:40px;height:40px;border-radius:11px;background:rgba(255,255,255,0.22);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:800;color:#fff;flex-shrink:0;}
+    .chat-panel-info{flex:1;}
+    .chat-panel-name{color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;line-height:1;}
+    .chat-panel-sub{color:rgba(255,255,255,0.75);font-size:.72rem;margin-top:.2rem;display:flex;align-items:center;gap:.3rem;}
+    .online-badge{display:inline-block;width:6px;height:6px;background:#86EFAC;border-radius:50%;}
+    .chat-messages{height:300px;overflow-y:auto;padding:1.2rem 1.4rem;display:flex;flex-direction:column;gap:.85rem;background:#F9F4EE;}
+    .chat-messages::-webkit-scrollbar{width:4px;}
+    .chat-messages::-webkit-scrollbar-track{background:transparent;}
+    .chat-messages::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+    .msg-row{display:flex;gap:.5rem;align-items:flex-end;}
+    .msg-row.mine{flex-direction:row-reverse;}
+    .msg-bubble{max-width:72%;padding:.6rem .95rem;border-radius:16px;font-size:.84rem;line-height:1.5;color:var(--ink2);}
+    .msg-row:not(.mine) .msg-bubble{background:var(--white);border:1px solid var(--border);border-bottom-left-radius:4px;box-shadow:0 2px 8px rgba(0,0,0,0.04);}
+    .msg-row.mine .msg-bubble{background:linear-gradient(135deg,#FF7A2F,#C94008);color:#fff;border-bottom-right-radius:4px;box-shadow:0 4px 14px rgba(201,64,8,0.22);}
+    .msg-time{font-size:.62rem;color:var(--muted);margin-bottom:.15rem;text-align:center;width:100%;}
+    .msg-sender-name{font-size:.65rem;color:var(--muted);font-weight:600;margin-bottom:.2rem;padding-left:.3rem;}
+    .chat-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:.75rem;text-align:center;}
+    .chat-empty-icon{width:52px;height:52px;background:var(--or-pale);border-radius:14px;display:flex;align-items:center;justify-content:center;}
+    .chat-empty-icon svg{width:22px;height:22px;color:var(--or2);}
+    .chat-empty p{font-size:.84rem;color:var(--muted);max-width:200px;line-height:1.5;}
+    .chat-input-row{display:flex;gap:.75rem;padding:1rem 1.2rem;border-top:1px solid var(--border);background:var(--white);align-items:flex-end;}
+    .chat-textarea{flex:1;border:1.5px solid var(--border);border-radius:12px;padding:.7rem 1rem;font-family:'Plus Jakarta Sans',sans-serif;font-size:.84rem;color:var(--ink);outline:none;background:var(--cream);resize:none;max-height:90px;line-height:1.45;transition:border-color .2s;}
+    .chat-textarea:focus{border-color:var(--or1);box-shadow:0 0 0 3px rgba(255,107,26,0.10);}
+    .chat-send-btn{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#FF7A2F,#C94008);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:1px 2px 0 #A83400,0 6px 16px rgba(201,64,8,0.28);transition:transform .2s cubic-bezier(.34,1.56,.64,1);}
+    .chat-send-btn:hover{transform:translateY(-2px);}
+    .chat-send-btn svg{width:16px;height:16px;color:#fff;}
+    .chat-notice{padding:.65rem 1.2rem;background:var(--amber-pale);border-top:1px solid rgba(217,119,6,0.15);font-size:.74rem;color:var(--amber);font-weight:600;display:flex;align-items:center;gap:.4rem;}
+    .chat-notice svg{width:13px;height:13px;flex-shrink:0;}
 
-    /* ── STATS ROW ── */
-    .stats-row {
-      display: flex; gap: 0;
-      background: var(--cream);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      overflow: hidden;
-      margin-bottom: 28px;
-      box-shadow: 0 2px 0 var(--border);
-    }
-    .stat-cell {
-      flex: 1; padding: 16px 12px; text-align: center;
-      border-right: 1px solid var(--border);
-      transition: background 0.2s;
-    }
-    .stat-cell:last-child { border-right: none; }
-    .stat-cell:hover { background: #fff6ee; }
-    .stat-num {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.3rem; font-weight: 800; color: var(--dark);
-      display: block;
-    }
-    .stat-lbl { font-size: 0.72rem; color: var(--mid); font-weight: 600; text-transform: uppercase; letter-spacing: .5px; }
+    /* Booking Required State */
+    .chat-locked{display:flex;flex-direction:column;align-items:center;justify-content:center;height:300px;gap:1rem;padding:2rem;text-align:center;background:#F9F4EE;}
+    .chat-locked-icon{width:60px;height:60px;background:var(--or-pale);border-radius:16px;display:flex;align-items:center;justify-content:center;}
+    .chat-locked-icon svg{width:26px;height:26px;color:var(--or2);}
+    .chat-locked h4{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--ink);}
+    .chat-locked p{font-size:.8rem;color:var(--muted);max-width:220px;line-height:1.55;}
+    .chat-locked-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.6rem 1.2rem;border-radius:11px;background:linear-gradient(135deg,#FF7A2F,#C94008);color:#fff;font-family:'Syne',sans-serif;font-size:.82rem;font-weight:700;text-decoration:none;box-shadow:2px 2px 0 #A83400;}
 
-    /* ── INFO SECTIONS ── */
-    .info-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-bottom: 24px;
-    }
-    .info-box {
-      background: var(--cream);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 18px 20px;
-      position: relative;
-      overflow: hidden;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .info-box:hover {
-      transform: translateY(-2px) scale(1.01);
-      box-shadow: var(--shadow-md);
-    }
-    /* 3D left-edge accent */
-    .info-box::before {
-      content: '';
-      position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
-      background: linear-gradient(180deg, var(--orange), var(--orange2));
-      border-radius: 4px 0 0 4px;
-    }
-    .info-box-label {
-      font-size: 0.72rem; font-weight: 700; color: var(--orange);
-      text-transform: uppercase; letter-spacing: 1px;
-      margin-bottom: 6px; display: flex; align-items: center; gap: 6px;
-    }
-    .info-box-label svg { width: 13px; height: 13px; }
-    .info-box-value {
-      font-size: 1rem; font-weight: 600; color: var(--dark);
-      word-break: break-word;
-    }
-
-    /* Bio spans full width */
-    .bio-box {
-      grid-column: 1 / -1;
-    }
-    .bio-text {
-      font-size: 0.97rem; color: var(--mid);
-      line-height: 1.7; font-style: italic;
-    }
-    .bio-empty { color: #bbb; font-style: italic; font-size: 0.9rem; }
-
-    /* ── CONTACT ROW ── */
-    .contact-row {
-      display: flex; align-items: center; gap: 12px;
-      background: linear-gradient(135deg, #fff8f2 0%, #fdf6ec 100%);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 18px 20px;
-      box-shadow: 0 2px 0 var(--border);
-    }
-    .contact-icon {
-      width: 40px; height: 40px; border-radius: 10px;
-      background: var(--orange);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-      box-shadow: 0 4px 12px rgba(242,100,25,0.30),
-                  0 -1px 0 rgba(0,0,0,0.1) inset;
-    }
-    .contact-icon svg { width: 18px; height: 18px; }
-    .contact-meta { flex: 1; }
-    .contact-lbl { font-size: 0.72rem; font-weight: 700; color: var(--orange); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 3px; }
-    .contact-val { font-size: 0.97rem; font-weight: 600; color: var(--dark); }
-    .contact-val a { color: var(--dark); text-decoration: none; }
-    .contact-val a:hover { color: var(--orange); text-decoration: underline; }
-
-    /* ── ACTION BUTTONS ── */
-    .action-row {
-      display: flex; gap: 12px; margin-top: 24px;
-    }
-    .btn-primary {
-      flex: 1; padding: 14px; text-align: center;
-      background: var(--orange); color: #fff;
-      border: none; border-radius: 14px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.95rem; font-weight: 700; cursor: pointer;
-      text-decoration: none;
-      box-shadow: 0 4px 14px rgba(242,100,25,0.35),
-                  0 -2px 0 rgba(0,0,0,0.12) inset;
-      transition: transform 0.15s, box-shadow 0.15s;
-    }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(242,100,25,0.42), 0 -2px 0 rgba(0,0,0,0.12) inset; }
-    .btn-secondary {
-      flex: 1; padding: 14px; text-align: center;
-      background: transparent; color: var(--dark);
-      border: 1.5px solid var(--dark); border-radius: 14px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.95rem; font-weight: 700; cursor: pointer;
-      text-decoration: none;
-      transition: background 0.18s, color 0.18s;
-    }
-    .btn-secondary:hover { background: var(--dark); color: #fff; }
-
-    /* ── FOOTER ── */
-    footer {
-      position: relative; z-index: 1;
-      text-align: center; padding: 28px 20px;
-      border-top: 1px solid var(--border);
-      color: var(--mid); font-size: 0.85rem;
-    }
-    footer span { color: var(--orange); font-weight: 700; }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 580px) {
-      nav { padding: 0 20px; }
-      .page { padding: 40px 16px 80px; }
-      .profile-info { padding: 6px 20px 24px; }
-      .avatar-row { padding: 0 20px; }
-      .info-grid { grid-template-columns: 1fr; }
-      .stats-row { flex-wrap: wrap; }
-      .stat-cell { min-width: 50%; border-bottom: 1px solid var(--border); }
-      .action-row { flex-direction: column; }
-    }
+    @media(max-width:1024px){.stats-row{grid-template-columns:repeat(2,1fr);}.details-grid{grid-template-columns:1fr;}}
+    @media(max-width:768px){.sidebar{transform:translateX(-100%);}.sidebar.open{transform:translateX(0);box-shadow:4px 0 40px rgba(0,0,0,0.15);}.main-wrap{margin-left:0;}.hamburger{display:flex;}.page-content{padding:1.2rem 1rem 2rem;}.hero-info-row{flex-direction:column;}.stats-row{grid-template-columns:repeat(2,1fr);}}
   </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
-  <a class="logo" href="{% url 'home' %}">
-    <div class="logo-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+<!-- ── Sidebar ── -->
+<aside class="sidebar" id="sidebar">
+  <a href="{% url 'shopkeepers:shopkeeper_dashboard' %}" class="sidebar-brand">
+    <div class="brand-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
         <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
         <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
       </svg>
     </div>
-    <span class="logo-text">Influ<span>Connect</span></span>
+    <span class="brand-name"><span class="bl">Influ</span><span class="or">Connect</span></span>
   </a>
-  <a href="{% url 'home' %}" class="nav-back">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M19 12H5M12 5l-7 7 7 7"/>
-    </svg>
-    Back to Influencers
-  </a>
-</nav>
+  <p class="nav-section-label">Main Menu</p>
+  <ul class="nav-menu">
+    <li class="nav-item">
+      <a href="{% url 'shopkeepers:shopkeeper_dashboard' %}" class="nav-link">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
+        Dashboard
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="{% url 'influencers:influencers_list' %}" class="nav-link active">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+        View Influencers
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="{% url 'bookings:all_bookings' %}" class="nav-link">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg></span>
+        My Bookings
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="{% url 'influencers:edit_profile' %}" class="nav-link">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span>
+        Edit Profile
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="{% url 'bookings:analytics' %}" class="nav-link">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
+        Analytics
+      </a>
+    </li>
+  </ul>
+  <div class="sidebar-footer">
+    <form method="post" action="{% url 'logout' %}">{% csrf_token %}
+      <button type="submit" class="logout-btn">
+        <span class="logout-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span>
+        Logout
+      </button>
+    </form>
+  </div>
+</aside>
 
-<!-- PAGE -->
-<div class="page">
-  <div class="profile-card">
 
-    <!-- Banner -->
-    <div class="card-banner">
-      <span class="banner-tag">{{ influencer.category }}</span>
+<div class="main-wrap">
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="hamburger" onclick="toggleSidebar()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+      <div class="topbar-text">
+        <span class="topbar-greeting">Influencer Profile</span>
+        <span class="topbar-name">Welcome, <span>{{ request.user.username }}</span></span>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <a href="{% url 'bookings:notifications_page' %}" class="notif-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <span class="notif-dot"></span>
+      </a>
+      <div class="avatar" style="{% if influencer.profile_image %}padding:0;overflow:hidden;{% endif %}">
+  {% if influencer.profile_image %}
+    <img src="{{ influencer.profile_image.url }}" style="width:100%;height:100%;object-fit:cover;border-radius:10px;">
+  {% else %}
+    {{ request.user.username|slice:":2"|upper }}
+  {% endif %}
+</div>
+    </div>
+  </header>
+
+  <main class="page-content">
+
+    
+    <div class="breadcrumb">
+      <a href="{% url 'shopkeepers:shopkeeper_dashboard' %}">Dashboard</a>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      <a href="{% url 'influencers:influencers_list' %}">Influencers</a>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      <span style="color:var(--ink2);font-weight:600;">{{ influencer.user.username }}</span>
     </div>
 
-    <!-- Avatar + Book button -->
-    <div class="avatar-row">
-      <div class="avatar-wrap">
-        <div class="avatar">{{ influencer.user.username|first|upper }}</div>
+    <!-- Profile Hero -->
+    <div class="profile-hero">
+      <div class="hero-banner" id="heroBanner" style="{% if influencer.banner_image %}background-image:url('{{ influencer.banner_image.url }}');background-size:cover;background-position:center;{% endif %}">
+     {% if not influencer.banner_image %}
+      <div class="hero-banner-pattern"></div>
+    {% endif %}
       </div>
-      <a href="{% url 'bookings:create_booking' influencer.id %}" class="book-btn"> 📅 Book Now</a>
-    </div>
-
-    <!-- Profile body -->
-    <div class="profile-info">
-
-      <!-- Name & handle -->
-      <div class="profile-name">{{ influencer.user.get_full_name|default:influencer.user.username }}</div>
-      <div class="profile-handle">@{{ influencer.user.username }}</div>
-
-      <!-- Stats -->
-      <div class="stats-row">
-        <div class="stat-cell">
-          <span class="stat-num">{{ influencer.followers }}</span>
-          <span class="stat-lbl">Followers</span>
-        </div>
-        <div class="stat-cell">
-          <span class="stat-num">
-            {% if influencer.rating %}{{ influencer.rating }}/5{% else %}—{% endif %}
-          </span>
-          <span class="stat-lbl">Rating</span>
-        </div>
-        <div class="stat-cell">
-          <span class="stat-num">{{ influencer.category }}</span>
-          <span class="stat-lbl">Niche</span>
-        </div>
-        <div class="stat-cell">
-          <span class="stat-num">
-            {% if influencer.price %}₹{{ influencer.price }}{% else %}—{% endif %}
-          </span>
-          <span class="stat-lbl">Per Post</span>
-        </div>
-      </div>
-
-      <!-- Info grid: Full name + Username -->
-      <div class="info-grid">
-
-        <!-- Full Name -->
-        <div class="info-box">
-          <div class="info-box-label">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            Full Name
-          </div>
-          <div class="info-box-value">
-            {{ influencer.user.get_full_name|default:"—" }}
-          </div>
-        </div>
-
-        <!-- Username -->
-        <div class="info-box">
-          <div class="info-box-label">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg>
-            Username
-          </div>
-          <div class="info-box-value">@{{ influencer.user.username }}</div>
-        </div>
-
-        <!-- Bio — full width -->
-        <div class="info-box bio-box">
-          <div class="info-box-label">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-            About
-          </div>
-          {% if influencer.bio %}
-            <p class="bio-text">"{{ influencer.bio }}"</p>
-          {% else %}
-            <p class="bio-empty">No bio added yet.</p>
-          {% endif %}
-        </div>
-
-      </div><!-- /info-grid -->
-
-      <!-- Email contact row -->
-      <div class="contact-row">
-        <div class="contact-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-            <polyline points="22,6 12,13 2,6"/>
-          </svg>
-        </div>
-        <div class="contact-meta">
-          <div class="contact-lbl">Email Address</div>
-          <div class="contact-val">
-            {% if influencer.user.email %}
-              <a href="mailto:{{ influencer.user.email }}">{{ influencer.user.email }}</a>
+      <div class="hero-body">
+        <div class="hero-avatar-wrap">
+          <div class="hero-avatar" style="padding:0;overflow:hidden;">
+            {% if influencer.profile_image %}
+              <img src="{{ influencer.profile_image.url }}" alt="{{ influencer.user.username }}" style="width:100%;height:100%;object-fit:cover;border-radius:18px;">
             {% else %}
-              <span style="color:#bbb">Not provided</span>
+              {{ influencer.user.username|slice:":2"|upper }}
             {% endif %}
           </div>
+          <div class="hero-verified"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        </div>
+        <div class="hero-info-row">
+          <div>
+            <h1 class="hero-name">{{ influencer.user.username }}</h1>
+            <p class="hero-handle">@{{ influencer.user.username|lower }} · {{ influencer.location }}</p>
+            <span class="hero-category-chip">{{ influencer.category }}</span>
+          </div>
+          <div class="hero-actions">
+            <!-- ─── CHAT BUTTON ─── -->
+            <button class="btn-chat-profile" onclick="openChatPanel()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              Message
+              <span class="chat-online-dot"></span>
+            </button>
+            <!-- ─── BOOK BUTTON ─── -->
+            <a href="{% url 'bookings:create_booking' influencer.id %}" class="btn-book">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              Book Now — ₹{{ influencer.price_per_post }}
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="stats-row">
+      <div class="stat-mini">
+        <span class="stat-mini-val">{{ influencer.followers }}</span>
+        <span class="stat-mini-lbl">Followers</span>
+      </div>
+      <div class="stat-mini">
+        <span class="stat-mini-val">7.4%</span>
+        <span class="stat-mini-lbl">Engagement</span>
+      </div>
+      <div class="stat-mini">
+        <span class="stat-mini-val">4.8★</span>
+        <span class="stat-mini-lbl">Avg Rating</span>
+      </div>
+      <div class="stat-mini">
+        <span class="stat-mini-val">₹{{ influencer.price_per_post }}</span>
+        <span class="stat-mini-lbl">Per Post</span>
+      </div>
+    </div>
+
+    <!-- Details + Chat Grid -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.4rem;" id="mainGrid">
+
+      <!-- Details Card -->
+      <div>
+        <div class="detail-card" style="margin-bottom:1.2rem;">
+          <div class="detail-card-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Influencer Details
+          </div>
+          <div class="detail-item"><span class="detail-item-lbl">Category</span><span class="detail-item-val">{{ influencer.category }}</span></div>
+          <div class="detail-item"><span class="detail-item-lbl">Location</span><span class="detail-item-val">{{ influencer.location }}</span></div>
+          <div class="detail-item"><span class="detail-item-lbl">Price/Post</span><span class="detail-item-val" style="color:var(--or2);font-weight:700;">₹{{ influencer.price_per_post }}</span></div>
+          <div class="detail-item"><span class="detail-item-lbl">Followers</span><span class="detail-item-val">{{ influencer.followers }}</span></div>
+          <div class="detail-item">
+            <span class="detail-item-lbl">Platforms</span>
+            <div class="platform-tags">
+              <span class="platform-tag insta">Instagram</span>
+              <span class="platform-tag yt">YouTube</span>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- Action buttons -->
-      <div class="action-row">
-        <a href="{% url 'bookings:create_booking' influencer.id %}" class="btn-primary">📅 Book This Influencer</a>
-        <a href="{% url 'shopkeepers:shopkeeper_dashboard' %}" style="display:flex; align-items:center; justify-content:center; gap:0.4rem; padding:0.75rem 1.5rem; border-radius:12px; border:2px solid #1E130A; background:#fff; color:#1E130A; font-family:'Syne',sans-serif; font-size:0.9rem; font-weight:700; text-decoration:none; transition:all 0.18s ease;" onmouseover="this.style.background='#1E130A';this.style.color='#fff'" onmouseout="this.style.background='#fff';this.style.color='#1E130A'">← Back to Explore</a>
+      <!-- ─────────────────────────────────────
+           CHAT PANEL — Profile page pe embedded
+           ───────────────────────────────────── -->
+      <div class="chat-panel-section" id="chatPanelWrap">
+        <div class="chat-panel">
+          <div class="chat-panel-header">
+            <div class="chat-panel-avatar" id="cpAvatar" style="padding:0;overflow:hidden;">
+              {% if influencer.profile_image %}
+               <img src="{{ influencer.profile_image.url }}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">
+              {% else %}
+              {{ influencer.user.username|slice:":2"|upper }}
+              {% endif %}
+            </div>
+            <div class="chat-panel-info">
+              <div class="chat-panel-name">{{ influencer.user.username }}</div>
+              <div class="chat-panel-sub"><span class="online-badge"></span> Online now · Direct Message</div>
+            </div>
+            <!-- Full chat page link -->
+            {% if booking_id %}
+            <a href="{% url 'bookings:chat_room' booking_id %}" style="color:rgba(255,255,255,0.8);font-size:.72rem;font-weight:600;text-decoration:none;display:flex;align-items:center;gap:.3rem;background:rgba(255,255,255,0.15);padding:.35rem .7rem;border-radius:8px;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              Full Chat
+            </a>
+            {% endif %}
+          </div>
+
+          <!-- Messages area -->
+          <div class="chat-messages" id="chatMsgArea">
+            {% if booking_id %}
+              <div class="chat-empty" id="chatEmptyState">
+                <div class="chat-empty-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                </div>
+                <p>Say hi to {{ influencer.user.username }}! Your conversation will appear here.</p>
+              </div>
+            {% else %}
+              <div class="chat-locked">
+                <div class="chat-locked-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                </div>
+                <h4>Chat Locked</h4>
+                <p>Pehle {{ influencer.user.username }} ko book karo, phir direct chat kar sakte ho.</p>
+                <a href="{% url 'bookings:create_booking' influencer.id %}" class="chat-locked-btn">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  Book Now
+                </a>
+              </div>
+            {% endif %}
+          </div>
+
+          {% if booking_id %}
+          <div class="chat-notice">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Booking #{{ booking_id }} ke liye chat chal rahi hai
+          </div>
+          <div class="chat-input-row">
+            <textarea class="chat-textarea" id="chatInput" placeholder="Message likho {{ influencer.user.username }} ko..." rows="1"
+              oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,90)+'px'"
+              onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMsg();}"></textarea>
+            <button class="chat-send-btn" onclick="sendMsg()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+          </div>
+          {% endif %}
+        </div>
       </div>
 
-    </div><!-- /profile-info -->
-  </div><!-- /profile-card -->
-</div><!-- /page -->
+    </div><!-- /mainGrid -->
 
-<footer>© 2026 <span>InfluConnect</span> · Connecting local shops with local creators.</footer>
+  </main>
+</div>
+
+<!-- ─── FLOATING CHAT FAB (agar koi booking ho) ─── -->
+{% if booking_id %}
+<style>
+  .fab-chat{position:fixed;bottom:28px;right:28px;z-index:9999;}
+  .fab-btn{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#FF7A2F,#C94008);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:2px 3px 0 #A83400,0 8px 24px rgba(201,64,8,0.38);transition:transform .2s cubic-bezier(.34,1.56,.64,1);}
+  .fab-btn:hover{transform:translateY(-4px) scale(1.07);}
+  .fab-btn svg{width:24px;height:24px;color:#fff;}
+</style>
+<div class="fab-chat">
+  <button class="fab-btn" onclick="openChatPanel()" title="Chat with {{ influencer.user.username }}">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+    </svg>
+  </button>
+</div>
+{% endif %}
+
+<script>
+  const BOOKING_ID = "{{ booking_id|default:'' }}";
+  const CURRENT_USER = "{{ request.user.username }}";
+
+  function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');}
+  document.addEventListener('click',function(e){
+    const sb=document.getElementById('sidebar');
+    if(window.innerWidth<=768&&sb.classList.contains('open')&&!sb.contains(e.target)&&!e.target.closest('.hamburger'))sb.classList.remove('open');
+  });
+
+  function openChatPanel(){
+    document.getElementById('chatPanelWrap').scrollIntoView({behavior:'smooth',block:'center'});
+    document.getElementById('chatInput')&&document.getElementById('chatInput').focus();
+  }
+
+  function getCsrf(){
+    var c=document.cookie.split(';').find(x=>x.trim().startsWith('csrftoken='));
+    return c?c.split('=')[1].trim():'';
+  }
+
+  // Load existing messages
+  async function loadMessages(){
+    if(!BOOKING_ID) return;
+    try{
+      const r=await fetch('/bookings/api/chat-messages/'+BOOKING_ID+'/');
+      if(!r.ok) return;
+      const d=await r.json();
+      const msgs=d.messages||[];
+      const area=document.getElementById('chatMsgArea');
+      if(msgs.length===0) return;
+      // Remove empty state
+      const empty=area.querySelector('#chatEmptyState');
+      if(empty) empty.remove();
+      // Render only new messages
+      area.innerHTML='';
+      msgs.forEach(m=>{
+        const mine=m.sender===CURRENT_USER;
+        area.innerHTML+=`<div class="msg-row ${mine?'mine':''}"><div class="msg-bubble">${m.message}</div></div>`;
+      });
+      area.scrollTop=area.scrollHeight;
+    }catch(e){}
+  }
+
+  async function sendMsg(){
+    if(!BOOKING_ID) return;
+    const inp=document.getElementById('chatInput');
+    const txt=inp.value.trim();
+    if(!txt) return;
+    const area=document.getElementById('chatMsgArea');
+    const empty=area.querySelector('#chatEmptyState');
+    if(empty) empty.remove();
+    area.innerHTML+=`<div class="msg-row mine"><div class="msg-bubble">${txt}</div></div>`;
+    area.scrollTop=area.scrollHeight;
+    inp.value=''; inp.style.height='auto';
+    try{
+      await fetch('/bookings/chat/'+BOOKING_ID+'/',{
+        method:'POST',
+        headers:{'Content-Type':'application/x-www-form-urlencoded','X-CSRFToken':getCsrf()},
+        body:'message='+encodeURIComponent(txt)
+      });
+    }catch(e){}
+  }
+
+  if(BOOKING_ID){
+    loadMessages();
+    setInterval(loadMessages, 5000);
+  }
+</script>
 
 </body>
 </html>

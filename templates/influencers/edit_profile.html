@@ -157,6 +157,20 @@
   <div class="badge"><div class="badge-dot"></div> INFLUENCER</div>
 </div>
 
+
+<!-- BANNER -->
+<div id="bannerDiv" style="width:100%;height:140px;background:linear-gradient(135deg,#FF7A2F,#C94008);position:relative;cursor:pointer;overflow:hidden;" onclick="document.getElementById('bannerInput').click()">
+  {% if profile.banner_image %}
+    <img id="bannerPreview" src="{{ profile.banner_image.url }}" style="width:100%;height:100%;object-fit:cover;display:block;">
+  {% else %}
+    <img id="bannerPreview" src="" style="width:100%;height:100%;object-fit:cover;display:none;">
+  {% endif %}
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.25);flex-direction:column;gap:6px;">
+    <span style="font-size:24px;">🖼</span>
+    <span style="color:white;font-size:12px;font-weight:600;">Click to upload banner</span>
+  </div>
+</div>
+
 <!-- AVATAR + TITLE -->
 <div class="avatar-section">
   <div class="avatar-wrap" onclick="document.getElementById('photoInput').click()">
@@ -242,6 +256,10 @@
 
     <!-- Photo Upload (hidden, triggered by avatar click) -->
     <input type="file" name="photo" id="photoFormInput" accept="image/*" style="display:none;" />
+
+    <!-- Banner Upload -->
+    <input type="file" name="banner_image" id="bannerFormInput" accept="image/*" style="display:none;" />
+    <input type="file" id="bannerInput" accept="image/*" style="display:none;" onchange="previewBanner(event)" />
   </div>
 
   <!-- ADDRESS -->
@@ -436,6 +454,22 @@
     };
     reader.readAsDataURL(file);
   }
+
+  function previewBanner(e) {
+    var file = e.target.files[0];
+    if (!file) return;
+    var dt = new DataTransfer();
+    dt.items.add(file);
+    document.getElementById('bannerFormInput').files = dt.files;
+    var reader = new FileReader();
+    reader.onload = function(ev) {
+      var img = document.getElementById('bannerPreview');
+      img.src = ev.target.result;
+      img.style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+  }
+
 
   {% if messages %}{% for message in messages %}{% if message.tags == 'success' %}
   window.addEventListener('DOMContentLoaded', function() {

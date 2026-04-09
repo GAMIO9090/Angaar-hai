@@ -7,914 +7,229 @@
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --or1:         #FF6B1A;
-      --or2:         #E8500A;
-      --or3:         #C94008;
-      --or-pale:     #FFF3EB;
-      --or-soft:     rgba(255,107,26,0.10);
-      --cream:       #F9F4EE;
-      --white:       #FFFFFF;
-      --ink:         #1E130A;
-      --ink2:        #3D2810;
-      --muted:       #8A7060;
-      --border:      #EAD9C8;
-      --sidebar-w:   252px;
-      --violet:      #7C3AED;
-      --violet-pale: #F5F3FF;
-      --teal:        #0EA878;
-      --teal-pale:   #E6FAF4;
-      --rose:        #E11D48;
-      --rose-pale:   #FFF1F4;
-      --amber:       #D97706;
-      --amber-pale:  #FEF6E4;
-      --blue:        #2563EB;
-      --blue-pale:   #EEF3FF;
-    }
-
-    html, body { height: 100%; }
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background: var(--cream);
-      color: var(--ink);
-      display: flex;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    .sidebar {
-      width: var(--sidebar-w);
-      min-height: 100vh;
-      background: var(--white);
-      border-right: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      position: fixed;
-      left: 0; top: 0; bottom: 0;
-      z-index: 100;
-      box-shadow: 4px 0 24px rgba(232,80,10,0.055);
-      transition: transform .3s cubic-bezier(.16,1,.3,1);
-    }
-
-    .sidebar-brand {
-      padding: 1.6rem 1.4rem 1.4rem;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: .65rem;
-      text-decoration: none;
-    }
-    .brand-icon {
-      width: 42px; height: 42px;
-      border-radius: 12px;
-      background: linear-gradient(145deg, #FF7A2F, #C94008);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-      box-shadow:
-        0 1px 0 rgba(255,200,140,0.45) inset,
-        0 -1px 0 rgba(0,0,0,0.18) inset,
-        2px 3px 0 #A83400,
-        5px 6px 0 rgba(168,52,0,0.22),
-        0 10px 22px rgba(201,64,8,0.32);
-    }
-    .brand-icon svg { width: 20px; height: 20px; }
-    .brand-name {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.28rem;
-      font-weight: 800;
-      letter-spacing: -.03em;
-      line-height: 1;
-    }
-    .brand-name .bl { color: var(--ink); }
-    .brand-name .or { color: var(--or1); text-shadow: 1.5px 1.5px 0 rgba(201,64,8,0.18); }
-
-    .role-chip {
-      margin: .85rem 1.4rem .2rem;
-      display: inline-flex;
-      align-items: center;
-      gap: .38rem;
-      background: var(--violet-pale);
-      border: 1px solid rgba(124,58,237,0.2);
-      border-radius: 20px;
-      padding: .22rem .75rem;
-      font-size: .67rem;
-      font-weight: 700;
-      letter-spacing: .06em;
-      text-transform: uppercase;
-      color: var(--violet);
-    }
-    .role-chip::before {
-      content: '';
-      width: 5px; height: 5px;
-      background: var(--violet);
-      border-radius: 50%;
-      flex-shrink: 0;
-      box-shadow: 0 0 5px rgba(124,58,237,0.6);
-    }
-
-    .nav-section-label {
-      font-size: .62rem;
-      font-weight: 700;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      color: var(--muted);
-      padding: 1.2rem 1.4rem .4rem;
-    }
-    .nav-menu { list-style: none; padding: 0 .7rem; flex: 1; }
-    .nav-item  { margin-bottom: .18rem; }
-
-    .nav-link {
-      display: flex;
-      align-items: center;
-      gap: .72rem;
-      padding: .68rem .85rem;
-      border-radius: 12px;
-      text-decoration: none;
-      color: var(--muted);
-      font-size: .875rem;
-      font-weight: 500;
-      transition: all .18s ease;
-    }
-    .nav-link:hover { background: var(--or-soft); color: var(--or2); }
-    .nav-link.active {
-      background: linear-gradient(135deg, rgba(255,107,26,0.13) 0%, rgba(255,107,26,0.06) 100%);
-      color: var(--or2);
-      font-weight: 600;
-      box-shadow: inset 3px 0 0 var(--or1);
-    }
-    .nav-icon {
-      width: 34px; height: 34px;
-      border-radius: 9px;
-      display: flex; align-items: center; justify-content: center;
-      background: transparent;
-      transition: background .18s;
-      flex-shrink: 0;
-    }
-    .nav-link:hover .nav-icon,
-    .nav-link.active .nav-icon { background: rgba(255,107,26,0.12); }
-    .nav-icon svg { width: 17px; height: 17px; }
-
-    .nav-badge {
-      margin-left: auto;
-      background: var(--or1);
-      color: #fff;
-      font-size: .62rem;
-      font-weight: 700;
-      padding: .1rem .42rem;
-      border-radius: 20px;
-      animation: pulseBadge 2s ease-in-out infinite;
-    }
-    @keyframes pulseBadge {
-      0%,100% { box-shadow: 0 0 0 0 rgba(255,107,26,0.4); }
-      50%      { box-shadow: 0 0 0 4px rgba(255,107,26,0); }
-    }
-
-    .sidebar-footer {
-      padding: 1rem .7rem 1.4rem;
-      border-top: 1px solid var(--border);
-    }
-    .logout-btn {
-      display: flex;
-      align-items: center;
-      gap: .72rem;
-      padding: .68rem .85rem;
-      border-radius: 12px;
-      color: #C0392B;
-      font-size: .875rem;
-      font-weight: 600;
-      background: transparent;
-      border: none;
-      width: 100%;
-      cursor: pointer;
-      transition: background .18s;
-      text-decoration: none;
-    }
-    .logout-btn:hover { background: rgba(192,57,43,0.08); }
-    .logout-icon {
-      width: 34px; height: 34px;
-      border-radius: 9px;
-      background: rgba(192,57,43,0.09);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-    }
-    .logout-icon svg { width: 17px; height: 17px; }
-
-    .main-wrap {
-      margin-left: var(--sidebar-w);
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
-    .topbar {
-      height: 68px;
-      background: rgba(255,255,255,0.86);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 2rem;
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      box-shadow: 0 2px 14px rgba(0,0,0,0.042);
-    }
-    .topbar-left { display: flex; align-items: center; gap: .9rem; }
-    .topbar-text { display: flex; flex-direction: column; }
-    .topbar-greeting {
-      font-size: .7rem;
-      color: var(--muted);
-      font-weight: 500;
-      letter-spacing: .05em;
-      text-transform: uppercase;
-    }
-    .topbar-name {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: var(--ink);
-      letter-spacing: -.02em;
-    }
-    .topbar-name span { color: var(--or1); }
-    .topbar-right { display: flex; align-items: center; gap: .9rem; }
-
-    .search-box {
-      display: flex;
-      align-items: center;
-      gap: .45rem;
-      background: var(--cream);
-      border: 1.5px solid var(--border);
-      border-radius: 10px;
-      padding: .45rem .9rem;
-      transition: all .2s;
-    }
-    .search-box:focus-within {
-      border-color: var(--or1);
-      box-shadow: 0 0 0 3px rgba(255,107,26,0.10);
-    }
-    .search-box svg { width: 15px; height: 15px; color: var(--muted); flex-shrink: 0; }
-    .search-box input {
-      border: none; background: transparent;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: .83rem; color: var(--ink);
-      outline: none; width: 150px;
-    }
-    .search-box input::placeholder { color: #B0A098; }
-
-    .icon-btn {
-      width: 38px; height: 38px;
-      border-radius: 10px;
-      background: var(--cream);
-      border: 1.5px solid var(--border);
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer;
-      position: relative;
-      transition: all .18s;
-    }
-    .icon-btn:hover { background: var(--or-soft); border-color: rgba(255,107,26,0.25); }
-    .icon-btn svg { width: 17px; height: 17px; color: var(--muted); }
-    .notif-dot {
-      position: absolute;
-      top: 6px; right: 6px;
-      width: 7px; height: 7px;
-      background: var(--or1);
-      border-radius: 50%;
-      border: 1.5px solid var(--white);
-    }
-
-    .topbar-avatar {
-      width: 38px; height: 38px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, var(--violet), #6D28D9);
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Syne', sans-serif;
-      font-size: .88rem;
-      font-weight: 800;
-      color: #fff;
-      cursor: pointer;
-      box-shadow: 2px 3px 0 #5B21B6, 0 8px 20px rgba(109,40,217,0.28);
-      transition: transform .2s;
-      flex-shrink: 0;
-    }
-    .topbar-avatar:hover { transform: translateY(-2px); }
-
-    .hamburger {
-      display: none;
-      width: 38px; height: 38px;
-      border-radius: 10px;
-      background: var(--cream);
-      border: 1.5px solid var(--border);
-      align-items: center; justify-content: center;
-      cursor: pointer;
-      flex-shrink: 0;
-    }
-    .hamburger svg { width: 18px; height: 18px; color: var(--ink); }
-
-    .page-content { padding: 2rem 2rem 3rem; flex: 1; }
-
-    .page-header {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      margin-bottom: 1.8rem;
-      animation: fadeUp .45s ease both;
-    }
-    .page-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.55rem;
-      font-weight: 800;
-      color: var(--ink);
-      letter-spacing: -.03em;
-    }
-    .page-subtitle { font-size: .84rem; color: var(--muted); margin-top: .2rem; }
-    .date-pill {
-      font-size: .77rem;
-      color: var(--muted);
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: .38rem .8rem;
-      font-weight: 500;
-    }
-
-    .messages-wrap { margin-bottom: 1.2rem; }
-    .msg {
-      display: flex;
-      align-items: center;
-      gap: .7rem;
-      padding: .8rem 1.1rem;
-      border-radius: 12px;
-      font-size: .85rem;
-      font-weight: 600;
-      margin-bottom: .5rem;
-      animation: fadeUp .3s ease both;
-    }
-    .msg-success { background: #ECFDF5; color: #059669; border: 1px solid rgba(5,150,105,0.2); }
-    .msg-info    { background: var(--blue-pale); color: var(--blue); border: 1px solid rgba(37,99,235,0.2); }
-    .msg-warning { background: var(--amber-pale); color: var(--amber); border: 1px solid rgba(217,119,6,0.2); }
-    .msg-error   { background: var(--rose-pale); color: var(--rose); border: 1px solid rgba(225,29,72,0.2); }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(3,1fr);
-      gap: 1.2rem;
-      margin-bottom: 1.8rem;
-    }
-    .stat-card {
-      background: var(--white);
-      border-radius: 20px;
-      padding: 1.5rem 1.6rem;
-      border: 1px solid var(--border);
-      position: relative;
-      overflow: hidden;
-      cursor: default;
-      transition: transform .22s cubic-bezier(.34,1.56,.64,1), box-shadow .22s ease;
-      animation: fadeUp .45s ease both;
-    }
-    .stat-card:nth-child(1) { animation-delay:.07s; }
-    .stat-card:nth-child(2) { animation-delay:.13s; }
-    .stat-card:nth-child(3) { animation-delay:.19s; }
-    .stat-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3.5px;
-      border-radius: 20px 20px 0 0;
-    }
-    .stat-card.violet::before { background: linear-gradient(90deg,#7C3AED,#A855F7); }
-    .stat-card.teal::before   { background: linear-gradient(90deg,#0EA878,#34D399); }
-    .stat-card.amber::before  { background: linear-gradient(90deg,#D97706,#FBBF24); }
-    .stat-card::after {
-      content: '';
-      position: absolute;
-      bottom: -28px; right: -18px;
-      width: 100px; height: 100px;
-      border-radius: 50%;
-      opacity: .07;
-    }
-    .stat-card.violet::after { background: #7C3AED; }
-    .stat-card.teal::after   { background: #0EA878; }
-    .stat-card.amber::after  { background: #D97706; }
-    .stat-card:hover { transform: translateY(-5px); }
-    .stat-card.violet:hover { box-shadow: 0 16px 40px rgba(124,58,237,0.14), 0 4px 12px rgba(124,58,237,0.07); }
-    .stat-card.teal:hover   { box-shadow: 0 16px 40px rgba(14,168,120,0.14), 0 4px 12px rgba(14,168,120,0.07); }
-    .stat-card.amber:hover  { box-shadow: 0 16px 40px rgba(217,119,6,0.14),  0 4px 12px rgba(217,119,6,0.07); }
-    .stat-icon {
-      width: 46px; height: 46px;
-      border-radius: 13px;
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 1rem;
-    }
-    .stat-card.violet .stat-icon { background: var(--violet-pale); }
-    .stat-card.teal   .stat-icon { background: var(--teal-pale); }
-    .stat-card.amber  .stat-icon { background: var(--amber-pale); }
-    .stat-icon svg { width: 21px; height: 21px; }
-    .stat-card.violet .stat-icon svg { color: #7C3AED; }
-    .stat-card.teal   .stat-icon svg { color: #0EA878; }
-    .stat-card.amber  .stat-icon svg { color: #D97706; }
-    .stat-label {
-      font-size: .73rem;
-      font-weight: 700;
-      color: var(--muted);
-      letter-spacing: .06em;
-      text-transform: uppercase;
-      margin-bottom: .35rem;
-    }
-    .stat-value {
-      font-family: 'Syne', sans-serif;
-      font-size: 2.15rem;
-      font-weight: 800;
-      color: var(--ink);
-      letter-spacing: -.04em;
-      line-height: 1;
-      margin-bottom: .55rem;
-    }
-    .stat-meta {
-      display: inline-flex;
-      align-items: center;
-      gap: .3rem;
-      font-size: .74rem;
-      font-weight: 600;
-      padding: .2rem .55rem;
-      border-radius: 20px;
-    }
-    .stat-meta.up   { color: #059669; background: #ECFDF5; }
-    .stat-meta.info { color: #2563EB; background: var(--blue-pale); }
-    .stat-meta.earn { color: #D97706; background: var(--amber-pale); }
-    .stat-meta svg  { width: 11px; height: 11px; }
-
-    .quick-row {
-      display: flex;
-      gap: .8rem;
-      margin-bottom: 2rem;
-      flex-wrap: wrap;
-      animation: fadeUp .45s .22s ease both;
-    }
-    .q-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: .52rem;
-      padding: .62rem 1.05rem;
-      border-radius: 12px;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: .82rem;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-      transition: all .18s ease;
-      border: 1.5px solid var(--border);
-      background: var(--white);
-      color: var(--ink2);
-      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
-    }
-    .q-btn svg { width: 15px; height: 15px; }
-    .q-btn:hover {
-      border-color: var(--or1);
-      color: var(--or2);
-      background: var(--or-pale);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 18px rgba(255,107,26,0.13);
-    }
-    .q-btn.primary {
-      background: linear-gradient(150deg,#FF7A2F,#C94008);
-      border-color: transparent;
-      color: #fff;
-      box-shadow: 2px 3px 0 #A83400, 0 8px 20px rgba(201,64,8,0.26);
-    }
-    .q-btn.primary:hover {
-      transform: translate(-1px,-3px);
-      box-shadow: 4px 5px 0 #A83400, 0 12px 28px rgba(201,64,8,0.32);
-      color: #fff;
-    }
-    .q-btn.violet-btn {
-      background: linear-gradient(150deg,#8B5CF6,#6D28D9);
-      border-color: transparent;
-      color: #fff;
-      box-shadow: 2px 3px 0 #5B21B6, 0 8px 20px rgba(109,40,217,0.24);
-    }
-    .q-btn.violet-btn:hover {
-      transform: translate(-1px,-3px);
-      box-shadow: 4px 5px 0 #5B21B6, 0 12px 28px rgba(109,40,217,0.3);
-      color: #fff;
-    }
-
-    .section-hdr {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 1.15rem;
-    }
-    .section-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.14rem;
-      font-weight: 700;
-      color: var(--ink);
-      letter-spacing: -.02em;
-      display: flex;
-      align-items: center;
-      gap: .5rem;
-    }
-    .live-dot {
-      width: 8px; height: 8px;
-      background: var(--or1);
-      border-radius: 50%;
-      display: inline-block;
-      animation: ripple 2s ease-in-out infinite;
-    }
-    @keyframes ripple {
-      0%   { box-shadow: 0 0 0 0 rgba(255,107,26,0.5); }
-      70%  { box-shadow: 0 0 0 7px rgba(255,107,26,0); }
-      100% { box-shadow: 0 0 0 0 rgba(255,107,26,0); }
-    }
-    .view-all {
-      display: flex;
-      align-items: center;
-      gap: .3rem;
-      font-size: .79rem;
-      font-weight: 600;
-      color: var(--or2);
-      text-decoration: none;
-      transition: gap .18s;
-    }
-    .view-all:hover { gap: .55rem; }
-    .view-all svg { width: 14px; height: 14px; }
-
-    .requests-grid {
-      display: grid;
-      grid-template-columns: repeat(2,1fr);
-      gap: 1.1rem;
-      animation: fadeUp .45s .28s ease both;
-    }
-
-    .req-card {
-      background: var(--white);
-      border-radius: 20px;
-      border: 1px solid var(--border);
-      padding: 1.4rem 1.5rem 1.3rem;
-      position: relative;
-      overflow: hidden;
-      transition: transform .22s cubic-bezier(.34,1.56,.64,1), box-shadow .22s ease;
-    }
-    .req-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 18px 44px rgba(0,0,0,0.08), 0 4px 14px rgba(0,0,0,0.05);
-    }
-
-    .req-card::before {
-      content: '';
-      position: absolute;
-      left: 0; top: 16px; bottom: 16px;
-      width: 3.5px;
-      border-radius: 0 4px 4px 0;
-    }
-    .req-card:nth-child(4n+1)::before { background: linear-gradient(180deg,#FF6B1A,#C94008); }
-    .req-card:nth-child(4n+2)::before { background: linear-gradient(180deg,#0EA878,#059669); }
-    .req-card:nth-child(4n+3)::before { background: linear-gradient(180deg,#7C3AED,#6D28D9); }
-    .req-card:nth-child(4n+0)::before { background: linear-gradient(180deg,#2563EB,#1D4ED8); }
-
-    .req-top {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      margin-bottom: 1rem;
-      padding-left: .6rem;
-    }
-    .req-shop-info { display: flex; align-items: center; gap: .7rem; }
-
-    .shop-avatar {
-      width: 44px; height: 44px;
-      border-radius: 12px;
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Syne', sans-serif;
-      font-size: 1rem;
-      font-weight: 800;
-      color: #fff;
-      flex-shrink: 0;
-    }
-    .req-card:nth-child(4n+1) .shop-avatar { background: linear-gradient(135deg,#FF7A2F,#C94008); box-shadow: 0 5px 14px rgba(255,107,26,0.28); }
-    .req-card:nth-child(4n+2) .shop-avatar { background: linear-gradient(135deg,#0EA878,#059669); box-shadow: 0 5px 14px rgba(14,168,120,0.26); }
-    .req-card:nth-child(4n+3) .shop-avatar { background: linear-gradient(135deg,#7C3AED,#6D28D9); box-shadow: 0 5px 14px rgba(124,58,237,0.26); }
-    .req-card:nth-child(4n+0) .shop-avatar { background: linear-gradient(135deg,#2563EB,#1D4ED8); box-shadow: 0 5px 14px rgba(37,99,235,0.24); }
-
-    .shop-name {
-      font-family: 'Syne', sans-serif;
-      font-size: .97rem;
-      font-weight: 700;
-      color: var(--ink);
-      letter-spacing: -.02em;
-    }
-    .shop-location {
-      font-size: .73rem;
-      color: var(--muted);
-      margin-top: .12rem;
-      display: flex;
-      align-items: center;
-      gap: .28rem;
-    }
-    .shop-location svg { width: 11px; height: 11px; }
-
-    .status-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: .3rem;
-      padding: .22rem .7rem;
-      border-radius: 20px;
-      font-size: .68rem;
-      font-weight: 700;
-      letter-spacing: .04em;
-      flex-shrink: 0;
-    }
-    .status-pill::before {
-      content: '';
-      width: 5px; height: 5px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-    .status-pill.pending  { background: #FEF6E4; color: #D97706; }
-    .status-pill.pending::before  { background: #D97706; box-shadow: 0 0 5px rgba(217,119,6,0.6); }
-    .status-pill.accepted { background: #ECFDF5; color: #059669; }
-    .status-pill.accepted::before { background: #059669; }
-    .status-pill.approved { background: #ECFDF5; color: #059669; }
-    .status-pill.approved::before { background: #059669; }
-    .status-pill.rejected { background: var(--rose-pale); color: var(--rose); }
-    .status-pill.rejected::before { background: var(--rose); }
-
-    .req-message {
-      background: var(--cream);
-      border-radius: 10px;
-      padding: .75rem 1rem;
-      margin: 0 0 1rem .6rem;
-      font-size: .84rem;
-      color: var(--ink2);
-      line-height: 1.55;
-      position: relative;
-    }
-    .req-message::before {
-      content: '"';
-      font-family: 'Syne', sans-serif;
-      font-size: 1.8rem;
-      color: rgba(0,0,0,0.08);
-      position: absolute;
-      top: 2px; left: 8px;
-      line-height: 1;
-    }
-
-    .req-meta {
-      display: flex;
-      gap: .6rem;
-      margin: 0 0 1.1rem .6rem;
-      flex-wrap: wrap;
-    }
-    .meta-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: .3rem;
-      font-size: .7rem;
-      font-weight: 600;
-      padding: .2rem .6rem;
-      border-radius: 8px;
-      background: var(--cream);
-      color: var(--muted);
-      border: 1px solid var(--border);
-    }
-    .meta-tag svg { width: 11px; height: 11px; }
-    .meta-tag.price { color: var(--amber); background: var(--amber-pale); border-color: rgba(217,119,6,0.18); }
-    .meta-tag.niche { color: var(--violet); background: var(--violet-pale); border-color: rgba(124,58,237,0.18); }
-
-    .req-actions {
-      display: flex;
-      gap: .7rem;
-      padding-left: .6rem;
-      align-items: stretch;
-    }
-    .req-actions form { flex: 1; display: flex; }
-
-    .btn-accept, .btn-reject {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: .4rem;
-      padding: .68rem .8rem;
-      border-radius: 12px;
-      font-family: 'Syne', sans-serif;
-      font-size: .82rem;
-      font-weight: 700;
-      border: none;
-      cursor: pointer;
-      transition: all .18s cubic-bezier(.34,1.56,.64,1);
-      position: relative;
-      overflow: hidden;
-    }
-    .btn-accept svg, .btn-reject svg { width: 14px; height: 14px; }
-
-    .btn-accept {
-      background: linear-gradient(135deg,#10B981,#059669);
-      color: #fff;
-      box-shadow: 0 4px 14px rgba(16,185,129,0.28);
-    }
-    .btn-accept:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(16,185,129,0.36); }
-    .btn-accept:active { transform: scale(.97); }
-
-    .btn-reject {
-      background: var(--white);
-      color: var(--rose);
-      border: 1.5px solid rgba(225,29,72,0.22);
-      box-shadow: 0 2px 8px rgba(225,29,72,0.06);
-    }
-    .btn-reject:hover { background: var(--rose-pale); border-color: rgba(225,29,72,0.4); transform: translateY(-2px); box-shadow: 0 6px 18px rgba(225,29,72,0.14); }
-    .btn-reject:active { transform: scale(.97); }
-
-    .req-actioned-msg {
-      flex: 1;
-      padding: .68rem 1rem;
-      border-radius: 12px;
-      font-family: 'Syne', sans-serif;
-      font-size: .82rem;
-      font-weight: 700;
-      text-align: center;
-    }
-    .actioned-accepted { background: #ECFDF5; color: #059669; border: 1.5px solid rgba(5,150,105,0.2); }
-    .actioned-rejected { background: var(--rose-pale); color: var(--rose); border: 1.5px solid rgba(225,29,72,0.2); }
-
-    .empty-state {
-      grid-column: 1 / -1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 3.5rem 2rem;
-      background: var(--white);
-      border-radius: 20px;
-      border: 1.5px dashed var(--border);
-      text-align: center;
-    }
-    .empty-icon {
-      width: 64px; height: 64px;
-      background: var(--or-pale);
-      border-radius: 18px;
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 1.2rem;
-      box-shadow: 0 4px 16px rgba(255,107,26,0.1);
-    }
-    .empty-icon svg { width: 28px; height: 28px; color: var(--or2); }
-    .empty-title { font-family: 'Syne', sans-serif; font-size: 1.05rem; font-weight: 700; color: var(--ink); margin-bottom: .4rem; }
-    .empty-sub { font-size: .84rem; color: var(--muted); max-width: 280px; line-height: 1.55; }
-
-    .perf-section { margin-top: 2rem; animation: fadeUp .45s .35s ease both; }
-    .perf-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; }
-    .perf-card {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 1.1rem 1.2rem;
-      display: flex;
-      align-items: center;
-      gap: .85rem;
-      transition: transform .2s cubic-bezier(.34,1.56,.64,1), box-shadow .2s;
-    }
-    .perf-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.07); }
-    .perf-icon { width: 40px; height: 40px; border-radius: 11px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .perf-icon svg { width: 18px; height: 18px; }
-    .perf-lbl { font-size: .72rem; color: var(--muted); font-weight: 500; margin-bottom: .15rem; }
-    .perf-val { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 800; color: var(--ink); letter-spacing: -.02em; }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    @media (max-width: 1180px) { .perf-grid { grid-template-columns: repeat(2,1fr); } }
-    @media (max-width: 960px)  { .requests-grid { grid-template-columns: 1fr; } .stats-grid { grid-template-columns: repeat(2,1fr); } }
-    @media (max-width: 768px) {
-      .sidebar { transform: translateX(-100%); }
-      .sidebar.open { transform: translateX(0); box-shadow: 4px 0 40px rgba(0,0,0,0.14); }
-      .main-wrap { margin-left: 0; }
-      .hamburger { display: flex; }
-      .search-box { display: none; }
-      .page-content { padding: 1.2rem 1rem 2rem; }
-      .stats-grid { grid-template-columns: 1fr; }
-      .perf-grid { grid-template-columns: repeat(2,1fr); }
-      .date-pill { display: none; }
-    }
-    @media (max-width: 480px) {
-      .topbar { padding: 0 1rem; }
-      .req-actions { flex-direction: column; }
-      .req-actions form { width: 100%; }
-    }
+      --or1:#FF6B1A;--or2:#E8500A;--or3:#C94008;--or-pale:#FFF3EB;--or-soft:rgba(255,107,26,0.10);
+      --cream:#F9F4EE;--white:#FFFFFF;--ink:#1E130A;--ink2:#3D2810;--muted:#8A7060;--border:#EAD9C8;
+      --sidebar-w:252px;--violet:#7C3AED;--violet-pale:#F5F3FF;--teal:#0EA878;--teal-pale:#E6FAF4;
+      --rose:#E11D48;--rose-pale:#FFF1F4;--amber:#D97706;--amber-pale:#FEF6E4;--blue:#2563EB;--blue-pale:#EEF3FF;
+    }
+    html,body{height:100%;}
+    body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--cream);color:var(--ink);display:flex;min-height:100vh;overflow-x:hidden;}
+    .sidebar{width:var(--sidebar-w);min-height:100vh;background:var(--white);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;left:0;top:0;bottom:0;z-index:100;box-shadow:4px 0 24px rgba(232,80,10,0.055);transition:transform .3s cubic-bezier(.16,1,.3,1);}
+    .sidebar-brand{padding:1.6rem 1.4rem 1.4rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.65rem;text-decoration:none;}
+    .brand-icon{width:42px;height:42px;border-radius:12px;background:linear-gradient(145deg,#FF7A2F,#C94008);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 1px 0 rgba(255,200,140,0.45) inset,0 -1px 0 rgba(0,0,0,0.18) inset,2px 3px 0 #A83400,5px 6px 0 rgba(168,52,0,0.22),0 10px 22px rgba(201,64,8,0.32);}
+    .brand-icon svg{width:20px;height:20px;}
+    .brand-name{font-family:'Syne',sans-serif;font-size:1.28rem;font-weight:800;letter-spacing:-.03em;line-height:1;}
+    .brand-name .bl{color:var(--ink);}.brand-name .or{color:var(--or1);text-shadow:1.5px 1.5px 0 rgba(201,64,8,0.18);}
+    .role-chip{margin:.85rem 1.4rem .2rem;display:inline-flex;align-items:center;gap:.38rem;background:var(--violet-pale);border:1px solid rgba(124,58,237,0.2);border-radius:20px;padding:.22rem .75rem;font-size:.67rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--violet);}
+    .role-chip::before{content:'';width:5px;height:5px;background:var(--violet);border-radius:50%;flex-shrink:0;box-shadow:0 0 5px rgba(124,58,237,0.6);}
+    .nav-section-label{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:1.2rem 1.4rem .4rem;}
+    .nav-menu{list-style:none;padding:0 .7rem;flex:1;}.nav-item{margin-bottom:.18rem;}
+    .nav-link{display:flex;align-items:center;gap:.72rem;padding:.68rem .85rem;border-radius:12px;text-decoration:none;color:var(--muted);font-size:.875rem;font-weight:500;transition:all .18s ease;}
+    .nav-link:hover{background:var(--or-soft);color:var(--or2);}
+    .nav-link.active{background:linear-gradient(135deg,rgba(255,107,26,0.13) 0%,rgba(255,107,26,0.06) 100%);color:var(--or2);font-weight:600;box-shadow:inset 3px 0 0 var(--or1);}
+    .nav-icon{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;background:transparent;transition:background .18s;flex-shrink:0;}
+    .nav-link:hover .nav-icon,.nav-link.active .nav-icon{background:rgba(255,107,26,0.12);}
+    .nav-icon svg{width:17px;height:17px;}
+    .nav-badge{margin-left:auto;background:var(--or1);color:#fff;font-size:.62rem;font-weight:700;padding:.1rem .42rem;border-radius:20px;animation:pulseBadge 2s ease-in-out infinite;}
+    @keyframes pulseBadge{0%,100%{box-shadow:0 0 0 0 rgba(255,107,26,0.4);}50%{box-shadow:0 0 0 4px rgba(255,107,26,0);}}
+    .sidebar-footer{padding:1rem .7rem 1.4rem;border-top:1px solid var(--border);}
+    .logout-btn{display:flex;align-items:center;gap:.72rem;padding:.68rem .85rem;border-radius:12px;color:#C0392B;font-size:.875rem;font-weight:600;background:transparent;border:none;width:100%;cursor:pointer;transition:background .18s;text-decoration:none;}
+    .logout-btn:hover{background:rgba(192,57,43,0.08);}
+    .logout-icon{width:34px;height:34px;border-radius:9px;background:rgba(192,57,43,0.09);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .logout-icon svg{width:17px;height:17px;}
+    .main-wrap{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-height:100vh;}
+    .topbar{height:68px;background:rgba(255,255,255,0.86);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 2rem;position:sticky;top:0;z-index:50;box-shadow:0 2px 14px rgba(0,0,0,0.042);}
+    .topbar-left{display:flex;align-items:center;gap:.9rem;}.topbar-text{display:flex;flex-direction:column;}
+    .topbar-greeting{font-size:.7rem;color:var(--muted);font-weight:500;letter-spacing:.05em;text-transform:uppercase;}
+    .topbar-name{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;color:var(--ink);letter-spacing:-.02em;}
+    .topbar-name span{color:var(--or1);}
+    .topbar-right{display:flex;align-items:center;gap:.9rem;}
+    .search-box{display:flex;align-items:center;gap:.45rem;background:var(--cream);border:1.5px solid var(--border);border-radius:10px;padding:.45rem .9rem;transition:all .2s;}
+    .search-box:focus-within{border-color:var(--or1);box-shadow:0 0 0 3px rgba(255,107,26,0.10);}
+    .search-box svg{width:15px;height:15px;color:var(--muted);flex-shrink:0;}
+    .search-box input{border:none;background:transparent;font-family:'Plus Jakarta Sans',sans-serif;font-size:.83rem;color:var(--ink);outline:none;width:150px;}
+    .search-box input::placeholder{color:#B0A098;}
+    .icon-btn{width:38px;height:38px;border-radius:10px;background:var(--cream);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;transition:all .18s;}
+    .icon-btn:hover{background:var(--or-soft);border-color:rgba(255,107,26,0.25);}
+    .icon-btn svg{width:17px;height:17px;color:var(--muted);}
+    .notif-dot{position:absolute;top:6px;right:6px;width:7px;height:7px;background:var(--or1);border-radius:50%;border:1.5px solid var(--white);}
+    .topbar-avatar{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--violet),#6D28D9);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:.88rem;font-weight:800;color:#fff;cursor:pointer;box-shadow:2px 3px 0 #5B21B6,0 8px 20px rgba(109,40,217,0.28);transition:transform .2s;flex-shrink:0;}
+    .topbar-avatar:hover{transform:translateY(-2px);}
+    .hamburger{display:none;width:38px;height:38px;border-radius:10px;background:var(--cream);border:1.5px solid var(--border);align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;}
+    .hamburger svg{width:18px;height:18px;color:var(--ink);}
+    .page-content{padding:2rem 2rem 3rem;flex:1;}
+    .page-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:1.8rem;animation:fadeUp .45s ease both;}
+    .page-title{font-family:'Syne',sans-serif;font-size:1.55rem;font-weight:800;color:var(--ink);letter-spacing:-.03em;}
+    .page-subtitle{font-size:.84rem;color:var(--muted);margin-top:.2rem;}
+    .date-pill{font-size:.77rem;color:var(--muted);background:var(--white);border:1px solid var(--border);border-radius:8px;padding:.38rem .8rem;font-weight:500;}
+    .messages-wrap{margin-bottom:1.2rem;}
+    .msg{display:flex;align-items:center;gap:.7rem;padding:.8rem 1.1rem;border-radius:12px;font-size:.85rem;font-weight:600;margin-bottom:.5rem;animation:fadeUp .3s ease both;}
+    .msg-success{background:#ECFDF5;color:#059669;border:1px solid rgba(5,150,105,0.2);}
+    .msg-info{background:var(--blue-pale);color:var(--blue);border:1px solid rgba(37,99,235,0.2);}
+    .msg-warning{background:var(--amber-pale);color:var(--amber);border:1px solid rgba(217,119,6,0.2);}
+    .msg-error{background:var(--rose-pale);color:var(--rose);border:1px solid rgba(225,29,72,0.2);}
+    .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-bottom:1.8rem;}
+    .stat-card{background:var(--white);border-radius:20px;padding:1.5rem 1.6rem;border:1px solid var(--border);position:relative;overflow:hidden;cursor:default;transition:transform .22s cubic-bezier(.34,1.56,.64,1),box-shadow .22s ease;animation:fadeUp .45s ease both;}
+    .stat-card:nth-child(1){animation-delay:.07s;}.stat-card:nth-child(2){animation-delay:.13s;}.stat-card:nth-child(3){animation-delay:.19s;}
+    .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3.5px;border-radius:20px 20px 0 0;}
+    .stat-card.violet::before{background:linear-gradient(90deg,#7C3AED,#A855F7);}
+    .stat-card.teal::before{background:linear-gradient(90deg,#0EA878,#34D399);}
+    .stat-card.amber::before{background:linear-gradient(90deg,#D97706,#FBBF24);}
+    .stat-card::after{content:'';position:absolute;bottom:-28px;right:-18px;width:100px;height:100px;border-radius:50%;opacity:.07;}
+    .stat-card.violet::after{background:#7C3AED;}.stat-card.teal::after{background:#0EA878;}.stat-card.amber::after{background:#D97706;}
+    .stat-card:hover{transform:translateY(-5px);}
+    .stat-card.violet:hover{box-shadow:0 16px 40px rgba(124,58,237,0.14),0 4px 12px rgba(124,58,237,0.07);}
+    .stat-card.teal:hover{box-shadow:0 16px 40px rgba(14,168,120,0.14),0 4px 12px rgba(14,168,120,0.07);}
+    .stat-card.amber:hover{box-shadow:0 16px 40px rgba(217,119,6,0.14),0 4px 12px rgba(217,119,6,0.07);}
+    .stat-icon{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;margin-bottom:1rem;}
+    .stat-card.violet .stat-icon{background:var(--violet-pale);}.stat-card.teal .stat-icon{background:var(--teal-pale);}.stat-card.amber .stat-icon{background:var(--amber-pale);}
+    .stat-icon svg{width:21px;height:21px;}
+    .stat-card.violet .stat-icon svg{color:#7C3AED;}.stat-card.teal .stat-icon svg{color:#0EA878;}.stat-card.amber .stat-icon svg{color:#D97706;}
+    .stat-label{font-size:.73rem;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.35rem;}
+    .stat-value{font-family:'Syne',sans-serif;font-size:2.15rem;font-weight:800;color:var(--ink);letter-spacing:-.04em;line-height:1;margin-bottom:.55rem;}
+    .stat-meta{display:inline-flex;align-items:center;gap:.3rem;font-size:.74rem;font-weight:600;padding:.2rem .55rem;border-radius:20px;}
+    .stat-meta.up{color:#059669;background:#ECFDF5;}.stat-meta.info{color:#2563EB;background:var(--blue-pale);}.stat-meta.earn{color:#D97706;background:var(--amber-pale);}
+    .stat-meta svg{width:11px;height:11px;}
+    .quick-row{display:flex;gap:.8rem;margin-bottom:2rem;flex-wrap:wrap;animation:fadeUp .45s .22s ease both;}
+    .q-btn{display:inline-flex;align-items:center;gap:.52rem;padding:.62rem 1.05rem;border-radius:12px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;text-decoration:none;transition:all .18s ease;border:1.5px solid var(--border);background:var(--white);color:var(--ink2);box-shadow:0 2px 6px rgba(0,0,0,0.04);}
+    .q-btn svg{width:15px;height:15px;}
+    .q-btn:hover{border-color:var(--or1);color:var(--or2);background:var(--or-pale);transform:translateY(-2px);box-shadow:0 6px 18px rgba(255,107,26,0.13);}
+    .q-btn.primary{background:linear-gradient(150deg,#FF7A2F,#C94008);border-color:transparent;color:#fff;box-shadow:2px 3px 0 #A83400,0 8px 20px rgba(201,64,8,0.26);}
+    .q-btn.primary:hover{transform:translate(-1px,-3px);box-shadow:4px 5px 0 #A83400,0 12px 28px rgba(201,64,8,0.32);color:#fff;}
+    .q-btn.violet-btn{background:linear-gradient(150deg,#8B5CF6,#6D28D9);border-color:transparent;color:#fff;box-shadow:2px 3px 0 #5B21B6,0 8px 20px rgba(109,40,217,0.24);}
+    .q-btn.violet-btn:hover{transform:translate(-1px,-3px);box-shadow:4px 5px 0 #5B21B6,0 12px 28px rgba(109,40,217,0.3);color:#fff;}
+    .section-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.15rem;}
+    .section-title{font-family:'Syne',sans-serif;font-size:1.14rem;font-weight:700;color:var(--ink);letter-spacing:-.02em;display:flex;align-items:center;gap:.5rem;}
+    .live-dot{width:8px;height:8px;background:var(--or1);border-radius:50%;display:inline-block;animation:ripple 2s ease-in-out infinite;}
+    @keyframes ripple{0%{box-shadow:0 0 0 0 rgba(255,107,26,0.5);}70%{box-shadow:0 0 0 7px rgba(255,107,26,0);}100%{box-shadow:0 0 0 0 rgba(255,107,26,0);}}
+    .view-all{display:flex;align-items:center;gap:.3rem;font-size:.79rem;font-weight:600;color:var(--or2);text-decoration:none;transition:gap .18s;}
+    .view-all:hover{gap:.55rem;}.view-all svg{width:14px;height:14px;}
+    .requests-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.1rem;animation:fadeUp .45s .28s ease both;}
+    .req-card{background:var(--white);border-radius:20px;border:1px solid var(--border);padding:1.4rem 1.5rem 1.3rem;position:relative;overflow:hidden;transition:transform .22s cubic-bezier(.34,1.56,.64,1),box-shadow .22s ease;}
+    .req-card:hover{transform:translateY(-5px);box-shadow:0 18px 44px rgba(0,0,0,0.08),0 4px 14px rgba(0,0,0,0.05);}
+    .req-card::before{content:'';position:absolute;left:0;top:16px;bottom:16px;width:3.5px;border-radius:0 4px 4px 0;}
+    .req-card:nth-child(4n+1)::before{background:linear-gradient(180deg,#FF6B1A,#C94008);}
+    .req-card:nth-child(4n+2)::before{background:linear-gradient(180deg,#0EA878,#059669);}
+    .req-card:nth-child(4n+3)::before{background:linear-gradient(180deg,#7C3AED,#6D28D9);}
+    .req-card:nth-child(4n+0)::before{background:linear-gradient(180deg,#2563EB,#1D4ED8);}
+    .req-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1rem;padding-left:.6rem;}
+    .req-shop-info{display:flex;align-items:center;gap:.7rem;}
+    .shop-avatar{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;color:#fff;flex-shrink:0;}
+    .req-card:nth-child(4n+1) .shop-avatar{background:linear-gradient(135deg,#FF7A2F,#C94008);box-shadow:0 5px 14px rgba(255,107,26,0.28);}
+    .req-card:nth-child(4n+2) .shop-avatar{background:linear-gradient(135deg,#0EA878,#059669);box-shadow:0 5px 14px rgba(14,168,120,0.26);}
+    .req-card:nth-child(4n+3) .shop-avatar{background:linear-gradient(135deg,#7C3AED,#6D28D9);box-shadow:0 5px 14px rgba(124,58,237,0.26);}
+    .req-card:nth-child(4n+0) .shop-avatar{background:linear-gradient(135deg,#2563EB,#1D4ED8);box-shadow:0 5px 14px rgba(37,99,235,0.24);}
+    .shop-name{font-family:'Syne',sans-serif;font-size:.97rem;font-weight:700;color:var(--ink);letter-spacing:-.02em;}
+    .shop-location{font-size:.73rem;color:var(--muted);margin-top:.12rem;display:flex;align-items:center;gap:.28rem;}
+    .shop-location svg{width:11px;height:11px;}
+    .status-pill{display:inline-flex;align-items:center;gap:.3rem;padding:.22rem .7rem;border-radius:20px;font-size:.68rem;font-weight:700;letter-spacing:.04em;flex-shrink:0;}
+    .status-pill::before{content:'';width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+    .status-pill.pending{background:#FEF6E4;color:#D97706;}.status-pill.pending::before{background:#D97706;box-shadow:0 0 5px rgba(217,119,6,0.6);}
+    .status-pill.accepted{background:#ECFDF5;color:#059669;}.status-pill.accepted::before{background:#059669;}
+    .status-pill.approved{background:#ECFDF5;color:#059669;}.status-pill.approved::before{background:#059669;}
+    .status-pill.rejected{background:var(--rose-pale);color:var(--rose);}.status-pill.rejected::before{background:var(--rose);}
+    .req-message{background:var(--cream);border-radius:10px;padding:.75rem 1rem;margin:0 0 1rem .6rem;font-size:.84rem;color:var(--ink2);line-height:1.55;position:relative;}
+    .req-message::before{content:'"';font-family:'Syne',sans-serif;font-size:1.8rem;color:rgba(0,0,0,0.08);position:absolute;top:2px;left:8px;line-height:1;}
+    .req-meta{display:flex;gap:.6rem;margin:0 0 1.1rem .6rem;flex-wrap:wrap;}
+    .meta-tag{display:inline-flex;align-items:center;gap:.3rem;font-size:.7rem;font-weight:600;padding:.2rem .6rem;border-radius:8px;background:var(--cream);color:var(--muted);border:1px solid var(--border);}
+    .meta-tag svg{width:11px;height:11px;}
+    .meta-tag.price{color:var(--amber);background:var(--amber-pale);border-color:rgba(217,119,6,0.18);}
+    .meta-tag.niche{color:var(--violet);background:var(--violet-pale);border-color:rgba(124,58,237,0.18);}
+    .req-actions{display:flex;gap:.7rem;padding-left:.6rem;align-items:stretch;}
+    .req-actions form{flex:1;display:flex;}
+    .btn-accept,.btn-reject{flex:1;display:flex;align-items:center;justify-content:center;gap:.4rem;padding:.68rem .8rem;border-radius:12px;font-family:'Syne',sans-serif;font-size:.82rem;font-weight:700;border:none;cursor:pointer;transition:all .18s cubic-bezier(.34,1.56,.64,1);position:relative;overflow:hidden;}
+    .btn-accept svg,.btn-reject svg{width:14px;height:14px;}
+    .btn-accept{background:linear-gradient(135deg,#10B981,#059669);color:#fff;box-shadow:0 4px 14px rgba(16,185,129,0.28);}
+    .btn-accept:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(16,185,129,0.36);}
+    .btn-reject{background:var(--white);color:var(--rose);border:1.5px solid rgba(225,29,72,0.22);box-shadow:0 2px 8px rgba(225,29,72,0.06);}
+    .btn-reject:hover{background:var(--rose-pale);border-color:rgba(225,29,72,0.4);transform:translateY(-2px);box-shadow:0 6px 18px rgba(225,29,72,0.14);}
+    .req-actioned-msg{flex:1;padding:.68rem 1rem;border-radius:12px;font-family:'Syne',sans-serif;font-size:.82rem;font-weight:700;text-align:center;}
+    .actioned-accepted{background:#ECFDF5;color:#059669;border:1.5px solid rgba(5,150,105,0.2);}
+    .actioned-rejected{background:var(--rose-pale);color:var(--rose);border:1.5px solid rgba(225,29,72,0.2);}
+    .empty-state{grid-column:1 / -1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3.5rem 2rem;background:var(--white);border-radius:20px;border:1.5px dashed var(--border);text-align:center;}
+    .empty-icon{width:64px;height:64px;background:var(--or-pale);border-radius:18px;display:flex;align-items:center;justify-content:center;margin-bottom:1.2rem;box-shadow:0 4px 16px rgba(255,107,26,0.1);}
+    .empty-icon svg{width:28px;height:28px;color:var(--or2);}
+    .empty-title{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;color:var(--ink);margin-bottom:.4rem;}
+    .empty-sub{font-size:.84rem;color:var(--muted);max-width:280px;line-height:1.55;}
+    .perf-section{margin-top:2rem;animation:fadeUp .45s .35s ease both;}
+    .perf-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;}
+    .perf-card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:1.1rem 1.2rem;display:flex;align-items:center;gap:.85rem;transition:transform .2s cubic-bezier(.34,1.56,.64,1),box-shadow .2s;}
+    .perf-card:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,0,0,0.07);}
+    .perf-icon{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .perf-icon svg{width:18px;height:18px;}
+    .perf-lbl{font-size:.72rem;color:var(--muted);font-weight:500;margin-bottom:.15rem;}
+    .perf-val{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;color:var(--ink);letter-spacing:-.02em;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+    @media(max-width:1180px){.perf-grid{grid-template-columns:repeat(2,1fr);}}
+    @media(max-width:960px){.requests-grid{grid-template-columns:1fr;}.stats-grid{grid-template-columns:repeat(2,1fr);}}
+    @media(max-width:768px){.sidebar{transform:translateX(-100%);}.sidebar.open{transform:translateX(0);box-shadow:4px 0 40px rgba(0,0,0,0.14);}.main-wrap{margin-left:0;}.hamburger{display:flex;}.search-box{display:none;}.page-content{padding:1.2rem 1rem 2rem;}.stats-grid{grid-template-columns:1fr;}.perf-grid{grid-template-columns:repeat(2,1fr);}.date-pill{display:none;}}
+    @media(max-width:480px){.topbar{padding:0 1rem;}.req-actions{flex-direction:column;}.req-actions form{width:100%;}}
   </style>
 </head>
 <body>
 
-<!-- ════════ SIDEBAR ════════ -->
 <aside class="sidebar" id="sidebar">
-
-  <!-- ✅ FIX: 'influencers:dashboard' → 'influencers:dashboard' (yeh URL exist karta hai) -->
   <a href="{% url 'influencers:dashboard' %}" class="sidebar-brand">
     <div class="brand-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="#fff"
-           stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
         <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
         <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
       </svg>
     </div>
     <span class="brand-name"><span class="bl">Influ</span><span class="or">Connect</span></span>
   </a>
-
   <div class="role-chip">⚡ Influencer Mode</div>
-
   <p class="nav-section-label">Main Menu</p>
-
   <ul class="nav-menu">
     <li class="nav-item">
       <a href="{% url 'influencers:dashboard' %}" class="nav-link active">
-        <span class="nav-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
-            <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
-          </svg>
-        </span>
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
         Dashboard
       </a>
     </li>
     <li class="nav-item">
       <a href="{% url 'bookings:all_bookings' %}" class="nav-link">
-        <span class="nav-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M18 8h1a4 4 0 0 1 0 8h-1"/>
-            <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>
-            <line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/>
-          </svg>
-        </span>
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></span>
         All Bookings
         <span class="nav-badge">{{ total_requests }}</span>
       </a>
     </li>
     <li class="nav-item">
       <a href="{% url 'influencers:edit_profile' %}" class="nav-link">
-        <span class="nav-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-            <circle cx="12" cy="7" r="4"/>
-          </svg>
-        </span>
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
         My Profile
       </a>
     </li>
     <li class="nav-item">
       <a href="{% url 'bookings:analytics' %}" class="nav-link">
-        <span class="nav-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
-          </svg>
-        </span>
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
         Analytics
       </a>
     </li>
     <li class="nav-item">
       <a href="#" class="nav-link">
-        <span class="nav-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="3"/>
-            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M4.93 4.93a10 10 0 0 0 0 14.14"/>
-          </svg>
-        </span>
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M4.93 4.93a10 10 0 0 0 0 14.14"/></svg></span>
         Settings
       </a>
     </li>
   </ul>
-
   <div class="sidebar-footer">
     <form method="POST" action="{% url 'logout' %}">
       {% csrf_token %}
       <button type="submit" class="logout-btn">
-        <span class="logout-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-            <polyline points="16 17 21 12 16 7"/>
-            <line x1="21" y1="12" x2="9" y2="12"/>
-          </svg>
-        </span>
+        <span class="logout-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span>
         Logout
       </button>
     </form>
   </div>
-
 </aside>
 
-<!-- ════════ MAIN ════════ -->
 <div class="main-wrap">
-
   <header class="topbar">
     <div class="topbar-left">
       <button class="hamburger" onclick="toggleSidebar()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
-        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
       </button>
       <div class="topbar-text">
         <span class="topbar-greeting">Creator Portal</span>
@@ -923,34 +238,22 @@
     </div>
     <div class="topbar-right">
       <div class="search-box">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <input type="text" placeholder="Search requests..."/>
       </div>
-    <a href="{% url 'bookings:notifications_page' %}" class="icon-btn" style="text-decoration:none;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-          <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-        </svg>
+      <a href="{% url 'bookings:notifications_page' %}" class="icon-btn" style="text-decoration:none;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
         <span class="notif-dot"></span>
-        </a>
+      </a>
       <div class="topbar-avatar">{{ request.user.username|slice:":2"|upper }}</div>
     </div>
   </header>
 
   <main class="page-content">
-
     {% if messages %}
     <div class="messages-wrap">
       {% for message in messages %}
-      <div class="msg
-        {% if message.tags == 'success' %}msg-success
-        {% elif message.tags == 'info' %}msg-info
-        {% elif message.tags == 'warning' %}msg-warning
-        {% else %}msg-error{% endif %}">
-        {{ message }}
-      </div>
+      <div class="msg {% if message.tags == 'success' %}msg-success{% elif message.tags == 'info' %}msg-info{% elif message.tags == 'warning' %}msg-warning{% else %}msg-error{% endif %}">{{ message }}</div>
       {% endfor %}
     </div>
     {% endif %}
@@ -965,39 +268,19 @@
 
     <div class="stats-grid">
       <div class="stat-card violet">
-        <div class="stat-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M18 8h1a4 4 0 0 1 0 8h-1"/>
-            <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>
-            <line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/>
-          </svg>
-        </div>
+        <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></div>
         <p class="stat-label">Booking Requests</p>
         <p class="stat-value">{{ total_requests }}</p>
         <span class="stat-meta up">Total received</span>
       </div>
-
       <div class="stat-card teal">
-        <div class="stat-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-            <polyline points="22 4 12 14.01 9 11.01"/>
-          </svg>
-        </div>
+        <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
         <p class="stat-label">Accepted Deals</p>
         <p class="stat-value">{{ accepted_requests }}</p>
-        <span class="stat-meta info">
-          {% if total_requests > 0 %}{{ accepted_requests }}/{{ total_requests }} accepted{% else %}No requests yet{% endif %}
-        </span>
+        <span class="stat-meta info">{% if total_requests > 0 %}{{ accepted_requests }}/{{ total_requests }} accepted{% else %}No requests yet{% endif %}</span>
       </div>
-
       <div class="stat-card amber">
-        <div class="stat-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="12" y1="1" x2="12" y2="23"/>
-            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-          </svg>
-        </div>
+        <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
         <p class="stat-label">Total Earnings</p>
         <p class="stat-value">₹{{ total_earnings }}</p>
         <span class="stat-meta earn">From accepted deals</span>
@@ -1005,44 +288,15 @@
     </div>
 
     <div class="quick-row">
-      <a href="{% url 'influencers:edit_profile' %}" class="q-btn violet-btn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-          <circle cx="12" cy="7" r="4"/>
-        </svg>
-        Edit Profile
-      </a>
-      <a href="{% url 'bookings:all_bookings' %}" class="q-btn primary">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M18 8h1a4 4 0 0 1 0 8h-1"/>
-          <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>
-          <line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/>
-        </svg>
-        All Bookings
-      </a>
-      <a href="{% url 'bookings:analytics' %}" class="q-btn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
-        </svg>
-        Analytics
-      </a>
-      <a href="#" class="q-btn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="4" width="18" height="18" rx="2"/>
-          <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
-        </svg>
-        Schedule
-      </a>
+      <a href="{% url 'influencers:edit_profile' %}" class="q-btn violet-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Edit Profile</a>
+      <a href="{% url 'bookings:all_bookings' %}" class="q-btn primary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>All Bookings</a>
+      <a href="{% url 'bookings:analytics' %}" class="q-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Analytics</a>
+      <a href="#" class="q-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Schedule</a>
     </div>
 
     <div class="section-hdr">
       <h2 class="section-title"><span class="live-dot"></span>Recent Booking Requests</h2>
-      <a href="{% url 'bookings:all_bookings' %}" class="view-all">
-        View all
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
-        </svg>
-      </a>
+      <a href="{% url 'bookings:all_bookings' %}" class="view-all">View all <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
     </div>
 
     <div class="requests-grid">
@@ -1054,63 +308,25 @@
               <div class="shop-avatar">{{ booking.business_name|slice:":2"|upper }}</div>
               <div>
                 <div class="shop-name">{{ booking.business_name }}</div>
-                <div class="shop-location">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                    <circle cx="12" cy="10" r="3"/>
-                  </svg>
-                  {{ booking.created_at|date:"d M Y" }}
-                </div>
+                <div class="shop-location"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>{{ booking.created_at|date:"d M Y" }}</div>
               </div>
             </div>
-            <span class="status-pill
-              {% if booking.status == 'pending' %}pending
-              {% elif booking.status == 'approved' or booking.status == 'accepted' %}accepted
-              {% elif booking.status == 'rejected' %}rejected{% endif %}">
-              {% if booking.status == 'approved' or booking.status == 'accepted' %}Approved
-              {% else %}{{ booking.status|capfirst }}{% endif %}
+            <span class="status-pill {% if booking.status == 'pending' %}pending{% elif booking.status == 'approved' or booking.status == 'accepted' %}accepted{% elif booking.status == 'rejected' %}rejected{% endif %}">
+              {% if booking.status == 'approved' or booking.status == 'accepted' %}Approved{% else %}{{ booking.status|capfirst }}{% endif %}
             </span>
           </div>
-
           <div class="req-message">Collaboration request for ₹{{ booking.amount }}</div>
-
           <div class="req-meta">
-            <span class="meta-tag price">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="12" y1="1" x2="12" y2="23"/>
-                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-              </svg>
-              ₹{{ booking.amount }} offered
-            </span>
+            <span class="meta-tag price"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>₹{{ booking.amount }} offered</span>
             <span class="meta-tag">{{ booking.created_at|timesince }} ago</span>
           </div>
-
           <div class="req-actions">
             {% if booking.status == 'pending' %}
-              <form method="POST" action="{% url 'bookings:approve_booking' booking.id %}">
-                {% csrf_token %}
-                <button type="submit" class="btn-accept">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="20 6 9 17 4 12"/>
-                  </svg>
-                  Accept
-                </button>
-              </form>
-              <form method="POST" action="{% url 'bookings:reject_booking' booking.id %}">
-                {% csrf_token %}
-                <button type="submit" class="btn-reject">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-                  </svg>
-                  Reject
-                </button>
-              </form>
+              <form method="POST" action="{% url 'bookings:approve_booking' booking.id %}">{% csrf_token %}<button type="submit" class="btn-accept"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Accept</button></form>
+              <form method="POST" action="{% url 'bookings:reject_booking' booking.id %}">{% csrf_token %}<button type="submit" class="btn-reject"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Reject</button></form>
             {% else %}
-              <div class="req-actioned-msg
-                {% if booking.status == 'approved' or booking.status == 'accepted' %}actioned-accepted
-                {% else %}actioned-rejected{% endif %}">
-                {% if booking.status == 'approved' or booking.status == 'accepted' %}✓ You accepted this booking
-                {% else %}✕ You rejected this booking{% endif %}
+              <div class="req-actioned-msg {% if booking.status == 'approved' or booking.status == 'accepted' %}actioned-accepted{% else %}actioned-rejected{% endif %}">
+                {% if booking.status == 'approved' or booking.status == 'accepted' %}✓ You accepted this booking{% else %}✕ You rejected this booking{% endif %}
               </div>
             {% endif %}
           </div>
@@ -1118,13 +334,7 @@
         {% endfor %}
       {% else %}
         <div class="empty-state">
-          <div class="empty-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M18 8h1a4 4 0 0 1 0 8h-1"/>
-              <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>
-              <line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/>
-            </svg>
-          </div>
+          <div class="empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></div>
           <h3 class="empty-title">No booking requests yet</h3>
           <p class="empty-sub">When shops book you, their requests will appear here.</p>
         </div>
@@ -1132,63 +342,28 @@
     </div>
 
     <div class="perf-section">
-      <div class="section-hdr">
-        <h2 class="section-title">Your Performance</h2>
-      </div>
+      <div class="section-hdr"><h2 class="section-title">Your Performance</h2></div>
       <div class="perf-grid">
-        <div class="perf-card">
-          <div class="perf-icon" style="background:#F5F3FF;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-              <circle cx="9" cy="7" r="4"/>
-              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-            </svg>
-          </div>
-          <div>
-            <div class="perf-lbl">Total Followers</div>
-            <div class="perf-val">{{ profile.followers|default:"0" }}</div>
-          </div>
-        </div>
-        <div class="perf-card">
-          <div class="perf-icon" style="background:#E6FAF4;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#0EA878" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-            </svg>
-          </div>
-          <div>
-            <div class="perf-lbl">Engagement Rate</div>
-            <div class="perf-val">7.4%</div>
-          </div>
-        </div>
-        <div class="perf-card">
-          <div class="perf-icon" style="background:#FEF6E4;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-            </svg>
-          </div>
-          <div>
-            <div class="perf-lbl">Avg. Rating</div>
-            <div class="perf-val">4.8 ★</div>
-          </div>
-        </div>
-        <div class="perf-card">
-          <div class="perf-icon" style="background:#EEF3FF;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
-              <line x1="1" y1="10" x2="23" y2="10"/>
-            </svg>
-          </div>
-          <div>
-            <div class="perf-lbl">Collabs Done</div>
-            <div class="perf-val">{{ accepted_requests }}</div>
-          </div>
-        </div>
+        <div class="perf-card"><div class="perf-icon" style="background:#F5F3FF;"><svg viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div><div class="perf-lbl">Total Followers</div><div class="perf-val">{{ profile.followers|default:"0" }}</div></div></div>
+        <div class="perf-card"><div class="perf-icon" style="background:#E6FAF4;"><svg viewBox="0 0 24 24" fill="none" stroke="#0EA878" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div><div class="perf-lbl">Engagement Rate</div><div class="perf-val">7.4%</div></div></div>
+        <div class="perf-card"><div class="perf-icon" style="background:#FEF6E4;"><svg viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><div><div class="perf-lbl">Avg. Rating</div><div class="perf-val">4.8 ★</div></div></div>
+        <div class="perf-card"><div class="perf-icon" style="background:#EEF3FF;"><svg viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div><div><div class="perf-lbl">Collabs Done</div><div class="perf-val">{{ accepted_requests }}</div></div></div>
       </div>
     </div>
-
   </main>
 </div>
+
+<script>
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+  }
+  document.addEventListener('click', function(e) {
+    const sb = document.getElementById('sidebar');
+    if (window.innerWidth <= 768 && sb.classList.contains('open') && !sb.contains(e.target) && !e.target.closest('.hamburger')) {
+      sb.classList.remove('open');
+    }
+  });
+</script>
 
 <script>
   function toggleSidebar() {
@@ -1204,6 +379,190 @@
     }
   });
 </script>
+
+<!-- ════════════════════════════════════════════════════════
+     FLOATING CHAT BUBBLE — Dashboard ke right-bottom mein
+     Yeh snippet </body> se BILKUL PEHLE paste karo
+     dono files mein: dashboard.html (shopkeeper) aur
+     influencer dashboard.html
+     ════════════════════════════════════════════════════════ -->
+<style>
+  .fab-chat{position:fixed;bottom:28px;right:28px;z-index:9999;}
+  .fab-btn{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#FF7A2F,#C94008);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:2px 3px 0 #A83400,0 8px 24px rgba(201,64,8,0.38);transition:transform .2s cubic-bezier(.34,1.56,.64,1);}
+  .fab-btn:hover{transform:translateY(-4px) scale(1.07);}
+  .fab-btn svg{width:24px;height:24px;color:#fff;}
+  .fab-badge{position:absolute;top:-4px;right:-4px;min-width:20px;height:20px;padding:0 5px;background:#1E130A;color:#fff;border-radius:10px;font-size:10px;font-weight:700;font-family:'Syne',sans-serif;display:flex;align-items:center;justify-content:center;border:2px solid #fff;}
+  .fab-popup{position:fixed;bottom:100px;right:28px;z-index:9998;width:320px;background:#fff;border-radius:20px;border:1px solid #EAD9C8;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.14);transform:scale(.9) translateY(12px);opacity:0;pointer-events:none;transition:transform .25s cubic-bezier(.34,1.56,.64,1),opacity .2s;}
+  .fab-popup.open{transform:scale(1) translateY(0);opacity:1;pointer-events:auto;}
+  .fab-header{background:linear-gradient(135deg,#FF7A2F,#C94008);padding:14px 16px;display:flex;align-items:center;gap:10px;}
+  .fab-h-avatar{width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,0.22);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:.8rem;font-weight:800;color:#fff;flex-shrink:0;}
+  .fab-h-info{flex:1;}
+  .fab-h-name{color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:.95rem;line-height:1;}
+  .fab-h-sub{color:rgba(255,255,255,0.75);font-size:.7rem;margin-top:2px;}
+  .fab-close{color:rgba(255,255,255,0.8);cursor:pointer;background:none;border:none;width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;}
+  .fab-close:hover{background:rgba(255,255,255,0.18);}
+  .fab-booking-list{max-height:180px;overflow-y:auto;background:#F9F4EE;border-bottom:1px solid #EAD9C8;}
+  .fab-booking-item{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid rgba(234,217,200,0.5);cursor:pointer;transition:background .15s;}
+  .fab-booking-item:hover,.fab-booking-item.active{background:rgba(255,107,26,0.08);}
+  .fab-bi-name{font-size:.82rem;font-weight:600;color:#1E130A;}
+  .fab-bi-status{font-size:.68rem;font-weight:700;padding:.18rem .55rem;border-radius:20px;}
+  .fab-bi-status.pending{background:#FEF6E4;color:#D97706;}
+  .fab-bi-status.approved,.fab-bi-status.accepted{background:#ECFDF5;color:#059669;}
+  .fab-no-booking{padding:20px;text-align:center;font-size:.82rem;color:#8A7060;}
+  .fab-messages{height:190px;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:8px;background:#F9F4EE;}
+  .fab-msg-row{display:flex;gap:6px;align-items:flex-end;}
+  .fab-msg-row.mine{flex-direction:row-reverse;}
+  .fab-bubble{max-width:75%;padding:.55rem .85rem;border-radius:14px;font-size:.81rem;line-height:1.45;color:#3D2810;}
+  .fab-msg-row:not(.mine) .fab-bubble{background:#fff;border:1px solid #EAD9C8;border-bottom-left-radius:4px;}
+  .fab-msg-row.mine .fab-bubble{background:linear-gradient(135deg,#FF7A2F,#C94008);color:#fff;border-bottom-right-radius:4px;}
+  .fab-empty-chat{display:flex;align-items:center;justify-content:center;height:100%;font-size:.78rem;color:#8A7060;text-align:center;padding:8px;}
+  .fab-input-row{display:flex;gap:8px;padding:10px 12px;border-top:1px solid #EAD9C8;background:#fff;align-items:flex-end;}
+  .fab-input{flex:1;border:1.5px solid #EAD9C8;border-radius:12px;padding:8px 12px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.82rem;color:#1E130A;outline:none;background:#F9F4EE;resize:none;max-height:80px;line-height:1.4;transition:border-color .2s;}
+  .fab-input:focus{border-color:#FF6B1A;}
+  .fab-send{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#FF7A2F,#C94008);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:1px 2px 0 #A83400;}
+  .fab-send svg{width:15px;height:15px;color:#fff;}
+</style>
+
+<div class="fab-chat">
+  <div class="fab-popup" id="fabPopup">
+    <div class="fab-header">
+      <div class="fab-h-avatar" id="fabAvatar">💬</div>
+      <div class="fab-h-info">
+        <div class="fab-h-name" id="fabName">Booking select karein</div>
+        <div class="fab-h-sub" id="fabSub">Chat shuru karne ke liye</div>
+      </div>
+      <button class="fab-close" onclick="toggleFab()">✕</button>
+    </div>
+    <!-- Booking list — click karke chat kholo -->
+    <div class="fab-booking-list" id="fabBookingList">
+      <div class="fab-no-booking">Bookings load ho rahi hain...</div>
+    </div>
+    <!-- Messages -->
+    <div class="fab-messages" id="fabMsgs">
+      <div class="fab-empty-chat">Upar se booking select karein</div>
+    </div>
+    <!-- Input -->
+    <div class="fab-input-row">
+      <textarea class="fab-input" id="fabInput" placeholder="Message likhein..." rows="1"
+        oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,80)+'px'"
+        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();fabSend();}"></textarea>
+      <button class="fab-send" onclick="fabSend()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- FAB button -->
+  <button class="fab-btn" onclick="toggleFab()" title="Chat">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+    </svg>
+    <span class="fab-badge" id="fabBadge" style="display:none">0</span>
+  </button>
+</div>
+
+<script>
+(function(){
+  var fabOpen=false, activeId=null, allBookings=[];
+
+  function getCsrf(){
+    var c=document.cookie.split(';').find(function(x){return x.trim().startsWith('csrftoken=');});
+    return c ? c.split('=')[1].trim() : '';
+  }
+
+  function showNoBooking(){
+    document.getElementById('fabBookingList').innerHTML='<div class="fab-no-booking">Koi booking nahi mili</div>';
+  }
+
+  function renderList(){
+    var el=document.getElementById('fabBookingList');
+    if(!allBookings.length){showNoBooking();return;}
+    el.innerHTML=allBookings.map(function(b){
+      return '<div class="fab-booking-item'+(activeId===b.id?' active':'')+
+        '" onclick="fabSelect('+b.id+',\''+b.name+'\',\''+b.status+'\')">'+
+        '<span class="fab-bi-name">'+b.name+'</span>'+
+        '<span class="fab-bi-status '+b.status+'">'+b.status+'</span></div>';
+    }).join('');
+  }
+
+  function updateBadge(){
+    var unread=allBookings.filter(function(b){return b.unread;}).length;
+    var badge=document.getElementById('fabBadge');
+    if(unread>0){badge.style.display='flex';badge.textContent=unread>9?'9+':unread;}
+    else{badge.style.display='none';}
+  }
+
+  async function loadBookings(){
+    try{
+      var r=await fetch('/api/my-bookings/');
+      if(!r.ok){showNoBooking();return;}
+      var d=await r.json();
+      allBookings=d.bookings||[];
+      renderList(); updateBadge();
+    }catch(e){showNoBooking();}
+  }
+
+  window.fabSelect=function(id,name,status){
+    activeId=id;
+    document.getElementById('fabName').textContent=name;
+    document.getElementById('fabSub').textContent=(status==='approved'||status==='accepted')?'Active booking':'Pending approval';
+    document.getElementById('fabAvatar').textContent=name.slice(0,2).toUpperCase();
+    renderList(); loadMsgs(id);
+  };
+
+  async function loadMsgs(bid){
+    var el=document.getElementById('fabMsgs');
+    el.innerHTML='<div class="fab-empty-chat">Load ho raha hai...</div>';
+    try{
+      var r=await fetch('/api/chat-messages/'+bid+'/');
+      if(!r.ok){
+        el.innerHTML='<div class="fab-empty-chat"><a href="/bookings/'+bid+'/chat/" style="color:#E8500A;font-weight:600;">Full chat kholen →</a></div>';
+        return;
+      }
+      var d=await r.json(); var msgs=d.messages||[];
+      if(!msgs.length){el.innerHTML='<div class="fab-empty-chat">Koi message nahi abhi tak</div>';return;}
+      el.innerHTML=msgs.map(function(m){
+        return '<div class="fab-msg-row '+(m.sender===d.current_user?'mine':'')+
+          '"><div class="fab-bubble">'+m.message+'</div></div>';
+      }).join('');
+      el.scrollTop=el.scrollHeight;
+    }catch(e){
+      el.innerHTML='<div class="fab-empty-chat"><a href="/bookings/'+bid+'/chat/" style="color:#E8500A;font-weight:600;">Chat kholen →</a></div>';
+    }
+  }
+
+  window.fabSend=async function(){
+    var inp=document.getElementById('fabInput');
+    var txt=inp.value.trim();
+    if(!txt||!activeId)return;
+    var el=document.getElementById('fabMsgs');
+    var empty=el.querySelector('.fab-empty-chat');if(empty)empty.remove();
+    el.innerHTML+='<div class="fab-msg-row mine"><div class="fab-bubble">'+txt+'</div></div>';
+    el.scrollTop=el.scrollHeight;
+    inp.value=''; inp.style.height='auto';
+    try{
+      await fetch('/bookings/'+activeId+'/chat/',{
+        method:'POST',
+        headers:{'Content-Type':'application/x-www-form-urlencoded','X-CSRFToken':getCsrf()},
+        body:'message='+encodeURIComponent(txt)
+      });
+    }catch(e){}
+  };
+
+  window.toggleFab=function(){
+    fabOpen=!fabOpen;
+    document.getElementById('fabPopup').classList.toggle('open',fabOpen);
+    if(fabOpen&&!allBookings.length)loadBookings();
+  };
+
+  // Initial load + auto-refresh every 5s when open
+  loadBookings();
+  setInterval(function(){if(fabOpen&&activeId)loadMsgs(activeId);},5000);
+})();
+</script>
+<!-- ════ /FLOATING CHAT BUBBLE ════ -->
 
 </body>
 </html>
