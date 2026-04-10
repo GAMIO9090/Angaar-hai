@@ -86,6 +86,9 @@ def influencers_list(request):
     return render(request, 'influencers/influencers.html', {'influencers': influencers})
 
 
+
+
+
 def influencer_detail(request, id):
     influencer = get_object_or_404(InfluencerProfile, id=id)
     

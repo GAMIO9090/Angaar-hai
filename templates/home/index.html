@@ -123,8 +123,9 @@
   <ul class="nav-links">
     <li><a href="{% url 'home' %}">Home</a></li>
     <li><a href="{% url 'influencers:influencers_list' %}">Explore Influencers</a></li>
-    <li><a href="#how-it-works">How it Works</a></li>
+    <li><a href="/how-it-works/">How it Works</a></li> 
     <li><a href="{% url 'login' %}">Login</a></li>
+
     {% if user.is_authenticated %}
       <li><a href="{% url 'shopkeepers:shopkeeper_dashboard' %}" class="nav-cta">Get Started</a></li>
     {% else %}

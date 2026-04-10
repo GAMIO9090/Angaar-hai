@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — ShopInfluence</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #faf8f6;
+    --surface: #ffffff;
+    --surface2: #f2ede8;
+    --accent: #ea6117;
+    --accent2: #f59e0b;
+    --purple: #6d4fc2;
+    --text: #1a1008;
+    --text-muted: #6b5f55;
+    --border: rgba(234,97,23,0.15);
+    --glow: rgba(234,97,23,0.07);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.8;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse 50% 50% at 20% 20%, rgba(234,97,23,0.09) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 85% 75%, rgba(234,97,23,0.06) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 18px 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(250,248,246,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.4rem;
+    letter-spacing: -0.02em;
+  }
+  .logo span { color: var(--accent); }
+
+  nav a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: color 0.2s;
+  }
+  nav a:hover { color: var(--accent); }
+
+  .page-hero {
+    position: relative;
+    z-index: 1;
+    padding: 80px 5% 60px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    background: rgba(124,92,191,0.12);
+    border: 1px solid rgba(124,92,191,0.3);
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #a88de0;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  .badge::before {
+    content: '🔒';
+    font-size: 0.7rem;
+  }
+
+  .page-hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.4rem, 5vw, 4rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    max-width: 700px;
+    margin-bottom: 20px;
+  }
+
+  .page-hero h1 em {
+    font-style: normal;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .page-hero p {
+    color: var(--text-muted);
+    max-width: 560px;
+    font-size: 1rem;
+    margin-bottom: 16px;
+  }
+
+  .meta {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .meta strong { color: var(--text); font-weight: 400; }
+
+  /* Data cards at top */
+  .data-cards {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .data-card {
+    background: var(--bg);
+    padding: 28px 32px;
+    transition: background 0.2s;
+  }
+  .data-card:hover { background: var(--surface); }
+
+  .data-card .icon {
+    font-size: 1.5rem;
+    margin-bottom: 12px;
+  }
+  .data-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    color: var(--text);
+  }
+  .data-card p {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .content-wrapper {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 0;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 5%;
+  }
+
+  .sidebar {
+    padding: 48px 24px 48px 0;
+    position: sticky;
+    top: 72px;
+    height: fit-content;
+    border-right: 1px solid var(--border);
+  }
+
+  .sidebar-title {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+  }
+
+  .toc-list { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+  .toc-list a {
+    display: block;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.82rem;
+    padding: 7px 12px;
+    border-radius: 8px;
+    transition: all 0.2s;
+    border-left: 2px solid transparent;
+  }
+  .toc-list a:hover {
+    color: var(--accent);
+    background: var(--glow);
+    border-left-color: var(--accent);
+    padding-left: 16px;
+  }
+
+  .main-content { padding: 48px 0 48px 48px; }
+
+  .section {
+    margin-bottom: 56px;
+    animation: fadeUp 0.5s ease both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .section:nth-child(1) { animation-delay: 0.05s; }
+  .section:nth-child(2) { animation-delay: 0.1s; }
+  .section:nth-child(3) { animation-delay: 0.15s; }
+  .section:nth-child(4) { animation-delay: 0.2s; }
+  .section:nth-child(5) { animation-delay: 0.25s; }
+
+  .section-number {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #a88de0;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .section h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+  }
+
+  .section p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin-bottom: 14px;
+  }
+
+  .section ul {
+    padding-left: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .section ul li {
+    color: var(--text-muted);
+    font-size: 0.93rem;
+    padding-left: 20px;
+    position: relative;
+  }
+  .section ul li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: #a88de0;
+    font-size: 0.8rem;
+  }
+
+  .highlight-box {
+    background: var(--surface2);
+    border: 1px solid rgba(124,92,191,0.2);
+    border-left: 3px solid #7c5cbf;
+    border-radius: 0 12px 12px 0;
+    padding: 20px 24px;
+    margin: 20px 0;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+  }
+  .highlight-box strong {
+    color: #a88de0;
+    font-weight: 500;
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 20px 0;
+  }
+
+  .mini-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 20px;
+  }
+  .mini-card h4 {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .mini-card p {
+    font-size: 0.82rem;
+    margin: 0;
+  }
+
+  hr.divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 48px 0;
+  }
+
+  footer {
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 32px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 40px;
+  }
+  footer p { font-size: 0.8rem; color: var(--text-muted); }
+  .footer-links { display: flex; gap: 24px; }
+  .footer-links a {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--accent); }
+
+  @media (max-width: 768px) {
+    .content-wrapper { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .main-content { padding: 32px 0; }
+    .two-col { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Shop<span>Influence</span></div>
+  <a href="{% url 'how_it_works' %}">← Back to Home</a>
+</nav>
+
+<div class="page-hero">
+  <div class="badge">Privacy</div>
+  <h1>Privacy <em>Policy</em></h1>
+  <p>Hum aapki privacy ko seriously lete hain. Jaaniye ki hum aapka data kaise collect, use aur protect karte hain.</p>
+  <div class="meta">
+    <span>Last Updated: <strong>March 28, 2026</strong></span>
+    <span>GDPR & IT Act: <strong>Compliant</strong></span>
+  </div>
+</div>
+
+<div class="data-cards">
+  <div class="data-card">
+    <div class="icon">📥</div>
+    <h3>Data We Collect</h3>
+    <p>Sirf woh info jo platform chalane ke liye zaroori hai</p>
+  </div>
+  <div class="data-card">
+    <div class="icon">🔐</div>
+    <h3>Data Security</h3>
+    <p>Industry-standard encryption aur secure servers</p>
+  </div>
+  <div class="data-card">
+    <div class="icon">🚫</div>
+    <h3>No Data Selling</h3>
+    <p>Aapka data kabhi third parties ko nahi becha jaata</p>
+  </div>
+  <div class="data-card">
+    <div class="icon">✋</div>
+    <h3>Your Rights</h3>
+    <p>Aap apna data anytime access, edit ya delete kar sakte hain</p>
+  </div>
+</div>
+
+<div class="content-wrapper">
+  <aside class="sidebar">
+    <p class="sidebar-title">Contents</p>
+    <ul class="toc-list">
+      <li><a href="#overview">1. Overview</a></li>
+      <li><a href="#collection">2. Data Collection</a></li>
+      <li><a href="#usage">3. How We Use Data</a></li>
+      <li><a href="#sharing">4. Data Sharing</a></li>
+      <li><a href="#storage">5. Storage & Security</a></li>
+      <li><a href="#cookies">6. Cookies</a></li>
+      <li><a href="#rights">7. Your Rights</a></li>
+      <li><a href="#children">8. Children's Privacy</a></li>
+      <li><a href="#changes">9. Policy Changes</a></li>
+      <li><a href="#contact">10. Contact</a></li>
+    </ul>
+  </aside>
+
+  <main class="main-content">
+
+    <div class="section" id="overview">
+      <div class="section-number">01 — Overview</div>
+      <h2>Privacy Overview</h2>
+      <p>ShopInfluence ("hum", "hamare", "platform") ek local business promotion platform hai jo shopkeepers ko nearby influencers se connect karta hai. Is Privacy Policy mein bataya gaya hai ki jab aap hamare platform ka use karte hain toh hum aapki kaunsi jaankari collect karte hain, uska kaise istemal karte hain aur use protect karne ke liye kya kadam uthate hain.</p>
+      <div class="highlight-box">
+        <strong>Jurisdiction</strong>
+        Yeh policy India ke Information Technology Act, 2000 aur IT (Reasonable Security Practices and Procedures) Rules, 2011 ke under governed hai.
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="section" id="collection">
+      <div class="section-number">02 — Collection</div>
+      <h2>Data Collection</h2>
+      <p>Hum do taraf se data collect karte hain:</p>
+
+      <div class="two-col">
+        <div class="mini-card">
+          <h4>🏪 Shopkeeper Data</h4>
+          <p style="font-size:0.82rem; color:var(--text-muted)">Naam, shop address, GST number, category, contact details, payment info</p>
+        </div>
+        <div class="mini-card">
+          <h4>📱 Influencer Data</h4>
+          <p style="font-size:0.82rem; color:var(--text-muted)">Naam, social media handles, follower count, location, bank details, portfolio</p>
+        </div>
+      </div>
+
+      <p>Automatically collect kiya jaata hai:</p>
+      <ul>
+        <li>Device information aur browser type</li>
+        <li>IP address aur location (approximate)</li>
+        <li>Platform usage patterns aur analytics</li>
+        <li>Transaction history</li>
+        <li>Communication logs (support queries)</li>
+      </ul>
+    </div>
+
+    <hr class="divider">
+
+    <div class="section" id="usage">
+      <div class="section-number">03 — Usage</div>
+      <h2>How We Use Your Data</h2>
+      <p>Aapka data sirf in purposes ke liye use hota hai:</p>
+      <ul>
+        <li>Account creation aur verification</li>
+        <li>Shopkeeper-Influencer matching algorithm improve karna</li>
+        <li>Payments process karna aur financial records maintain karna</li>
+        <li>Platform security aur fraud prevention</li>
+        <li>Customer support provide karna</li>
+        <li>Platform improvements ke liye anonymized analytics</li>
+        <li>Aapki consent se marketing communications</li>
+      </ul>
+      <div class="highlight-box">
+        <strong>No Profiling</strong>
+        Hum aapka data third-party advertising platforms ko nahi dete aur aapki online activity track nahi karte platform ke bahar.
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="section" id="sharing">
+      <div class="section-number">04 — Sharing</div>
+      <h2>Data Sharing</h2>
+      <p>Aapka data sirf limited circumstances mein share hota hai:</p>
+      <ul>
+        <li><strong style="color:var(--text)">Deal Partners:</strong> Jab aap koi deal accept karte hain, toh limited info dusre party ko visible hoti hai</li>
+        <li><strong style="color:var(--text)">Payment Processors:</strong> Secure transactions ke liye (Razorpay / PayU)</li>
+        <li><strong style="color:var(--text)">Legal Requirements:</strong> Government ya court order ke case mein</li>
+        <li><strong style="color:var(--text)">Service Providers:</strong> Cloud hosting, email service (NDA ke under)</li>
+      </ul>
+      <p>Hum aapka data <strong style="color:var(--accent)">kabhi nahi</strong> sell, rent, ya exchange karte hain advertisers ko.</p>
+    </div>
+
+    <hr class="divider">
+
+    <div class="section" id="storage">
+      <div class="section-number">05 — Storage</div>
+      <h2>Storage &amp; Security</h2>
+      <ul>
+        <li>Data India-based servers par store hota hai</li>
+        <li>Passwords bcrypt encryption se store hote hain</li>
+        <li>Payment data PCI-DSS compliant processors ke through handle hota hai</li>
+        <li>Regular security audits aur penetration testing</li>
+        <li>Account deletion ke 90 days baad data permanently delete hota hai</li>
+      </ul>
+    </div>
+
+    <hr class="divider">
+
+    <div class="section" id="cookies">
+      <div class="section-number">06 — Cookies</div>
+      <h2>Cookies &amp; Tracking</h2>
+      <p>Hum in cookies use karte hain:</p>
+      <ul>
+        <li><strong style="color:var(--text)">Essential Cookies:</strong> Login session aur basic functionality ke liye (opt-out possible nahi)</li>
+        <li><strong style="color:var(--text)">Analytics Cookies:</strong> Platform usage samajhne ke liye (opt-out available)</li>
+        <li><strong style="color:var(--text)">Preference Cookies:</strong> Aapki settings yaad rakhne ke liye</li>
+      </ul>
+      <p>Browser settings se aap cookies manage kar sakte hain.</p>
+    </div>
+
+    <hr class="divider">
+
+    <div class="section" id="rights">
+      <div class="section-number">07 — Rights</div>
+      <h2>Your Rights</h2>
+      <p>Aapke paas yeh rights hain:</p>
+      <ul>
+        <li>Apna data access karne ka right</li>
+        <li>Galat information correct karwane ka right</li>
+        <li>Account aur data delete karne ka right</li>
+        <li>Marketing emails se unsubscribe karne ka right</li>
+        <li>Data portability — apna data download karne ka right</li>
+        <li>Automated decisions ko challenge karne ka right</li>
+      </ul>
+      <div class="highlight-box">
+        <strong>How to Exercise</strong>
+        In rights ke liye <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="dcacaeb5aabdbfa59cafb4b3acb5b2bab0a9b9b2bfb9f2b5b2">[email&#160;protected]</a> par email karein. Hum 30 days mein respond karenge.
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="section" id="children">
+      <div class="section-number">08 — Children</div>
+      <h2>Children's Privacy</h2>
+      <p>ShopInfluence sirf 18+ users ke liye hai. Hum jaanboojhkar 18 saal se kam umra ke kisi bhi vyakti ka data collect nahi karte. Agar hume pata chale ki koi minor ka account hai, toh use turant delete kar diya jaayega.</p>
+    </div>
+
+    <hr class="divider">
+
+    <div class="section" id="changes">
+      <div class="section-number">09 — Changes</div>
+      <h2>Policy Changes</h2>
+      <p>Hum is policy ko update kar sakte hain. Major changes ke liye hum aapko email ya in-app notification se inform karenge. Continued use of the platform after changes means acceptance of the updated policy.</p>
+    </div>
+
+    <hr class="divider">
+
+    <div class="section" id="contact">
+      <div class="section-number">10 — Contact</div>
+      <h2>Privacy Contact</h2>
+      <ul>
+        <li>Privacy Officer: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2d5d5f445b4c4e546d5e45425d44434b415848434e48034443">[email&#160;protected]</a></li>
+        <li>General Support: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b8cbcdc8c8d7caccf8cbd0d7c8d1d6ded4cdddd6dbdd96d1d6">[email&#160;protected]</a></li>

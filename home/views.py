@@ -25,3 +25,12 @@ def home(request):
         'influencers': influencers
     }
     return render(request, 'home/index.html', context)
+
+def how_it_works(request):
+    return render(request, 'home/how-it-works.html')
+
+def privacy_policy(request):
+    return render(request, 'home/privacy-policy.html')
+
+def terms_conditions(request):
+    return render(request, 'home/terms-and-conditions.html')
