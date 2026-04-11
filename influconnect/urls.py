@@ -3,13 +3,22 @@ from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
-from home import views
+from home import views as home_views 
 
 urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(next_page='/'), name='logout'),
 
+     path('ai-chat/', home_views.ai_chat, name='ai_chat'),
+
+
 
     path('', include('home.urls')),
+    
+
+
+
+
+
     path('admin/', admin.site.urls),
 
     path('accounts/', include('accounts.urls')),
@@ -23,7 +32,6 @@ urlpatterns = [
 
     path('bookings/', include('bookings.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
-  
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

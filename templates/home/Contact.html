@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Contact Us – InfluConnect</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--orange:#f26419;--orange-light:#ff8c42;--dark:#080808;--card:#0f0f0f;--border:rgba(255,255,255,0.07)}
+body{font-family:'DM Sans',sans-serif;background:var(--dark);color:#fff;min-height:100vh;overflow-x:hidden}
+
+nav{display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:70px;background:rgba(8,8,8,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);position:fixed;top:0;left:0;right:0;z-index:200}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-icon{width:38px;height:38px;background:var(--orange);border-radius:10px;display:flex;align-items:center;justify-content:center}
+.logo-text{font-family:'Syne',sans-serif;font-size:1.35rem;font-weight:800;color:#fff}
+.logo-text span{color:var(--orange)}
+.nav-back{display:flex;align-items:center;gap:8px;text-decoration:none;color:rgba(255,255,255,0.5);font-size:0.9rem;font-weight:500;transition:color 0.2s}
+.nav-back:hover{color:#fff}
+.nav-back svg{width:16px;height:16px}
+
+/* HERO */
+.ct-hero{position:relative;padding:140px 48px 72px;overflow:hidden;text-align:center}
+.ct-hero::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:800px;height:400px;background:radial-gradient(ellipse at center top,rgba(242,100,25,0.12) 0%,transparent 70%);pointer-events:none}
+.orb{position:absolute;border-radius:50%;pointer-events:none}
+.orb-1{width:320px;height:320px;top:-80px;left:-60px;background:radial-gradient(circle,rgba(242,100,25,0.06) 0%,transparent 70%)}
+.orb-2{width:240px;height:240px;bottom:-40px;right:-40px;background:radial-gradient(circle,rgba(242,100,25,0.05) 0%,transparent 70%)}
+.ct-hero-inner{position:relative;z-index:2;max-width:600px;margin:0 auto}
+.pp-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(242,100,25,0.1);border:1px solid rgba(242,100,25,0.3);border-radius:50px;padding:7px 18px;font-size:0.8rem;font-weight:600;color:var(--orange-light);margin-bottom:24px;letter-spacing:0.4px}
+.pp-badge svg{width:14px;height:14px}
+.ct-hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.4rem,5vw,4rem);font-weight:800;letter-spacing:-2px;line-height:1.0;margin-bottom:16px}
+.ct-hero h1 span{color:var(--orange)}
+.ct-hero p{color:rgba(255,255,255,0.45);font-size:1rem;line-height:1.7}
+
+/* CONTACT CARDS ROW */
+.ct-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;max-width:900px;margin:60px auto 0;padding:0 48px}
+.ct-card{background:var(--card);border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:28px 24px;text-align:center;transition:transform 0.25s,box-shadow 0.25s,border-color 0.25s;position:relative;overflow:hidden;cursor:pointer}
+.ct-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--orange),transparent);opacity:0;transition:opacity 0.3s}
+.ct-card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,0.5),0 0 0 1px rgba(242,100,25,0.2);border-color:rgba(242,100,25,0.15)}
+.ct-card:hover::before{opacity:1}
+.ct-icon{width:52px;height:52px;background:rgba(242,100,25,0.1);border:1px solid rgba(242,100,25,0.2);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+.ct-icon svg{width:22px;height:22px;color:var(--orange)}
+.ct-card h3{font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;margin-bottom:6px;color:#fff}
+.ct-card p{color:rgba(255,255,255,0.4);font-size:0.82rem;line-height:1.6;margin-bottom:10px}
+.ct-card a{color:var(--orange-light);font-size:0.88rem;font-weight:600;text-decoration:none;transition:color 0.2s}
+.ct-card a:hover{color:#fff}
+.ct-card-link{color:var(--orange-light);font-size:0.88rem;font-weight:600;}
+
+/* MAIN SECTION */
+.ct-main{max-width:900px;margin:72px auto 0;padding:0 48px 100px;display:grid;grid-template-columns:1fr 1fr;gap:40px}
+
+/* FORM */
+.ct-form-wrap{animation:fadeUp 0.6s 0.1s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.ct-form-wrap h2{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;letter-spacing:-0.5px;margin-bottom:6px}
+.ct-form-wrap p{color:rgba(255,255,255,0.4);font-size:0.9rem;margin-bottom:28px;line-height:1.6}
+.form-group{margin-bottom:16px}
+.form-label{display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:7px}
+.form-input,.form-textarea,.form-select{width:100%;background:#161616;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:12px 16px;font-size:0.93rem;color:#fff;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.2s,box-shadow 0.2s}
+.form-input::placeholder,.form-textarea::placeholder{color:rgba(255,255,255,0.2)}
+.form-input:focus,.form-textarea:focus,.form-select:focus{border-color:rgba(242,100,25,0.5);box-shadow:0 0 0 3px rgba(242,100,25,0.1)}
+.form-textarea{resize:vertical;min-height:120px;line-height:1.6}
+.form-select{appearance:none;cursor:pointer;color:rgba(255,255,255,0.55)}
+.form-select option{background:#1a1a1a;color:#fff}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.submit-btn{width:100%;background:var(--orange);color:#fff;border:none;border-radius:12px;padding:13px;font-size:0.95rem;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;box-shadow:0 4px 20px rgba(242,100,25,0.4);transition:background 0.2s,transform 0.1s,box-shadow 0.2s;margin-top:4px;display:flex;align-items:center;justify-content:center;gap:8px}
+.submit-btn:hover{background:#d4510f;transform:translateY(-1px);box-shadow:0 6px 28px rgba(242,100,25,0.55)}
+.submit-btn svg{width:16px;height:16px}
+.success-msg{display:none;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.25);border-radius:12px;padding:14px 18px;color:#4ade80;font-size:0.9rem;font-weight:500;margin-top:16px;text-align:center}
+
+/* INFO PANEL */
+.ct-info{animation:fadeUp 0.6s 0.2s ease both}
+.ct-info h2{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;letter-spacing:-0.5px;margin-bottom:6px}
+.ct-info > p{color:rgba(255,255,255,0.4);font-size:0.9rem;margin-bottom:28px;line-height:1.6}
+.info-item{display:flex;gap:14px;margin-bottom:22px;align-items:flex-start}
+.info-dot{width:42px;height:42px;background:rgba(242,100,25,0.08);border:1px solid rgba(242,100,25,0.2);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.info-dot svg{width:18px;height:18px;color:var(--orange)}
+.info-item h4{font-size:0.9rem;font-weight:700;color:#fff;margin-bottom:3px}
+.info-item p{color:rgba(255,255,255,0.4);font-size:0.83rem;line-height:1.6}
+.info-item a{color:var(--orange-light);text-decoration:none}
+.info-item a:hover{color:#fff}
+
+/* MAP PLACEHOLDER */
+.map-box{background:var(--card);border:1px solid rgba(255,255,255,0.07);border-radius:16px;height:180px;margin-top:24px;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center}
+.map-box svg.map-grid{position:absolute;inset:0;width:100%;height:100%;opacity:0.15}
+.map-center{position:relative;z-index:2;text-align:center}
+.map-pin-anim{width:44px;height:44px;background:var(--orange);border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;box-shadow:0 0 20px rgba(242,100,25,0.6);animation:pinFloat 2s ease-in-out infinite}
+@keyframes pinFloat{0%,100%{transform:rotate(-45deg) translateY(0)}50%{transform:rotate(-45deg) translateY(-5px)}}
+.map-pin-anim svg{transform:rotate(45deg);width:20px;height:20px}
+.map-center p{font-size:0.82rem;color:rgba(255,255,255,0.5)}
+
+/* SUPPORT HOURS */
+.hours-grid{background:var(--card);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:20px 24px;margin-top:24px}
+.hours-title{font-size:0.8rem;font-weight:700;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:14px}
+.hours-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.04)}
+.hours-row:last-child{border-bottom:none}
+.hours-row span:first-child{color:rgba(255,255,255,0.55);font-size:0.85rem}
+.hours-row span:last-child{font-size:0.83rem;font-weight:600}
+.open{color:#4ade80}
+.closed{color:rgba(255,255,255,0.3)}
+
+footer{text-align:center;padding:26px 20px;border-top:1px solid rgba(255,255,255,0.07);color:rgba(255,255,255,0.3);font-size:0.83rem}
+footer span{color:var(--orange);font-weight:700}
+
+@media(max-width:768px){.ct-main{grid-template-columns:1fr;padding:0 20px 80px}.ct-cards{padding:0 20px;grid-template-columns:1fr 1fr}.ct-hero{padding:120px 20px 60px}.form-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="{% url 'home' %}">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="22" height="22">
+        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+      </svg>
+    </div>
+    <span class="logo-text">Influ<span>Connect</span></span>
+  </a>
+  <a class="nav-back" href="{% url 'home' %}">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Back to Home
+  </a>
+</nav>
+
+<!-- HERO -->
+<section class="ct-hero">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="ct-hero-inner">
+    <div class="pp-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Get In Touch
+    </div>
+    <h1>Baat Karo <span>Humse</span></h1>
+    <p>Koi bhi sawaal, feedback, ya support chahiye? Hum yahan hain. Usually 2-4 hours mein respond karte hain.</p>
+  </div>
+</section>
+
+<!-- QUICK CONTACT CARDS -->
+<div class="ct-cards">
+  <div class="ct-card" onclick="openChat()">
+    <div class="ct-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+    <h3>Live Chat</h3>
+    <p>Instant help chahiye?</p>
+    <span class="ct-card-link">Platform pe chat karo</span>
+  </div>
+  <div class="ct-card" style="cursor:default">
+    <div class="ct-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5 19.79 19.79 0 0 1 1.6 4.88 2 2 0 0 1 3.57 2.7h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.1a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.46 17.5l.46-.58z"/></svg></div>
+    <h3>Phone</h3>
+    <p>Mon–Sat, 10am–7pm</p>
+    <a href="tel:+91XXXXXXXXXX" onclick="event.stopPropagation()">+91-XXXX-XXXXXX</a>
+  </div>
+  <div class="ct-card" style="cursor:default">
+    <div class="ct-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+    <h3>Email</h3>
+    <p>General queries ke liye</p>
+    <a href="mailto:connect_with@influconnect.in" onclick="event.stopPropagation()">connect_with@influconnect.in</a>
+  </div>
+  <div class="ct-card" style="cursor:default">
+    <div class="ct-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></div>
+    <h3>GitHub</h3>
+    <p>Bugs report karo</p>
+    <a href="#" onclick="event.stopPropagation()">github.com/influconnect</a>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="ct-main">
+
+  <!-- CONTACT FORM -->
+  <div class="ct-form-wrap">
+    <h2>Message Bhejo</h2>
+    <p>Form fill karo, hum jald se jald reply karenge.</p>
+
+    <form id="contactForm">
+      {% csrf_token %}
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Aapka Naam *</label>
+          <input type="text" class="form-input" placeholder="Rahul Sharma" required/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone</label>
+          <input type="tel" class="form-input" placeholder="+91 98XX XXXXXX"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email Address *</label>
+        <input type="email" class="form-input" placeholder="rahul@email.com" required/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Aap Kaun Hain?</label>
+        <select class="form-input form-select">
+          <option value="">Select karo...</option>
+          <option>Shopkeeper / Business Owner</option>
+          <option>Influencer / Content Creator</option>
+          <option>Investor</option>
+          <option>Press / Media</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Subject *</label>
+        <input type="text" class="form-input" placeholder="Aapka topic kya hai?" required/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Message *</label>
+        <textarea class="form-textarea" placeholder="Apni baat detail mein likhein..." required></textarea>
+      </div>
+      <button type="submit" class="submit-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        Message Bhejo
+      </button>
+      <div class="success-msg" id="successMsg">✅ Message bhej diya! Hum 2-4 hours mein reply karenge.</div>
+    </form>
+  </div>
+
+  <!-- INFO PANEL -->
+  <div class="ct-info">
+    <h2>Hum Kahan Hain</h2>
+    <p>India ke local businesses aur influencers ke liye built platform.</p>
+
+    <div class="info-item">
+      <div class="info-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+      <div>
+        <h4>Head Office</h4>
+        <p>InfluConnect HQ<br>India (Exact address coming soon)</p>
+      </div>
+    </div>
+    <div class="info-item">
+      <div class="info-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+      <div>
+        <h4>Email Contacts</h4>
+        <p>
+          General: <a href="mailto:connect_with@influconnect.in">connect_with@influconnect.in</a><br>
+          Support: <a href="mailto:support@influconnect.in">support@influconnect.in</a><br>
+          Legal: <a href="mailto:legal@influconnect.in">legal@influconnect.in</a>
+        </p>
+      </div>
+    </div>
+    <div class="info-item">
+      <div class="info-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg></div>
+      <div>
+        <h4>Social Media</h4>
+        <p>
+          Instagram: <a href="#">@influconnect</a><br>
+          Twitter/X: <a href="#">@influconnect</a><br>
+          LinkedIn: <a href="#">InfluConnect</a>
+        </p>
+      </div>
+    </div>
+
+    <!-- Map -->
+    <div class="map-box">
+      <svg class="map-grid" viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg">
+        <line x1="0" y1="45" x2="400" y2="45" stroke="#f26419" stroke-width="0.8"/>
+        <line x1="0" y1="90" x2="400" y2="90" stroke="#f26419" stroke-width="0.8"/>
+        <line x1="0" y1="135" x2="400" y2="135" stroke="#f26419" stroke-width="0.8"/>
+        <line x1="80" y1="0" x2="80" y2="180" stroke="#f26419" stroke-width="0.8"/>
+        <line x1="160" y1="0" x2="160" y2="180" stroke="#f26419" stroke-width="0.8"/>
+        <line x1="240" y1="0" x2="240" y2="180" stroke="#f26419" stroke-width="0.8"/>
+        <line x1="320" y1="0" x2="320" y2="180" stroke="#f26419" stroke-width="0.8"/>
+        <rect x="90" y="50" width="60" height="35" rx="4" fill="#1a1a1a"/>
+        <rect x="170" y="30" width="45" height="55" rx="4" fill="#1a1a1a"/>
+        <rect x="250" y="55" width="55" height="30" rx="4" fill="#1a1a1a"/>
+      </svg>
+      <div class="map-center">
+        <div class="map-pin-anim"><svg viewBox="0 0 24 24" fill="white"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>
+        <p>India</p>
+      </div>
+    </div>
+
+    <!-- Hours -->
+    <div class="hours-grid">
+      <p class="hours-title">Support Hours (IST)</p>
+      <div class="hours-row"><span>Monday – Friday</span><span class="open">10:00 AM – 7:00 PM</span></div>
+      <div class="hours-row"><span>Saturday</span><span class="open">10:00 AM – 4:00 PM</span></div>
+      <div class="hours-row"><span>Sunday</span><span class="closed">Closed</span></div>
+    </div>
+
+  </div>
+</div>
+
+<footer>© 2026 <span>InfluConnect</span> · Built to connect local shops with local creators.</footer>
+
+<script>
+  document.getElementById('contactForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const btn = this.querySelector('.submit-btn');
+    btn.textContent = 'Bhej rahe hain...';
+    btn.disabled = true;
+    setTimeout(()=>{
+      document.getElementById('successMsg').style.display = 'block';
+      this.reset();
+      btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Message Bhejo';
+      btn.disabled = false;
+    }, 1200);
+  });
+</script>
+
+<!-- AI CHAT WIDGET -->
+<style>
+  #ic-widget{position:fixed;bottom:24px;right:24px;z-index:9999;font-family:'DM Sans',sans-serif;display:flex;flex-direction:column;align-items:flex-end}
+  #ic-toggle-btn{width:56px;height:56px;border-radius:16px;border:none;cursor:pointer;background:#f26419;flex-shrink:0;box-shadow:0 0 0 1px rgba(242,100,25,0.4),0 8px 24px rgba(242,100,25,0.45);display:flex;align-items:center;justify-content:center;transition:transform 0.2s,box-shadow 0.2s}
+  #ic-toggle-btn:hover{transform:translateY(-2px)}
+  #ic-toggle-btn svg{width:24px;height:24px;transition:transform 0.3s}
+  #ic-toggle-btn.open svg{transform:rotate(45deg)}
+  #ic-box{display:none;flex-direction:column;width:340px;height:500px;border-radius:20px;overflow:hidden;background:#0f0f0f;border:1px solid rgba(242,100,25,0.22);box-shadow:0 32px 64px rgba(0,0,0,0.75);margin-bottom:12px;opacity:0;transition:transform 0.25s cubic-bezier(0.34,1.56,0.64,1),opacity 0.2s ease}
+  #ic-box.visible{display:flex;opacity:1}
+  .ic-header{background:linear-gradient(135deg,#1c0900 0%,#2e1500 60%,#1a0800 100%);padding:14px 16px;border-bottom:1px solid rgba(242,100,25,0.18);display:flex;align-items:center;gap:10px;flex-shrink:0}
+  .ic-logo{width:38px;height:38px;background:#f26419;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .ic-logo svg{width:19px;height:19px}
+  .ic-title-wrap{flex:1}
+  .ic-title-wrap strong{display:block;font-size:14px;font-weight:700;color:#fff;line-height:1.2}
+  .ic-title-wrap small{font-size:11px;color:rgba(242,100,25,0.75);font-weight:500}
+  .ic-dot{width:7px;height:7px;background:#22c55e;border-radius:50%;box-shadow:0 0 7px rgba(34,197,94,0.7);animation:icpulse 2.2s infinite}
+  @keyframes icpulse{0%,100%{opacity:1}50%{opacity:0.35}}
+  #ic-form-screen{padding:16px;background:#0a0a0a;flex:1;overflow-y:auto;min-height:0}
+  #ic-form-screen p.ic-welcome{font-size:13px;color:rgba(255,255,255,0.55);margin-bottom:14px;line-height:1.5}
+  .ic-label{display:block;font-size:11px;font-weight:600;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:5px}
+  .ic-field{width:100%;background:#161616;border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px 13px;font-size:13px;color:#fff;outline:none;font-family:'DM Sans',sans-serif;margin-bottom:12px;box-sizing:border-box;transition:border-color 0.2s}
+  .ic-field:focus{border-color:rgba(242,100,25,0.5);box-shadow:0 0 0 3px rgba(242,100,25,0.1)}
+  .ic-lang-row{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}
+  .ic-lang-btn{padding:7px 14px;border-radius:20px;border:1.5px solid rgba(242,100,25,0.4);background:transparent;color:rgba(255,255,255,0.55);font-size:12px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all 0.15s}
+  .ic-lang-btn.active{background:#f26419;border-color:#f26419;color:#fff}
+  .ic-start-btn{width:100%;background:#f26419;color:#fff;border:none;border-radius:12px;padding:11px;font-size:14px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;transition:background 0.15s}
+  .ic-start-btn:hover{background:#d4510f}
+  .ic-error{color:#ff6b6b;font-size:12px;margin-top:8px;display:none;font-weight:500}
+  #ic-chat-screen{display:none;flex-direction:column;flex:1;min-height:0}
+  #ic-messages{flex:1;overflow-y:auto;padding:14px;background:#080808;display:flex;flex-direction:column;gap:10px;min-height:0}
+  #ic-messages::-webkit-scrollbar{width:3px}
+  #ic-messages::-webkit-scrollbar-thumb{background:rgba(242,100,25,0.25);border-radius:2px}
+  .ic-bot-row{display:flex;align-items:flex-end;gap:8px}
+  .ic-bot-avatar{width:28px;height:28px;flex-shrink:0;background:#161616;border:1px solid rgba(242,100,25,0.25);border-radius:8px;display:flex;align-items:center;justify-content:center}
+  .ic-bot-avatar svg{width:14px;height:14px}
+  .ic-bot-bubble{background:#161616;border:1px solid rgba(255,255,255,0.06);border-radius:14px 14px 14px 3px;padding:10px 13px;font-size:13px;color:rgba(255,255,255,0.85);line-height:1.55;max-width:82%}
+  .ic-user-row{display:flex;justify-content:flex-end}
+  .ic-user-bubble{background:linear-gradient(135deg,#f26419,#c94e0e);border-radius:14px 14px 3px 14px;padding:10px 13px;font-size:13px;color:#fff;line-height:1.55;max-width:82%;box-shadow:0 4px 14px rgba(242,100,25,0.3)}
+  .ic-typing{color:rgba(255,255,255,0.3);font-size:12px;padding:4px 0}
+  .ic-input-row{padding:12px;background:#0c0c0c;border-top:1px solid rgba(255,255,255,0.05);display:flex;gap:8px;align-items:center;flex-shrink:0}
+  #ic-input{flex:1;background:#161616;border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:10px 14px;font-size:13px;color:#fff;outline:none;font-family:'DM Sans',sans-serif}
+  #ic-input:focus{border-color:rgba(242,100,25,0.45);box-shadow:0 0 0 3px rgba(242,100,25,0.08)}
+  #ic-send-btn{width:38px;height:38px;flex-shrink:0;border:none;background:#f26419;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(242,100,25,0.35)}
+  #ic-send-btn svg{width:15px;height:15px}
+</style>
+
+<div id="ic-widget">
+  <div id="ic-box">
+    <div class="ic-header">
+      <div class="ic-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+        </svg>
+      </div>
+      <div class="ic-title-wrap">
+        <strong>InfluConnect AI</strong>
+        <small>Influencer booking assistant</small>
+      </div>
+      <div class="ic-dot"></div>
+    </div>
+    <div id="ic-form-screen">
+      <p class="ic-welcome">Pehle thodi details dijiye taaki main aapki better help kar sakun:</p>
+      <label class="ic-label">Aapka naam</label>
+      <input id="ic-name" type="text" placeholder="Jaise: Rahul" class="ic-field"/>
+      <label class="ic-label">Email address</label>
+      <input id="ic-email" type="email" placeholder="rahul@email.com" class="ic-field"/>
+      <label class="ic-label">Language chunein</label>
+      <div class="ic-lang-row">
+        <button class="ic-lang-btn" onclick="icSelectLang(this,'Hindi')">Hindi</button>
+        <button class="ic-lang-btn" onclick="icSelectLang(this,'English')">English</button>
+        <button class="ic-lang-btn" onclick="icSelectLang(this,'Hinglish')">Hinglish</button>
+      </div>
+      <button class="ic-start-btn" onclick="icStartChat()">Start Chat &rarr;</button>
+      <p id="ic-form-error" class="ic-error">Sabhi fields fill karo aur language chunein!</p>
+    </div>
+    <div id="ic-chat-screen">
+      <div id="ic-messages"></div>
+      <div class="ic-input-row">
+        <input id="ic-input" type="text" placeholder="Apna sawaal likhein..." onkeypress="if(event.key==='Enter') icSend()"/>
+        <button id="ic-send-btn" onclick="icSend()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  <button id="ic-toggle-btn" onclick="icToggle()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+    </svg>
+  </button>
+</div>
+
+<script>
+  let icLang='',icName='',icEmail='',icHistory=[];
+
+  function icToggle(autoOpen=false){
+    const box=document.getElementById('ic-box');
+    const btn=document.getElementById('ic-toggle-btn');
+    const isOpen=box.classList.contains('visible');
+    if(isOpen && !autoOpen){
+      box.style.opacity='0';
+      setTimeout(()=>{box.classList.remove('visible');box.style.display='none';},200);
+      btn.classList.remove('open');
+    } else if(!isOpen){
+      box.style.display='flex';
+      setTimeout(()=>{box.classList.add('visible');},10);
+      btn.classList.add('open');
+    }
+  }
+
+  function openChat(){
+    icToggle(true);
+    window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'});
+  }
+
+  function icSelectLang(btn,lang){
+    document.querySelectorAll('.ic-lang-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    icLang=lang;
+  }
+
+  function icStartChat(){
+    icName=document.getElementById('ic-name').value.trim();
+    icEmail=document.getElementById('ic-email').value.trim();
+    const err=document.getElementById('ic-form-error');
+    if(!icName||!icEmail||!icLang){err.style.display='block';return;}
+    err.style.display='none';
+    document.getElementById('ic-form-screen').style.display='none';
+    const cs=document.getElementById('ic-chat-screen');
+    cs.style.display='flex';
+    cs.style.flexDirection='column';
+    const greet=icLang==='Hindi'
+      ?`Namaste ${icName} ji! Main InfluConnect ka AI assistant hoon. Kya help chahiye?`
+      :icLang==='English'
+      ?`Hello ${icName}! I'm InfluConnect's AI assistant. How can I help you today?`
+      :`Hey ${icName}! Main InfluConnect ka AI assistant hoon. Batao kya help chahiye?`;
+    icAddBot(greet);
+  }
+
+  function icAddBot(text){
+    const m=document.getElementById('ic-messages');
+    const row=document.createElement('div');
+    row.className='ic-bot-row';
+    row.innerHTML=`<div class="ic-bot-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="#f26419" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/></svg></div><div class="ic-bot-bubble">${text}</div>`;
+    m.appendChild(row);
+    m.scrollTop=m.scrollHeight;
+  }
+
+  function icGetCookie(name){
+    let v=null;
+    if(document.cookie){document.cookie.split(';').forEach(c=>{c=c.trim();if(c.startsWith(name+'='))v=decodeURIComponent(c.substring(name.length+1));});}
+    return v;
+  }
+
+  function icSend(){
+    const input=document.getElementById('ic-input');
+    const m=document.getElementById('ic-messages');
+    const msg=input.value.trim();
+    if(!msg)return;
+    const uRow=document.createElement('div');
+    uRow.className='ic-user-row';
+    uRow.innerHTML=`<div class="ic-user-bubble">${msg}</div>`;
+    m.appendChild(uRow);
+    input.value='';
+    m.scrollTop=m.scrollHeight;
+    const tid='ict-'+Date.now();
+    const tEl=document.createElement('div');
+    tEl.className='ic-typing';tEl.id=tid;tEl.textContent='Typing...';
+    m.appendChild(tEl);
+    m.scrollTop=m.scrollHeight;
+    icHistory.push({role:'user',content:msg});
+    fetch('/ai-chat/',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','X-CSRFToken':icGetCookie('csrftoken')},
+      body:JSON.stringify({message:msg,language:icLang,name:icName})
+    })
+    .then(res=>{if(!res.ok)throw new Error('Server error '+res.status);return res.json();})
+    .then(data=>{
+      const t=document.getElementById(tid);if(t)t.remove();
+      if(data.reply){icHistory.push({role:'assistant',content:data.reply});icAddBot(data.reply);}
+      else throw new Error(data.error||'Koi jawab nahi aaya.');
+    })
+    .catch(err=>{
+      const t=document.getElementById(tid);if(t)t.remove();
+      const eRow=document.createElement('div');
+      eRow.className='ic-bot-row';
+      eRow.innerHTML=`<div class="ic-bot-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="#f26419" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/></svg></div><div class="ic-bot-bubble" style="color:#ff6b6b;">${err.message||'Dobara try karo.'}</div>`;
+      m.appendChild(eRow);
+      m.scrollTop=m.scrollHeight;
+      icHistory.pop();
+    });
+  }
+</script>
+</body>
+</html>

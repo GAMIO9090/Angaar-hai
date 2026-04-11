@@ -1,0 +1,289 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Terms & Conditions – InfluConnect</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--orange:#f26419;--orange-light:#ff8c42;--dark:#080808;--card:#111111;--border:rgba(255,255,255,0.07)}
+body{font-family:'DM Sans',sans-serif;background:var(--dark);color:#fff;min-height:100vh;overflow-x:hidden}
+
+nav{display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:70px;background:rgba(8,8,8,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);position:fixed;top:0;left:0;right:0;z-index:200}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-icon{width:38px;height:38px;background:var(--orange);border-radius:10px;display:flex;align-items:center;justify-content:center}
+.logo-text{font-family:'Syne',sans-serif;font-size:1.35rem;font-weight:800;color:#fff}
+.logo-text span{color:var(--orange)}
+.nav-back{display:flex;align-items:center;gap:8px;text-decoration:none;color:rgba(255,255,255,0.5);font-size:0.9rem;font-weight:500;transition:color 0.2s}
+.nav-back:hover{color:#fff}
+.nav-back svg{width:16px;height:16px}
+
+/* TOC SIDEBAR */
+.tc-layout{display:flex;gap:40px;max-width:1100px;margin:0 auto;padding:140px 48px 100px}
+.tc-sidebar{width:220px;flex-shrink:0;position:sticky;top:90px;height:fit-content}
+.toc-title{font-size:0.75rem;font-weight:700;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
+.toc-list{list-style:none;display:flex;flex-direction:column;gap:4px}
+.toc-list a{display:flex;align-items:center;gap:8px;text-decoration:none;color:rgba(255,255,255,0.4);font-size:0.82rem;font-weight:500;padding:6px 10px;border-radius:8px;transition:all 0.2s;border-left:2px solid transparent}
+.toc-list a:hover{color:#fff;background:rgba(255,255,255,0.04);border-left-color:var(--orange)}
+.toc-list a.active{color:var(--orange-light);border-left-color:var(--orange)}
+.toc-num{font-size:0.72rem;color:rgba(242,100,25,0.5);font-weight:700;min-width:18px}
+
+/* HERO INLINE */
+.tc-hero{margin-bottom:56px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,0.07);position:relative}
+.tc-hero::before{content:'';position:absolute;top:-60px;right:-60px;width:300px;height:300px;background:radial-gradient(circle,rgba(242,100,25,0.07) 0%,transparent 70%);pointer-events:none}
+.pp-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(242,100,25,0.1);border:1px solid rgba(242,100,25,0.3);border-radius:50px;padding:7px 18px;font-size:0.8rem;font-weight:600;color:var(--orange-light);margin-bottom:20px;letter-spacing:0.4px}
+.pp-badge svg{width:14px;height:14px}
+.tc-hero h1{font-family:'Syne',sans-serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:800;letter-spacing:-2px;line-height:1.05;margin-bottom:14px}
+.tc-hero h1 span{color:var(--orange)}
+.tc-hero p{color:rgba(255,255,255,0.45);font-size:0.95rem;line-height:1.7;max-width:500px}
+.tc-meta{display:flex;gap:20px;margin-top:20px}
+.tc-meta span{font-size:0.82rem;color:rgba(255,255,255,0.3);display:flex;align-items:center;gap:6px}
+.tc-meta svg{width:13px;height:13px;color:var(--orange)}
+
+/* CONTENT */
+.tc-main{flex:1;min-width:0}
+.tc-section{margin-bottom:52px;scroll-margin-top:90px;animation:fadeUp 0.5s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.tc-section:nth-child(n){animation-delay:calc(0.05s * var(--i,0))}
+
+.section-header{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.section-num{display:flex;align-items:center;justify-content:center;width:34px;height:34px;background:rgba(242,100,25,0.1);border:1px solid rgba(242,100,25,0.25);border-radius:8px;font-family:'Syne',sans-serif;font-size:0.78rem;font-weight:800;color:var(--orange);flex-shrink:0}
+.tc-section h2{font-family:'Syne',sans-serif;font-size:1.25rem;font-weight:800;letter-spacing:-0.3px;color:#fff}
+.tc-section p{color:rgba(255,255,255,0.55);font-size:0.93rem;line-height:1.8;margin-bottom:12px}
+.tc-section p:last-child{margin-bottom:0}
+.tc-list{list-style:none;display:flex;flex-direction:column;gap:9px;margin:8px 0}
+.tc-list li{display:flex;align-items:flex-start;gap:10px;color:rgba(255,255,255,0.55);font-size:0.93rem;line-height:1.7}
+.tc-list li::before{content:'';width:6px;height:6px;background:var(--orange);border-radius:50%;flex-shrink:0;margin-top:8px}
+
+.info-card{background:var(--card);border:1px solid rgba(242,100,25,0.15);border-radius:16px;padding:22px 26px;margin:14px 0;position:relative;overflow:hidden}
+.info-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--orange),var(--orange-light))}
+.info-card p{color:rgba(255,255,255,0.6);font-size:0.9rem;line-height:1.75}
+.info-card strong{color:#fff}
+
+.warn-card{background:rgba(242,100,25,0.06);border:1px solid rgba(242,100,25,0.2);border-radius:12px;padding:16px 20px;margin:14px 0;display:flex;gap:12px;align-items:flex-start}
+.warn-icon{width:20px;height:20px;flex-shrink:0;color:var(--orange);margin-top:1px}
+.warn-card p{color:rgba(255,255,255,0.6);font-size:0.88rem;line-height:1.7;margin:0}
+.warn-card strong{color:var(--orange-light)}
+
+.pp-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(242,100,25,0.18),transparent);margin:52px 0}
+
+footer{text-align:center;padding:26px 20px;border-top:1px solid rgba(255,255,255,0.07);color:rgba(255,255,255,0.3);font-size:0.83rem}
+footer span{color:var(--orange);font-weight:700}
+
+@media(max-width:900px){.tc-sidebar{display:none}.tc-layout{padding:120px 20px 80px}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="{% url 'home' %}">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="22" height="22">
+        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+      </svg>
+    </div>
+    <span class="logo-text">Influ<span>Connect</span></span>
+  </a>
+  <a class="nav-back" href="{% url 'home' %}">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Back to Home
+  </a>
+</nav>
+
+<div class="tc-layout">
+
+  <!-- SIDEBAR TOC -->
+  <aside class="tc-sidebar">
+    <p class="toc-title">Contents</p>
+    <ul class="toc-list">
+      <li><a href="#acceptance"><span class="toc-num">01</span> Acceptance</a></li>
+      <li><a href="#accounts"><span class="toc-num">02</span> User Accounts</a></li>
+      <li><a href="#services"><span class="toc-num">03</span> Services</a></li>
+      <li><a href="#bookings"><span class="toc-num">04</span> Bookings</a></li>
+      <li><a href="#payments"><span class="toc-num">05</span> Payments</a></li>
+      <li><a href="#conduct"><span class="toc-num">06</span> User Conduct</a></li>
+      <li><a href="#intellectual"><span class="toc-num">07</span> IP Rights</a></li>
+      <li><a href="#liability"><span class="toc-num">08</span> Liability</a></li>
+      <li><a href="#termination"><span class="toc-num">09</span> Termination</a></li>
+      <li><a href="#contact"><span class="toc-num">10</span> Contact</a></li>
+    </ul>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="tc-main">
+
+    <div class="tc-hero">
+      <div class="pp-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Legal Document
+      </div>
+      <h1>Terms & <span>Conditions</span></h1>
+      <p>Platform use karne se pehle yeh terms dhyan se padhein. Yeh agreement aap aur InfluConnect ke beech hai.</p>
+      <div class="tc-meta">
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="#f26419" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Effective: April 2026</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="#f26419" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>~8 min read</span>
+      </div>
+    </div>
+
+    <div class="tc-section" id="acceptance">
+      <div class="section-header"><div class="section-num">01</div><h2>Terms Ki Acceptance</h2></div>
+      <p>InfluConnect platform access ya use karke aap agree karte hain ki aap in Terms & Conditions se bound hain. Agar aap 18 saal se kam umra ke hain ya in terms se agree nahi karte, toh platform use mat karein.</p>
+      <div class="warn-card">
+        <svg class="warn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <p><strong>Platform use karna = Terms se agreement.</strong> Hum kabhi bhi in terms ko update kar sakte hain. Continued use ka matlab hai aap updated terms se agree karte hain.</p>
+      </div>
+    </div>
+
+    <div class="pp-divider"></div>
+
+    <div class="tc-section" id="accounts">
+      <div class="section-header"><div class="section-num">02</div><h2>User Accounts</h2></div>
+      <p>Platform use karne ke liye account banana zaroori hai. Account registration mein:</p>
+      <ul class="tc-list">
+        <li>Accurate aur complete information provide karna aapki responsibility hai</li>
+        <li>Account credentials confidential rakhna zaroori hai</li>
+        <li>Ek person ek hi account rakh sakta hai</li>
+        <li>Account activity ki poori responsibility account owner ki hai</li>
+        <li>Suspicious activity hone pe turant hume inform karein</li>
+      </ul>
+      <p>Hum accounts suspend ya terminate kar sakte hain agar terms violate hoti hain, bina prior notice ke.</p>
+    </div>
+
+    <div class="tc-section" id="services">
+      <div class="section-header"><div class="section-num">03</div><h2>Platform Services</h2></div>
+      <p>InfluConnect provide karta hai:</p>
+      <ul class="tc-list">
+        <li>Influencer discovery aur search platform</li>
+        <li>Booking management system</li>
+        <li>In-platform messaging between shopkeepers aur influencers</li>
+        <li>Campaign tracking aur reporting</li>
+        <li>Secure payment processing</li>
+        <li>AI-powered assistant for platform navigation</li>
+      </ul>
+      <div class="info-card">
+        <p><strong>Service Availability:</strong> Hum 99% uptime ka target rakhte hain lekin guarantee nahi de sakte. Maintenance, updates, ya technical issues ke wajah se temporary downtime ho sakta hai. Critical bookings ke liye advance planning karein.</p>
+      </div>
+    </div>
+
+    <div class="pp-divider"></div>
+
+    <div class="tc-section" id="bookings">
+      <div class="section-header"><div class="section-num">04</div><h2>Booking Rules</h2></div>
+      <p>Bookings ke liye yeh rules apply hote hain:</p>
+      <ul class="tc-list">
+        <li>Shopkeeper booking request bhejta hai, influencer accept/reject karta hai</li>
+        <li>Confirmed booking ke baad cancellation policy apply hoti hai</li>
+        <li>Campaign details — deliverables, timeline, payment — booking mein clearly mention hongi</li>
+        <li>Dono parties ko agreed terms follow karne honge</li>
+        <li>Disputes ke liye platform ka mediation process use karna hoga</li>
+      </ul>
+      <div class="warn-card">
+        <svg class="warn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <p><strong>Cancellation:</strong> 48 hours se pehle cancel karne pe full refund. 24-48 hours mein 50% refund. 24 hours se kam mein no refund.</p>
+      </div>
+    </div>
+
+    <div class="tc-section" id="payments">
+      <div class="section-header"><div class="section-num">05</div><h2>Payments & Fees</h2></div>
+      <p>Payment structure:</p>
+      <ul class="tc-list">
+        <li>Platform ke through secure payment required hai — direct payment prohibited</li>
+        <li>InfluConnect 10% platform fee charge karta hai each transaction pe</li>
+        <li>GST aur applicable taxes separately apply honge</li>
+        <li>Influencer ko campaign completion ke baad 3-5 business days mein payment milti hai</li>
+        <li>Disputed payments escrow mein hold hote hain resolution tak</li>
+      </ul>
+    </div>
+
+    <div class="pp-divider"></div>
+
+    <div class="tc-section" id="conduct">
+      <div class="section-header"><div class="section-num">06</div><h2>User Conduct</h2></div>
+      <p>Platform pe yeh strictly prohibited hai:</p>
+      <ul class="tc-list">
+        <li>Fake profiles ya misleading information create karna</li>
+        <li>Spam, harassment, ya abusive behavior</li>
+        <li>Platform ke bahar direct deals karna (fees avoid karne ke liye)</li>
+        <li>Fake reviews ya ratings submit karna</li>
+        <li>Copyrighted content bina permission ke use karna</li>
+        <li>Platform security ko compromise karne ki koshish</li>
+        <li>Multiple accounts banana ek hi person ke liye</li>
+      </ul>
+      <p>Violations pe immediate account suspension ho sakta hai aur legal action bhi possible hai.</p>
+    </div>
+
+    <div class="tc-section" id="intellectual">
+      <div class="section-header"><div class="section-num">07</div><h2>Intellectual Property</h2></div>
+      <p>Content ownership ke baare mein:</p>
+      <ul class="tc-list">
+        <li>InfluConnect platform, logo, aur branding hamari property hai</li>
+        <li>User-generated content ka ownership creator ke paas rehta hai</li>
+        <li>Platform pe content upload karke aap hume limited license dete hain display ke liye</li>
+        <li>Campaign content ka ownership agreement mein specify hona chahiye</li>
+      </ul>
+    </div>
+
+    <div class="pp-divider"></div>
+
+    <div class="tc-section" id="liability">
+      <div class="section-header"><div class="section-num">08</div><h2>Limitation of Liability</h2></div>
+      <p>InfluConnect liable nahi hai:</p>
+      <ul class="tc-list">
+        <li>Users ke beech disputes ya unresolved transactions ke liye</li>
+        <li>Campaign results ya ROI guarantees ke liye</li>
+        <li>Third-party services se hone wale issues ke liye</li>
+        <li>Indirect ya consequential damages ke liye</li>
+        <li>Force majeure events (natural disasters, internet outages) ke liye</li>
+      </ul>
+      <div class="info-card">
+        <p>Hamare maximum liability limit ek transaction mein paid amount tak restricted hai, kabhi isse zyada nahi.</p>
+      </div>
+    </div>
+
+    <div class="tc-section" id="termination">
+      <div class="section-header"><div class="section-num">09</div><h2>Termination</h2></div>
+      <p>Account termination ke rules:</p>
+      <ul class="tc-list">
+        <li>Aap kabhi bhi account delete kar sakte hain settings se</li>
+        <li>Hum terms violation pe bina notice account terminate kar sakte hain</li>
+        <li>Termination ke baad pending bookings complete ki jaayengi</li>
+        <li>Owed payments termination ke baad bhi process honge</li>
+        <li>Data deletion 90 days mein complete hogi (legal holds exclude)</li>
+      </ul>
+    </div>
+
+    <div class="tc-section" id="contact">
+      <div class="section-header"><div class="section-num">10</div><h2>Governing Law & Contact</h2></div>
+      <p>Yeh Terms Indian law ke under govern hote hain. Disputes ke liye jurisdiction India hoga.</p>
+      <div class="info-card">
+        <p><strong>Legal Queries:</strong> legal@influconnect.in<br>
+        <strong>General Support:</strong> support@influconnect.in<br>
+        <strong>Address:</strong> InfluConnect, India<br>
+        <strong>Phone:</strong> +91-XXXX-XXXXXX</p>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<footer>© 2026 <span>InfluConnect</span> · Built to connect local shops with local creators.</footer>
+
+<script>
+  const sections = document.querySelectorAll('.tc-section[id]');
+  const links = document.querySelectorAll('.toc-list a');
+  const observer = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        links.forEach(l=>l.classList.remove('active'));
+        const active=document.querySelector(`.toc-list a[href="#${e.target.id}"]`);
+        if(active) active.classList.add('active');
+      }
+    });
+  },{rootMargin:'-20% 0px -70% 0px'});
+  sections.forEach(s=>observer.observe(s));
+</script>
+</body>
+</html>

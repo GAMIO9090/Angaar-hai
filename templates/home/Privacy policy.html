@@ -1,0 +1,245 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Privacy Policy – InfluConnect</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--orange:#f26419;--orange-light:#ff8c42;--dark:#080808;--card:#111111;--border:rgba(255,255,255,0.07)}
+body{font-family:'DM Sans',sans-serif;background:var(--dark);color:#fff;min-height:100vh;overflow-x:hidden}
+
+nav{display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:70px;background:rgba(8,8,8,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);position:fixed;top:0;left:0;right:0;z-index:200}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-icon{width:38px;height:38px;background:var(--orange);border-radius:10px;display:flex;align-items:center;justify-content:center}
+.logo-text{font-family:'Syne',sans-serif;font-size:1.35rem;font-weight:800;color:#fff}
+.logo-text span{color:var(--orange)}
+.nav-back{display:flex;align-items:center;gap:8px;text-decoration:none;color:rgba(255,255,255,0.5);font-size:0.9rem;font-weight:500;transition:color 0.2s}
+.nav-back:hover{color:#fff}
+.nav-back svg{width:16px;height:16px}
+
+/* HERO */
+.pp-hero{position:relative;padding:140px 48px 80px;overflow:hidden;background:#080808}
+.pp-hero::before{content:'';position:absolute;top:-200px;left:-200px;width:600px;height:600px;background:radial-gradient(circle,rgba(242,100,25,0.08) 0%,transparent 70%);pointer-events:none}
+.pp-hero::after{content:'';position:absolute;bottom:-100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(242,100,25,0.05) 0%,transparent 70%);pointer-events:none}
+.pp-hero-inner{max-width:800px;margin:0 auto;position:relative;z-index:2}
+.pp-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(242,100,25,0.1);border:1px solid rgba(242,100,25,0.3);border-radius:50px;padding:7px 18px;font-size:0.8rem;font-weight:600;color:var(--orange-light);margin-bottom:24px;letter-spacing:0.4px}
+.pp-badge svg{width:14px;height:14px}
+.pp-hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,5vw,3.8rem);font-weight:800;letter-spacing:-2px;line-height:1.05;margin-bottom:16px}
+.pp-hero h1 span{color:var(--orange)}
+.pp-hero p{color:rgba(255,255,255,0.45);font-size:1rem;line-height:1.7;max-width:520px}
+.pp-meta{display:flex;align-items:center;gap:20px;margin-top:24px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.07)}
+.pp-meta span{font-size:0.83rem;color:rgba(255,255,255,0.35);display:flex;align-items:center;gap:6px}
+.pp-meta svg{width:13px;height:13px;color:var(--orange)}
+
+/* 3D GRID DECORATION */
+.grid-deco{position:absolute;bottom:0;right:0;width:380px;height:220px;opacity:0.18;pointer-events:none}
+
+/* CONTENT */
+.pp-content{max-width:800px;margin:0 auto;padding:60px 48px 100px}
+.pp-section{margin-bottom:48px;animation:fadeUp 0.6s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.pp-section:nth-child(1){animation-delay:0.1s}
+.pp-section:nth-child(2){animation-delay:0.15s}
+.pp-section:nth-child(3){animation-delay:0.2s}
+.pp-section:nth-child(4){animation-delay:0.25s}
+.pp-section:nth-child(5){animation-delay:0.3s}
+.pp-section:nth-child(6){animation-delay:0.35s}
+.pp-section:nth-child(7){animation-delay:0.4s}
+
+.section-num{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;background:rgba(242,100,25,0.12);border:1px solid rgba(242,100,25,0.25);border-radius:8px;font-family:'Syne',sans-serif;font-size:0.8rem;font-weight:800;color:var(--orange);margin-bottom:12px}
+.pp-section h2{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;letter-spacing:-0.3px;margin-bottom:14px;color:#fff}
+.pp-section p{color:rgba(255,255,255,0.55);font-size:0.95rem;line-height:1.8;margin-bottom:12px}
+.pp-section p:last-child{margin-bottom:0}
+.pp-list{list-style:none;display:flex;flex-direction:column;gap:10px;margin-top:4px}
+.pp-list li{display:flex;align-items:flex-start;gap:10px;color:rgba(255,255,255,0.55);font-size:0.95rem;line-height:1.7}
+.pp-list li::before{content:'';width:6px;height:6px;background:var(--orange);border-radius:50%;flex-shrink:0;margin-top:8px}
+
+/* INFO CARD */
+.info-card{background:var(--card);border:1px solid rgba(242,100,25,0.15);border-radius:16px;padding:24px 28px;margin-top:16px;position:relative;overflow:hidden}
+.info-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--orange),var(--orange-light))}
+.info-card p{color:rgba(255,255,255,0.6);font-size:0.92rem;line-height:1.75}
+.info-card strong{color:#fff}
+
+/* HIGHLIGHT BOX */
+.highlight-box{background:rgba(242,100,25,0.06);border:1px solid rgba(242,100,25,0.18);border-radius:12px;padding:18px 22px;margin:16px 0}
+.highlight-box p{color:rgba(255,255,255,0.6);font-size:0.9rem;line-height:1.7;margin:0}
+.highlight-box strong{color:var(--orange-light)}
+
+/* DIVIDER */
+.pp-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(242,100,25,0.2),transparent);margin:48px 0}
+
+/* FOOTER */
+footer{text-align:center;padding:26px 20px;border-top:1px solid rgba(255,255,255,0.07);color:rgba(255,255,255,0.3);font-size:0.83rem}
+footer span{color:var(--orange);font-weight:700}
+
+@media(max-width:640px){nav{padding:0 18px}.pp-hero{padding:120px 20px 60px}.pp-content{padding:40px 20px 80px}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="{% url 'home' %}">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="22" height="22">
+        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+      </svg>
+    </div>
+    <span class="logo-text">Influ<span>Connect</span></span>
+  </a>
+  <a class="nav-back" href="{% url 'home' %}">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Back to Home
+  </a>
+</nav>
+
+<section class="pp-hero">
+  <svg class="grid-deco" viewBox="0 0 380 220" xmlns="http://www.w3.org/2000/svg">
+    <defs><linearGradient id="gf" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f26419"/><stop offset="100%" stop-color="#f26419" stop-opacity="0"/></linearGradient></defs>
+    <line x1="0" y1="55" x2="380" y2="55" stroke="url(#gf)" stroke-width="1"/>
+    <line x1="0" y1="110" x2="380" y2="110" stroke="url(#gf)" stroke-width="1"/>
+    <line x1="0" y1="165" x2="380" y2="165" stroke="url(#gf)" stroke-width="1"/>
+    <line x1="76" y1="0" x2="76" y2="220" stroke="url(#gf)" stroke-width="1"/>
+    <line x1="152" y1="0" x2="152" y2="220" stroke="url(#gf)" stroke-width="1"/>
+    <line x1="228" y1="0" x2="228" y2="220" stroke="url(#gf)" stroke-width="1"/>
+    <line x1="304" y1="0" x2="304" y2="220" stroke="url(#gf)" stroke-width="1"/>
+    <circle cx="76" cy="55" r="3" fill="#f26419"/>
+    <circle cx="228" cy="110" r="3" fill="#f26419"/>
+    <circle cx="304" cy="165" r="3" fill="#f26419"/>
+    <circle cx="152" cy="55" r="2" fill="#f26419" opacity="0.5"/>
+  </svg>
+  <div class="pp-hero-inner">
+    <div class="pp-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Legal Document
+    </div>
+    <h1>Privacy <span>Policy</span></h1>
+    <p>Aapki privacy hamare liye sabse important hai. Yeh document batata hai ki hum aapka data kaise collect, use aur protect karte hain.</p>
+    <div class="pp-meta">
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="#f26419" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Last Updated: April 2026</span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="#f26419" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>~5 min read</span>
+    </div>
+  </div>
+</section>
+
+<div class="pp-content">
+
+  <div class="pp-section">
+    <div class="section-num">01</div>
+    <h2>Introduction</h2>
+    <p>InfluConnect ("hum", "humara", ya "platform") ek influencer marketing platform hai jo local businesses ko nearby content creators se connect karta hai. Yeh Privacy Policy explain karti hai ki jab aap hamari website <strong style="color:#fff">influconnect.in</strong> use karte hain toh hum aapki personal information kaise handle karte hain.</p>
+    <p>Is platform ko use karke aap is Privacy Policy se agree karte hain. Agar aap agree nahi karte, toh kripya platform use karna band karein.</p>
+  </div>
+
+  <div class="pp-divider"></div>
+
+  <div class="pp-section">
+    <div class="section-num">02</div>
+    <h2>Data Jo Hum Collect Karte Hain</h2>
+    <p>Hum alag-alag sources se information collect karte hain:</p>
+    <ul class="pp-list">
+      <li><strong style="color:#fff">Account Information:</strong> Naam, email address, phone number, aur password jab aap register karte hain</li>
+      <li><strong style="color:#fff">Profile Data:</strong> Business ya influencer profile details, location, category, aur social media handles</li>
+      <li><strong style="color:#fff">Transaction Data:</strong> Booking history, payment information (encrypted), aur campaign details</li>
+      <li><strong style="color:#fff">Usage Data:</strong> Pages visited, features used, time spent, aur click patterns</li>
+      <li><strong style="color:#fff">Device Data:</strong> IP address, browser type, operating system, aur device identifiers</li>
+      <li><strong style="color:#fff">Location Data:</strong> City/area information jo aap provide karte hain influencer search ke liye</li>
+      <li><strong style="color:#fff">Communications:</strong> Messages jo aap platform pe bhejte hain, support tickets, aur feedback</li>
+    </ul>
+  </div>
+
+  <div class="pp-section">
+    <div class="section-num">03</div>
+    <h2>Data Ka Use</h2>
+    <p>Collected information ka use hum in purposes ke liye karte hain:</p>
+    <ul class="pp-list">
+      <li>Platform services provide karna aur account manage karna</li>
+      <li>Shopkeepers ko relevant influencers se match karna</li>
+      <li>Booking aur payment transactions process karna</li>
+      <li>Customer support aur queries resolve karna</li>
+      <li>Platform security maintain karna aur fraud prevent karna</li>
+      <li>Service improvements ke liye analytics aur research</li>
+      <li>Legal obligations comply karna</li>
+    </ul>
+    <div class="highlight-box">
+      <p><strong>Important:</strong> Hum aapka personal data kabhi third-party advertisers ko sell nahi karte. Aapka data sirf platform operations ke liye use hota hai.</p>
+    </div>
+  </div>
+
+  <div class="pp-divider"></div>
+
+  <div class="pp-section">
+    <div class="section-num">04</div>
+    <h2>Data Sharing</h2>
+    <p>Hum limited circumstances mein data share karte hain:</p>
+    <ul class="pp-list">
+      <li><strong style="color:#fff">Platform Users:</strong> Shopkeepers influencer profiles dekh sakte hain (public info only)</li>
+      <li><strong style="color:#fff">Service Providers:</strong> Payment processors, email services, hosting providers jo hamari behalf pe kaam karte hain</li>
+      <li><strong style="color:#fff">Legal Requirements:</strong> Agar court order ya government authority require kare</li>
+      <li><strong style="color:#fff">Business Transfer:</strong> Merger ya acquisition ke case mein, advance notice ke saath</li>
+    </ul>
+  </div>
+
+  <div class="pp-section">
+    <div class="section-num">05</div>
+    <h2>Data Security</h2>
+    <p>Aapki information protect karne ke liye hum industry-standard security measures use karte hain:</p>
+    <div class="info-card">
+      <p><strong>SSL/TLS Encryption</strong> — Saara data transmission encrypted hai<br><br>
+      <strong>Password Hashing</strong> — Passwords kabhi plain text mein store nahi hote<br><br>
+      <strong>Regular Audits</strong> — Security vulnerabilities ke liye regular checks<br><br>
+      <strong>Access Controls</strong> — Sirf authorized personnel ko sensitive data access milta hai</p>
+    </div>
+    <p style="margin-top:16px">Lekin koi bhi system 100% secure nahi hota. Agar aapko koi security issue lagta hai, turant <strong style="color:var(--orange)">security@influconnect.in</strong> pe report karein.</p>
+  </div>
+
+  <div class="pp-divider"></div>
+
+  <div class="pp-section">
+    <div class="section-num">06</div>
+    <h2>Aapke Rights</h2>
+    <p>India ke IT Act aur applicable laws ke under aapke yeh rights hain:</p>
+    <ul class="pp-list">
+      <li>Apna personal data access karne ka right</li>
+      <li>Galat information correct karwane ka right</li>
+      <li>Data deletion request karne ka right (kuch exceptions ke saath)</li>
+      <li>Marketing communications se opt-out karne ka right</li>
+      <li>Data portability — apna data download karne ka right</li>
+    </ul>
+    <p>In rights exercise karne ke liye <strong style="color:var(--orange)">privacy@influconnect.in</strong> pe email karein. Hum 30 din ke andar respond karenge.</p>
+  </div>
+
+  <div class="pp-section">
+    <div class="section-num">07</div>
+    <h2>Cookies</h2>
+    <p>Hum cookies aur similar technologies use karte hain:</p>
+    <ul class="pp-list">
+      <li><strong style="color:#fff">Essential Cookies:</strong> Login session aur security ke liye zaroori</li>
+      <li><strong style="color:#fff">Analytics Cookies:</strong> Platform usage samajhne ke liye (Google Analytics)</li>
+      <li><strong style="color:#fff">Preference Cookies:</strong> Aapki language aur display preferences save karne ke liye</li>
+    </ul>
+    <p>Browser settings se aap cookies disable kar sakte hain, lekin kuch features kaam nahi karenge.</p>
+  </div>
+
+  <div class="pp-divider"></div>
+
+  <div class="pp-section">
+    <div class="section-num">08</div>
+    <h2>Policy Changes</h2>
+    <p>Hum is Privacy Policy ko update kar sakte hain. Significant changes ke liye hum email ya platform notification ke through inform karenge. Latest version hamesha is page pe available rahega.</p>
+    <div class="info-card">
+      <p>Questions ke liye contact karein: <strong>privacy@influconnect.in</strong><br>
+      InfluConnect, India<br>
+      Phone: +91-XXXX-XXXXXX</p>
+    </div>
+  </div>
+
+</div>
+
+<footer>© 2026 <span>InfluConnect</span> · Built to connect local shops with local creators.</footer>
+
+</body>
+</html>
