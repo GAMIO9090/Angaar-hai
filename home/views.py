@@ -112,3 +112,16 @@ def home(request):
         influencers = influencers.filter(location__icontains=city)
 
     return render(request, "home/index.html", {"influencers": influencers})
+
+
+def how_it_works(request):
+    return render(request, "home/How it works.html")
+
+def privacy_policy(request):
+    return render(request, "home/Privacy policy.html")
+
+def contact(request):
+    return render(request, "home/Contact.html")
+
+def terms(request):
+    return render(request, "home/Terms conditions.html")

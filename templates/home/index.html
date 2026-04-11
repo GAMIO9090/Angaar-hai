@@ -123,7 +123,7 @@
   <ul class="nav-links">
     <li><a href="{% url 'home' %}">Home</a></li>
     <li><a href="{% url 'influencers:influencers_list' %}">Explore Influencers</a></li>
-    <li><a href="#how-it-works">How it Works</a></li>
+    <li><a href="{% url 'how_it_works' %}">How it Works</a></li>
     <li><a href="{% url 'login' %}">Login</a></li>
     {% if user.is_authenticated %}
       <li><a href="{% url 'shopkeepers:shopkeeper_dashboard' %}" class="nav-cta">Get Started</a></li>
@@ -627,162 +627,69 @@ function getGPS(){
      ═══════════════════════════════════════════════ -->
 
 <style>
-  /* ── WIDGET SHELL ── */
-  #ic-widget{position:fixed;bottom:24px;right:24px;z-index:9999;font-family:'DM Sans',sans-serif}
+  #ic-widget{position:fixed;bottom:24px;right:24px;z-index:9999;font-family:'DM Sans',sans-serif;display:flex;flex-direction:column;align-items:flex-end}
 
-  /* ── TOGGLE BUTTON ── */
-  #ic-toggle-btn{
-    width:56px;height:56px;border-radius:16px;border:none;cursor:pointer;
-    background:#f26419;
-    box-shadow:0 0 0 1px rgba(242,100,25,0.4),0 8px 24px rgba(242,100,25,0.45),0 0 48px rgba(242,100,25,0.15);
-    display:flex;align-items:center;justify-content:center;
-    transition:transform 0.2s,box-shadow 0.2s;
-    margin-left:auto;
-  }
+  #ic-toggle-btn{width:56px;height:56px;border-radius:16px;border:none;cursor:pointer;background:#f26419;flex-shrink:0;box-shadow:0 0 0 1px rgba(242,100,25,0.4),0 8px 24px rgba(242,100,25,0.45),0 0 48px rgba(242,100,25,0.15);display:flex;align-items:center;justify-content:center;transition:transform 0.2s,box-shadow 0.2s}
   #ic-toggle-btn:hover{transform:translateY(-2px);box-shadow:0 0 0 1px rgba(242,100,25,0.5),0 12px 32px rgba(242,100,25,0.55),0 0 60px rgba(242,100,25,0.2)}
   #ic-toggle-btn svg{width:24px;height:24px;transition:transform 0.3s}
   #ic-toggle-btn.open svg{transform:rotate(45deg)}
 
-  /* ── CHAT BOX ── */
-  #ic-box{
-    display:none;flex-direction:column;
-    width:340px;
-    border-radius:20px;overflow:hidden;
-    background:#0f0f0f;
-    border:1px solid rgba(242,100,25,0.22);
-    box-shadow:
-      0 0 0 1px rgba(242,100,25,0.07),
-      0 32px 64px rgba(0,0,0,0.75),
-      inset 0 1px 0 rgba(255,255,255,0.05);
-    margin-bottom:12px;
-    transform:translateY(12px) scale(0.97);
-    opacity:0;
-    transition:transform 0.25s cubic-bezier(0.34,1.56,0.64,1),opacity 0.2s ease;
-  }
+  #ic-box{display:none;flex-direction:column;width:340px;height:500px;border-radius:20px;overflow:hidden;background:#0f0f0f;border:1px solid rgba(242,100,25,0.22);box-shadow:0 0 0 1px rgba(242,100,25,0.07),0 32px 64px rgba(0,0,0,0.75),inset 0 1px 0 rgba(255,255,255,0.05);margin-bottom:12px;transform:translateY(12px) scale(0.97);opacity:0;transition:transform 0.25s cubic-bezier(0.34,1.56,0.64,1),opacity 0.2s ease}
   #ic-box.visible{display:flex;opacity:1;transform:translateY(0) scale(1)}
 
-  /* ── HEADER ── */
-  .ic-header{
-    background:linear-gradient(135deg,#1c0900 0%,#2e1500 60%,#1a0800 100%);
-    padding:14px 16px;
-    border-bottom:1px solid rgba(242,100,25,0.18);
-    display:flex;align-items:center;gap:10px;flex-shrink:0;
-  }
-  .ic-logo{
-    width:38px;height:38px;background:#f26419;border-radius:10px;
-    display:flex;align-items:center;justify-content:center;flex-shrink:0;
-    box-shadow:0 0 18px rgba(242,100,25,0.55);
-  }
+  .ic-header{background:linear-gradient(135deg,#1c0900 0%,#2e1500 60%,#1a0800 100%);padding:14px 16px;border-bottom:1px solid rgba(242,100,25,0.18);display:flex;align-items:center;gap:10px;flex-shrink:0}
+  .ic-logo{width:38px;height:38px;background:#f26419;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 0 18px rgba(242,100,25,0.55)}
   .ic-logo svg{width:19px;height:19px}
   .ic-title-wrap{flex:1;min-width:0}
   .ic-title-wrap strong{display:block;font-size:14px;font-weight:700;color:#fff;letter-spacing:-0.2px;line-height:1.2}
   .ic-title-wrap small{font-size:11px;color:rgba(242,100,25,0.75);font-weight:500}
-  .ic-status{display:flex;align-items:center;gap:5px}
   .ic-dot{width:7px;height:7px;background:#22c55e;border-radius:50%;box-shadow:0 0 7px rgba(34,197,94,0.7);animation:icpulse 2.2s infinite}
   @keyframes icpulse{0%,100%{opacity:1}50%{opacity:0.35}}
 
-  /* ── FORM SCREEN ── */
-  #ic-form-screen{padding:16px;background:#0a0a0a;flex:1;overflow-y:auto}
+  #ic-form-screen{padding:16px;background:#0a0a0a;flex:1;overflow-y:auto;min-height:0}
   #ic-form-screen p.ic-welcome{font-size:13px;color:rgba(255,255,255,0.55);margin-bottom:14px;line-height:1.5}
   .ic-label{display:block;font-size:11px;font-weight:600;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:5px}
-  .ic-field{
-    width:100%;background:#161616;border:1px solid rgba(255,255,255,0.08);
-    border-radius:10px;padding:10px 13px;font-size:13px;color:#fff;
-    outline:none;font-family:'DM Sans',sans-serif;margin-bottom:12px;
-    box-sizing:border-box;transition:border-color 0.2s,box-shadow 0.2s;
-  }
+  .ic-field{width:100%;background:#161616;border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px 13px;font-size:13px;color:#fff;outline:none;font-family:'DM Sans',sans-serif;margin-bottom:12px;box-sizing:border-box;transition:border-color 0.2s,box-shadow 0.2s}
   .ic-field::placeholder{color:rgba(255,255,255,0.2)}
   .ic-field:focus{border-color:rgba(242,100,25,0.5);box-shadow:0 0 0 3px rgba(242,100,25,0.1)}
   .ic-lang-row{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}
-  .ic-lang-btn{
-    padding:7px 14px;border-radius:20px;
-    border:1.5px solid rgba(242,100,25,0.4);
-    background:transparent;color:rgba(255,255,255,0.55);
-    font-size:12px;font-weight:600;font-family:'DM Sans',sans-serif;
-    cursor:pointer;transition:all 0.15s;
-  }
+  .ic-lang-btn{padding:7px 14px;border-radius:20px;border:1.5px solid rgba(242,100,25,0.4);background:transparent;color:rgba(255,255,255,0.55);font-size:12px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all 0.15s}
   .ic-lang-btn:hover{border-color:rgba(242,100,25,0.7);color:#fff}
   .ic-lang-btn.active{background:#f26419;border-color:#f26419;color:#fff;box-shadow:0 4px 12px rgba(242,100,25,0.35)}
-  .ic-start-btn{
-    width:100%;background:#f26419;color:#fff;border:none;
-    border-radius:12px;padding:11px;font-size:14px;font-weight:700;
-    font-family:'DM Sans',sans-serif;cursor:pointer;
-    box-shadow:0 4px 16px rgba(242,100,25,0.4);
-    transition:background 0.15s,transform 0.1s,box-shadow 0.15s;
-  }
-  .ic-start-btn:hover{background:#d4510f;transform:translateY(-1px);box-shadow:0 6px 20px rgba(242,100,25,0.5)}
+  .ic-start-btn{width:100%;background:#f26419;color:#fff;border:none;border-radius:12px;padding:11px;font-size:14px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;box-shadow:0 4px 16px rgba(242,100,25,0.4);transition:background 0.15s,transform 0.1s}
+  .ic-start-btn:hover{background:#d4510f;transform:translateY(-1px)}
   .ic-error{color:#ff6b6b;font-size:12px;margin-top:8px;display:none;font-weight:500}
 
-  /* ── CHAT SCREEN ── */
+  /* CHAT SCREEN — fills remaining height */
   #ic-chat-screen{display:none;flex-direction:column;flex:1;min-height:0}
 
-  /* ── MESSAGES ── */
-  #ic-messages{
-    flex:1;overflow-y:auto;padding:14px;
-    background:#080808;
-    display:flex;flex-direction:column;gap:10px;
-    height:280px;
-  }
+  /* MESSAGES — scrollable, never overflows box */
+  #ic-messages{flex:1;overflow-y:auto;padding:14px;background:#080808;display:flex;flex-direction:column;gap:10px;min-height:0}
   #ic-messages::-webkit-scrollbar{width:3px}
   #ic-messages::-webkit-scrollbar-track{background:transparent}
   #ic-messages::-webkit-scrollbar-thumb{background:rgba(242,100,25,0.25);border-radius:2px}
 
   .ic-bot-row{display:flex;align-items:flex-end;gap:8px}
-  .ic-bot-avatar{
-    width:28px;height:28px;flex-shrink:0;
-    background:#161616;border:1px solid rgba(242,100,25,0.25);
-    border-radius:8px;display:flex;align-items:center;justify-content:center;
-  }
+  .ic-bot-avatar{width:28px;height:28px;flex-shrink:0;background:#161616;border:1px solid rgba(242,100,25,0.25);border-radius:8px;display:flex;align-items:center;justify-content:center}
   .ic-bot-avatar svg{width:14px;height:14px}
-  .ic-bot-bubble{
-    background:#161616;
-    border:1px solid rgba(255,255,255,0.06);
-    border-radius:14px 14px 14px 3px;
-    padding:10px 13px;font-size:13px;
-    color:rgba(255,255,255,0.85);line-height:1.55;
-    max-width:82%;
-  }
+  .ic-bot-bubble{background:#161616;border:1px solid rgba(255,255,255,0.06);border-radius:14px 14px 14px 3px;padding:10px 13px;font-size:13px;color:rgba(255,255,255,0.85);line-height:1.55;max-width:82%}
   .ic-user-row{display:flex;justify-content:flex-end}
-  .ic-user-bubble{
-    background:linear-gradient(135deg,#f26419,#c94e0e);
-    border-radius:14px 14px 3px 14px;
-    padding:10px 13px;font-size:13px;color:#fff;
-    line-height:1.55;max-width:82%;
-    box-shadow:0 4px 14px rgba(242,100,25,0.3);
-  }
-  .ic-typing{color:rgba(255,255,255,0.3);font-size:12px;padding:4px 0}
+  .ic-user-bubble{background:linear-gradient(135deg,#f26419,#c94e0e);border-radius:14px 14px 3px 14px;padding:10px 13px;font-size:13px;color:#fff;line-height:1.55;max-width:82%;box-shadow:0 4px 14px rgba(242,100,25,0.3)}
+  .ic-typing{color:rgba(255,255,255,0.3);font-size:12px;padding:4px 0;flex-shrink:0}
 
-  /* ── INPUT ROW ── */
-  .ic-input-row{
-    padding:12px;background:#0c0c0c;
-    border-top:1px solid rgba(255,255,255,0.05);
-    display:flex;gap:8px;align-items:center;flex-shrink:0;
-  }
-  #ic-input{
-    flex:1;background:#161616;border:1px solid rgba(255,255,255,0.07);
-    border-radius:12px;padding:10px 14px;font-size:13px;color:#fff;
-    outline:none;font-family:'DM Sans',sans-serif;
-    transition:border-color 0.2s,box-shadow 0.2s;
-  }
+  /* INPUT — always pinned to bottom */
+  .ic-input-row{padding:12px;background:#0c0c0c;border-top:1px solid rgba(255,255,255,0.05);display:flex;gap:8px;align-items:center;flex-shrink:0}
+  #ic-input{flex:1;background:#161616;border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:10px 14px;font-size:13px;color:#fff;outline:none;font-family:'DM Sans',sans-serif;transition:border-color 0.2s,box-shadow 0.2s}
   #ic-input::placeholder{color:rgba(255,255,255,0.22)}
   #ic-input:focus{border-color:rgba(242,100,25,0.45);box-shadow:0 0 0 3px rgba(242,100,25,0.08)}
-  #ic-send-btn{
-    width:38px;height:38px;flex-shrink:0;border:none;
-    background:#f26419;border-radius:10px;cursor:pointer;
-    display:flex;align-items:center;justify-content:center;
-    box-shadow:0 4px 12px rgba(242,100,25,0.35);
-    transition:background 0.15s,transform 0.1s;
-  }
+  #ic-send-btn{width:38px;height:38px;flex-shrink:0;border:none;background:#f26419;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(242,100,25,0.35);transition:background 0.15s,transform 0.1s}
   #ic-send-btn:hover{background:#d4510f;transform:scale(1.05)}
   #ic-send-btn svg{width:15px;height:15px}
 </style>
 
 <div id="ic-widget">
 
-  <!-- Chat Box -->
   <div id="ic-box">
-
-    <!-- Header -->
     <div class="ic-header">
       <div class="ic-logo">
         <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -794,31 +701,25 @@ function getGPS(){
         <strong>InfluConnect AI</strong>
         <small>Influencer booking assistant</small>
       </div>
-      <div class="ic-status"><div class="ic-dot"></div></div>
+      <div class="ic-dot"></div>
     </div>
 
-    <!-- Form Screen -->
     <div id="ic-form-screen">
       <p class="ic-welcome">Pehle thodi details dijiye taaki main aapki better help kar sakun:</p>
-
       <label class="ic-label">Aapka naam</label>
       <input id="ic-name" type="text" placeholder="Jaise: Rahul" class="ic-field"/>
-
       <label class="ic-label">Email address</label>
       <input id="ic-email" type="email" placeholder="rahul@email.com" class="ic-field"/>
-
       <label class="ic-label">Language chunein</label>
       <div class="ic-lang-row">
         <button class="ic-lang-btn" onclick="icSelectLang(this,'Hindi')">Hindi</button>
         <button class="ic-lang-btn" onclick="icSelectLang(this,'English')">English</button>
         <button class="ic-lang-btn" onclick="icSelectLang(this,'Hinglish')">Hinglish</button>
       </div>
-
       <button class="ic-start-btn" onclick="icStartChat()">Start Chat &rarr;</button>
       <p id="ic-form-error" class="ic-error">Sabhi fields fill karo aur language chunein!</p>
     </div>
 
-    <!-- Chat Screen -->
     <div id="ic-chat-screen">
       <div id="ic-messages"></div>
       <div class="ic-input-row">
@@ -831,10 +732,8 @@ function getGPS(){
         </button>
       </div>
     </div>
-
   </div>
 
-  <!-- Toggle Button -->
   <button id="ic-toggle-btn" onclick="icToggle()">
     <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
       <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
@@ -845,119 +744,102 @@ function getGPS(){
 </div>
 
 <script>
-  let icLang = '', icName = '', icEmail = '', icHistory = [];
+  let icLang='',icName='',icEmail='',icHistory=[];
 
   function icToggle(){
-    const box = document.getElementById('ic-box');
-    const btn = document.getElementById('ic-toggle-btn');
-    const isOpen = box.classList.contains('visible');
+    const box=document.getElementById('ic-box');
+    const btn=document.getElementById('ic-toggle-btn');
+    const isOpen=box.classList.contains('visible');
     if(isOpen){
-      box.style.opacity = '0';
-      box.style.transform = 'translateY(12px) scale(0.97)';
-      setTimeout(()=>{ box.classList.remove('visible'); box.style.display='none'; },200);
+      box.style.opacity='0';
+      box.style.transform='translateY(12px) scale(0.97)';
+      setTimeout(()=>{box.classList.remove('visible');box.style.display='none';},200);
       btn.classList.remove('open');
     } else {
-      box.style.display = 'flex';
-      setTimeout(()=>{ box.classList.add('visible'); },10);
+      box.style.display='flex';
+      setTimeout(()=>{box.classList.add('visible');},10);
       btn.classList.add('open');
     }
   }
 
-  function icSelectLang(btn, lang){
-    document.querySelectorAll('.ic-lang-btn').forEach(b => b.classList.remove('active'));
+  function icSelectLang(btn,lang){
+    document.querySelectorAll('.ic-lang-btn').forEach(b=>b.classList.remove('active'));
     btn.classList.add('active');
-    icLang = lang;
+    icLang=lang;
   }
 
   function icStartChat(){
-    icName  = document.getElementById('ic-name').value.trim();
-    icEmail = document.getElementById('ic-email').value.trim();
-    const err = document.getElementById('ic-form-error');
-    if(!icName || !icEmail || !icLang){ err.style.display='block'; return; }
-    err.style.display = 'none';
-    document.getElementById('ic-form-screen').style.display = 'none';
-    const cs = document.getElementById('ic-chat-screen');
-    cs.style.display = 'flex';
-    cs.style.flexDirection = 'column';
-    const greet = icLang==='Hindi'
-      ? `Namaste ${icName} ji! Main InfluConnect ka AI assistant hoon. Kya help chahiye?`
-      : icLang==='English'
-      ? `Hello ${icName}! I'm InfluConnect's AI assistant. How can I help you today?`
-      : `Hey ${icName}! Main InfluConnect ka AI assistant hoon. Batao kya help chahiye?`;
+    icName=document.getElementById('ic-name').value.trim();
+    icEmail=document.getElementById('ic-email').value.trim();
+    const err=document.getElementById('ic-form-error');
+    if(!icName||!icEmail||!icLang){err.style.display='block';return;}
+    err.style.display='none';
+    document.getElementById('ic-form-screen').style.display='none';
+    const cs=document.getElementById('ic-chat-screen');
+    cs.style.display='flex';
+    cs.style.flexDirection='column';
+    const greet=icLang==='Hindi'
+      ?`Namaste ${icName} ji! Main InfluConnect ka AI assistant hoon. Kya help chahiye?`
+      :icLang==='English'
+      ?`Hello ${icName}! I'm InfluConnect's AI assistant. How can I help you today?`
+      :`Hey ${icName}! Main InfluConnect ka AI assistant hoon. Batao kya help chahiye?`;
     icAddBot(greet);
   }
 
   function icAddBot(text){
-    const m = document.getElementById('ic-messages');
-    const row = document.createElement('div');
-    row.className = 'ic-bot-row';
-    row.innerHTML = `
-      <div class="ic-bot-avatar">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#f26419" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="11" width="18" height="10" rx="2"/>
-          <circle cx="12" cy="5" r="2"/><path d="M12 7v4"/>
-          <line x1="8" y1="16" x2="8" y2="16"/><line x1="16" y1="16" x2="16" y2="16"/>
-        </svg>
-      </div>
-      <div class="ic-bot-bubble">${text}</div>`;
+    const m=document.getElementById('ic-messages');
+    const row=document.createElement('div');
+    row.className='ic-bot-row';
+    row.innerHTML=`<div class="ic-bot-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="#f26419" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8" y2="16"/><line x1="16" y1="16" x2="16" y2="16"/></svg></div><div class="ic-bot-bubble">${text}</div>`;
     m.appendChild(row);
-    m.scrollTop = m.scrollHeight;
+    m.scrollTop=m.scrollHeight;
   }
 
   function icGetCookie(name){
-    let v = null;
-    if(document.cookie){
-      document.cookie.split(';').forEach(c=>{
-        c = c.trim();
-        if(c.startsWith(name+'=')) v = decodeURIComponent(c.substring(name.length+1));
-      });
-    }
+    let v=null;
+    if(document.cookie){document.cookie.split(';').forEach(c=>{c=c.trim();if(c.startsWith(name+'='))v=decodeURIComponent(c.substring(name.length+1));});}
     return v;
   }
 
   function icSend(){
-    const input = document.getElementById('ic-input');
-    const m = document.getElementById('ic-messages');
-    const msg = input.value.trim();
-    if(!msg) return;
+    const input=document.getElementById('ic-input');
+    const m=document.getElementById('ic-messages');
+    const msg=input.value.trim();
+    if(!msg)return;
 
-    const uRow = document.createElement('div');
-    uRow.className = 'ic-user-row';
-    uRow.innerHTML = `<div class="ic-user-bubble">${msg}</div>`;
+    const uRow=document.createElement('div');
+    uRow.className='ic-user-row';
+    uRow.innerHTML=`<div class="ic-user-bubble">${msg}</div>`;
     m.appendChild(uRow);
-    input.value = '';
-    m.scrollTop = m.scrollHeight;
+    input.value='';
+    m.scrollTop=m.scrollHeight;
 
-    const tid = 'ict-' + Date.now();
-    const tEl = document.createElement('div');
-    tEl.className = 'ic-typing'; tEl.id = tid; tEl.textContent = 'Typing...';
+    const tid='ict-'+Date.now();
+    const tEl=document.createElement('div');
+    tEl.className='ic-typing';tEl.id=tid;tEl.textContent='Typing...';
     m.appendChild(tEl);
-    m.scrollTop = m.scrollHeight;
+    m.scrollTop=m.scrollHeight;
 
-    icHistory.push({role:'user', content:msg});
+    icHistory.push({role:'user',content:msg});
 
-    fetch('/ai-chat/', {
+    fetch('/ai-chat/',{
       method:'POST',
       headers:{'Content-Type':'application/json','X-CSRFToken':icGetCookie('csrftoken')},
-      body:JSON.stringify({message:msg, language:icLang, name:icName})
+      body:JSON.stringify({message:msg,language:icLang,name:icName})
     })
-    .then(res=>{ if(!res.ok) throw new Error('Server error '+res.status); return res.json(); })
+    .then(res=>{if(!res.ok)throw new Error('Server error '+res.status);return res.json();})
     .then(data=>{
-      const t = document.getElementById(tid); if(t) t.remove();
-      if(data.reply){
-        icHistory.push({role:'assistant', content:data.reply});
-        icAddBot(data.reply);
-      } else {
-        throw new Error(data.error || 'Koi jawab nahi aaya.');
-      }
+      const t=document.getElementById(tid);if(t)t.remove();
+      if(data.reply){icHistory.push({role:'assistant',content:data.reply});icAddBot(data.reply);}
+      else throw new Error(data.error||'Koi jawab nahi aaya.');
     })
     .catch(err=>{
-      const t = document.getElementById(tid); if(t) t.remove();
-      const eRow = document.createElement('div');
-      eRow.className = 'ic-bot-row';
-      eRow.innerHTML = `<div class="ic-bot-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="#f26419" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/></svg></div><div class="ic-bot-bubble" style="color:#ff6b6b;">${err.message || 'Dobara try karo.'}</div>`;
+      const t=document.getElementById(tid);if(t)t.remove();
+      const eRow=document.createElement('div');
+      eRow.className='ic-bot-row';
+      eRow.innerHTML=`<div class="ic-bot-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="#f26419" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/></svg></div><div class="ic-bot-bubble" style="color:#ff6b6b;">${err.message||'Dobara try karo.'}</div>`;
       m.appendChild(eRow);
-      m.scrollTop = m.scrollHeight;
+      m.scrollTop=m.scrollHeight;
       icHistory.pop();
     });
   }

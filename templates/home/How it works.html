@@ -1,0 +1,428 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>How It Works – InfluConnect</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--orange:#f26419;--orange-light:#ff8c42;--dark:#080808;--card:#0f0f0f;--border:rgba(255,255,255,0.07)}
+body{font-family:'DM Sans',sans-serif;background:var(--dark);color:#fff;min-height:100vh;overflow-x:hidden}
+
+nav{display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:70px;background:rgba(8,8,8,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);position:fixed;top:0;left:0;right:0;z-index:200}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-icon{width:38px;height:38px;background:var(--orange);border-radius:10px;display:flex;align-items:center;justify-content:center}
+.logo-text{font-family:'Syne',sans-serif;font-size:1.35rem;font-weight:800;color:#fff}
+.logo-text span{color:var(--orange)}
+.nav-back{display:flex;align-items:center;gap:8px;text-decoration:none;color:rgba(255,255,255,0.5);font-size:0.9rem;font-weight:500;transition:color 0.2s}
+.nav-back:hover{color:#fff}
+.nav-back svg{width:16px;height:16px}
+
+/* HERO */
+.hw-hero{position:relative;padding:140px 48px 80px;text-align:center;overflow:hidden}
+.hw-hero::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:900px;height:500px;background:radial-gradient(ellipse at center top,rgba(242,100,25,0.1) 0%,transparent 65%);pointer-events:none}
+.hw-hero-inner{position:relative;z-index:2;max-width:680px;margin:0 auto}
+.pp-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(242,100,25,0.1);border:1px solid rgba(242,100,25,0.3);border-radius:50px;padding:7px 18px;font-size:0.8rem;font-weight:600;color:var(--orange-light);margin-bottom:24px;letter-spacing:0.4px}
+.pp-badge svg{width:14px;height:14px}
+.hw-hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.4rem,5.5vw,4.2rem);font-weight:800;letter-spacing:-2px;line-height:1.0;margin-bottom:18px}
+.hw-hero h1 span{color:var(--orange)}
+.hw-hero p{color:rgba(255,255,255,0.45);font-size:1rem;line-height:1.75;max-width:500px;margin:0 auto 36px}
+.tab-row{display:inline-flex;background:#111;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:4px;gap:4px}
+.tab-btn{padding:9px 24px;border-radius:9px;border:none;background:transparent;color:rgba(255,255,255,0.45);font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:600;cursor:pointer;transition:all 0.2s}
+.tab-btn.active{background:var(--orange);color:#fff;box-shadow:0 4px 14px rgba(242,100,25,0.4)}
+
+/* STATS */
+.hw-stats{display:flex;justify-content:center;gap:48px;padding:60px 48px;border-top:1px solid rgba(255,255,255,0.05);border-bottom:1px solid rgba(255,255,255,0.05)}
+.stat-item{text-align:center}
+.stat-num{font-family:'Syne',sans-serif;font-size:2.4rem;font-weight:800;color:#fff;letter-spacing:-1px}
+.stat-num span{color:var(--orange)}
+.stat-label{font-size:0.83rem;color:rgba(255,255,255,0.35);margin-top:4px;font-weight:500}
+
+/* STEPS SECTION */
+.hw-section{max-width:1100px;margin:0 auto;padding:80px 48px}
+.section-label{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.section-label span{font-size:0.75rem;font-weight:700;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:1px}
+.section-label::before{content:'';width:28px;height:1.5px;background:var(--orange)}
+.hw-section h2{font-family:'Syne',sans-serif;font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:800;letter-spacing:-1px;margin-bottom:16px}
+.hw-section h2 span{color:var(--orange)}
+.hw-section > p{color:rgba(255,255,255,0.4);font-size:0.95rem;line-height:1.7;max-width:480px;margin-bottom:56px}
+
+/* STEPS GRID */
+.steps-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:80px}
+.step-card{background:var(--card);border:1px solid rgba(255,255,255,0.07);border-radius:20px;padding:32px 28px;position:relative;overflow:hidden;transition:transform 0.3s,box-shadow 0.3s,border-color 0.3s}
+.step-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--orange),var(--orange-light));opacity:0;transition:opacity 0.3s}
+.step-card:hover{transform:translateY(-6px);box-shadow:0 24px 60px rgba(0,0,0,0.5),0 0 0 1px rgba(242,100,25,0.2);border-color:rgba(242,100,25,0.15)}
+.step-card:hover::before{opacity:1}
+.step-card.featured{border-color:rgba(242,100,25,0.2);background:linear-gradient(135deg,#111 0%,#160a00 100%)}
+.step-card.featured::before{opacity:1}
+.step-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px}
+.step-icon{width:52px;height:52px;background:rgba(242,100,25,0.1);border:1px solid rgba(242,100,25,0.2);border-radius:14px;display:flex;align-items:center;justify-content:center}
+.step-icon svg{width:24px;height:24px;color:var(--orange)}
+.step-badge{font-size:0.72rem;font-weight:800;color:rgba(255,255,255,0.2);font-family:'Syne',sans-serif;letter-spacing:1px;background:rgba(255,255,255,0.04);padding:4px 10px;border-radius:6px}
+.step-card.featured .step-badge{color:var(--orange);background:rgba(242,100,25,0.1)}
+.step-card h3{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:800;letter-spacing:-0.3px;margin-bottom:10px;color:#fff}
+.step-card p{color:rgba(255,255,255,0.45);font-size:0.9rem;line-height:1.7;margin-bottom:18px}
+.step-tags{display:flex;flex-wrap:wrap;gap:7px}
+.step-tag{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:4px 10px;font-size:0.75rem;color:rgba(255,255,255,0.45);font-weight:500}
+.step-tag.accent{background:rgba(242,100,25,0.1);border-color:rgba(242,100,25,0.2);color:var(--orange-light)}
+
+/* FLOW DIVIDER */
+.flow-arrow{display:flex;align-items:center;justify-content:center;gap:12px;padding:12px 0;color:rgba(255,255,255,0.2);font-size:0.8rem;font-weight:600;letter-spacing:0.5px}
+.flow-arrow::before,.flow-arrow::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(242,100,25,0.2))}
+.flow-arrow::after{background:linear-gradient(90deg,rgba(242,100,25,0.2),transparent)}
+.flow-arrow svg{width:18px;height:18px;color:var(--orange)}
+
+/* USER TABS CONTENT */
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+/* ROLES SECTION */
+.roles-section{padding:0 48px 80px;max-width:1100px;margin:0 auto}
+.roles-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.role-card{background:var(--card);border:1px solid rgba(255,255,255,0.07);border-radius:20px;padding:36px 32px;position:relative;overflow:hidden}
+.role-card.shopkeeper{border-color:rgba(242,100,25,0.15)}
+.role-card.influencer{border-color:rgba(99,102,241,0.15)}
+.role-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.role-card.shopkeeper::before{background:linear-gradient(90deg,var(--orange),var(--orange-light))}
+.role-card.influencer::before{background:linear-gradient(90deg,#6366f1,#818cf8)}
+.role-pill{display:inline-flex;align-items:center;gap:7px;border-radius:50px;padding:6px 14px;font-size:0.78rem;font-weight:700;letter-spacing:0.3px;margin-bottom:20px}
+.role-pill.shop{background:rgba(242,100,25,0.1);border:1px solid rgba(242,100,25,0.25);color:var(--orange-light)}
+.role-pill.inf{background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.25);color:#818cf8}
+.role-pill svg{width:13px;height:13px}
+.role-card h3{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;letter-spacing:-0.5px;margin-bottom:8px}
+.role-card > p{color:rgba(255,255,255,0.4);font-size:0.9rem;line-height:1.7;margin-bottom:24px}
+.role-steps{display:flex;flex-direction:column;gap:14px}
+.role-step{display:flex;gap:14px;align-items:flex-start}
+.rs-num{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:0.78rem;font-weight:800;flex-shrink:0;margin-top:1px}
+.role-card.shopkeeper .rs-num{background:rgba(242,100,25,0.12);color:var(--orange)}
+.role-card.influencer .rs-num{background:rgba(99,102,241,0.12);color:#818cf8}
+.role-step h4{font-size:0.9rem;font-weight:700;color:#fff;margin-bottom:3px}
+.role-step p{color:rgba(255,255,255,0.4);font-size:0.83rem;line-height:1.6}
+
+/* FAQ */
+.faq-section{max-width:700px;margin:0 auto;padding:0 48px 100px}
+.faq-section h2{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;letter-spacing:-0.8px;text-align:center;margin-bottom:8px}
+.faq-section > p{color:rgba(255,255,255,0.4);text-align:center;margin-bottom:40px;font-size:0.9rem}
+.faq-item{border:1px solid rgba(255,255,255,0.07);border-radius:14px;margin-bottom:10px;overflow:hidden;transition:border-color 0.2s}
+.faq-item.open{border-color:rgba(242,100,25,0.2)}
+.faq-q{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;cursor:pointer;gap:12px}
+.faq-q span{font-size:0.93rem;font-weight:600;color:#fff;line-height:1.4}
+.faq-arrow{width:20px;height:20px;flex-shrink:0;color:rgba(255,255,255,0.3);transition:transform 0.3s,color 0.2s}
+.faq-item.open .faq-arrow{transform:rotate(180deg);color:var(--orange)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height 0.35s ease,padding 0.2s}
+.faq-item.open .faq-a{max-height:200px}
+.faq-a p{padding:0 22px 18px;color:rgba(255,255,255,0.5);font-size:0.88rem;line-height:1.75}
+
+/* CTA */
+.hw-cta{text-align:center;padding:72px 48px 100px;position:relative;overflow:hidden}
+.hw-cta::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(242,100,25,0.08) 0%,transparent 70%);pointer-events:none}
+.hw-cta h2{font-family:'Syne',sans-serif;font-size:clamp(2rem,4vw,3rem);font-weight:800;letter-spacing:-1.5px;margin-bottom:16px;position:relative}
+.hw-cta h2 span{color:var(--orange)}
+.hw-cta p{color:rgba(255,255,255,0.4);max-width:400px;margin:0 auto 36px;font-size:0.95rem;line-height:1.7;position:relative}
+.cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative}
+.btn-primary{background:var(--orange);color:#fff;text-decoration:none;padding:13px 32px;border-radius:12px;font-weight:700;font-size:0.95rem;box-shadow:0 4px 20px rgba(242,100,25,0.4);transition:background 0.2s,transform 0.1s,box-shadow 0.2s;display:inline-flex;align-items:center;gap:8px}
+.btn-primary:hover{background:#d4510f;transform:translateY(-1px);box-shadow:0 6px 28px rgba(242,100,25,0.55)}
+.btn-secondary{background:transparent;color:rgba(255,255,255,0.7);text-decoration:none;padding:13px 32px;border-radius:12px;font-weight:600;font-size:0.95rem;border:1px solid rgba(255,255,255,0.15);transition:all 0.2s;display:inline-flex;align-items:center;gap:8px}
+.btn-secondary:hover{border-color:rgba(255,255,255,0.3);color:#fff;background:rgba(255,255,255,0.05)}
+.btn-primary svg,.btn-secondary svg{width:16px;height:16px}
+
+footer{text-align:center;padding:26px 20px;border-top:1px solid rgba(255,255,255,0.07);color:rgba(255,255,255,0.3);font-size:0.83rem}
+footer span{color:var(--orange);font-weight:700}
+
+@media(max-width:768px){.steps-grid{grid-template-columns:1fr}.roles-grid{grid-template-columns:1fr}.hw-stats{gap:24px;flex-wrap:wrap}.hw-section{padding:60px 20px}.roles-section{padding:0 20px 60px}.faq-section{padding:0 20px 80px}.hw-cta{padding:60px 20px 80px}.hw-hero{padding:120px 20px 60px}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="{% url 'home' %}">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="22" height="22">
+        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+      </svg>
+    </div>
+    <span class="logo-text">Influ<span>Connect</span></span>
+  </a>
+  <ul style="display:flex;align-items:center;gap:24px;list-style:none">
+    <li><a href="{% url 'privacy_policy' %}" style="text-decoration:none;color:rgba(255,255,255,0.5);font-size:0.88rem;font-weight:500;transition:color 0.2s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Privacy Policy</a></li>
+    <li><a href="{% url 'contact' %}" style="text-decoration:none;color:rgba(255,255,255,0.5);font-size:0.88rem;font-weight:500;transition:color 0.2s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Contact</a></li>
+    <li><a href="{% url 'terms' %}" style="text-decoration:none;color:rgba(255,255,255,0.5);font-size:0.88rem;font-weight:500;transition:color 0.2s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Terms</a></li>
+    <li><a href="{% url 'home' %}" style="display:flex;align-items:center;gap:8px;text-decoration:none;color:rgba(255,255,255,0.5);font-size:0.88rem;font-weight:500;transition:color 0.2s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      Back to Home
+    </a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hw-hero">
+  <div class="hw-hero-inner">
+    <div class="pp-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Simple Process
+    </div>
+    <h1>Kaise Kaam Karta Hai <span>InfluConnect?</span></h1>
+    <p>3 simple steps mein apne local business ko viral karo. Register karo, influencer dhundo, book karo — aur growth dekho!</p>
+    <div class="tab-row">
+      <button class="tab-btn active" onclick="switchTab('shopkeeper',this)">Shopkeeper Hoon</button>
+      <button class="tab-btn" onclick="switchTab('influencer',this)">Influencer Hoon</button>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="hw-stats">
+  <div class="stat-item"><div class="stat-num">2,400<span>+</span></div><div class="stat-label">Verified Influencers</div></div>
+  <div class="stat-item"><div class="stat-num">850<span>+</span></div><div class="stat-label">Shops Connected</div></div>
+  <div class="stat-item"><div class="stat-num">3<span>x</span></div><div class="stat-label">Average ROI</div></div>
+  <div class="stat-item"><div class="stat-num">48<span>hr</span></div><div class="stat-label">Avg Booking Time</div></div>
+</div>
+
+<!-- SHOPKEEPER STEPS -->
+<div id="tab-shopkeeper" class="tab-content active">
+  <div class="hw-section">
+    <div class="section-label"><span>Shopkeeper Process</span></div>
+    <h2>Apna Business <span>Viral Karo</span></h2>
+    <p>Sirf 4 steps follow karo aur apne area ke influencers se collaborate karo.</p>
+
+    <div class="steps-grid">
+      <div class="step-card featured">
+        <div class="step-top">
+          <div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+          <span class="step-badge">STEP 01</span>
+        </div>
+        <h3>Account Banao</h3>
+        <p>Free mein register karo. Business details, location, aur category add karo taaki relevant influencers mil sakein.</p>
+        <div class="step-tags">
+          <span class="step-tag accent">Free Registration</span>
+          <span class="step-tag">5 min setup</span>
+          <span class="step-tag">Instant access</span>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-top">
+          <div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+          <span class="step-badge">STEP 02</span>
+        </div>
+        <h3>Influencer Dhundo</h3>
+        <p>City aur niche filter karke nearby influencers browse karo. Followers, ratings, aur past work dekho.</p>
+        <div class="step-tags">
+          <span class="step-tag">Location filter</span>
+          <span class="step-tag">Niche filter</span>
+          <span class="step-tag accent">AI Suggestions</span>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-top">
+          <div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+          <span class="step-badge">STEP 03</span>
+        </div>
+        <h3>Booking Karo</h3>
+        <p>Campaign details — deliverables, date, budget — specify karo aur booking request bhejo. Influencer accept karega.</p>
+        <div class="step-tags">
+          <span class="step-tag accent">Secure payment</span>
+          <span class="step-tag">Contract auto-generate</span>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-top">
+          <div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+          <span class="step-badge">STEP 04</span>
+        </div>
+        <h3>Growth Track Karo</h3>
+        <p>Campaign complete hone ke baad analytics dekho. Reach, engagement, aur conversions track karo dashboard se.</p>
+        <div class="step-tags">
+          <span class="step-tag">Live analytics</span>
+          <span class="step-tag accent">ROI tracking</span>
+          <span class="step-tag">Review system</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- INFLUENCER STEPS -->
+<div id="tab-influencer" class="tab-content">
+  <div class="hw-section">
+    <div class="section-label"><span>Influencer Process</span></div>
+    <h2>Apni <span>Earning Shuru Karo</span></h2>
+    <p>Content creator hona aur paise kamana — ab dono ek saath possible hai.</p>
+
+    <div class="steps-grid">
+      <div class="step-card featured">
+        <div class="step-top">
+          <div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+          <span class="step-badge">STEP 01</span>
+        </div>
+        <h3>Profile Banao</h3>
+        <p>Social media links, niche, location, aur rate card add karo. Ek strong portfolio se zyada bookings milti hain.</p>
+        <div class="step-tags">
+          <span class="step-tag accent">Verified Badge</span>
+          <span class="step-tag">Portfolio upload</span>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-top">
+          <div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></div>
+          <span class="step-badge">STEP 02</span>
+        </div>
+        <h3>Requests Receive Karo</h3>
+        <p>Nearby shops se collaboration requests aayengi. Campaign details review karo aur decide karo — accept ya decline.</p>
+        <div class="step-tags">
+          <span class="step-tag">Push notifications</span>
+          <span class="step-tag accent">Counter-offer option</span>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-top">
+          <div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></div>
+          <span class="step-badge">STEP 03</span>
+        </div>
+        <h3>Content Create Karo</h3>
+        <p>Agreed deliverables complete karo — reel, story, post — aur campaign ke andar submit karo. Client approve karega.</p>
+        <div class="step-tags">
+          <span class="step-tag">In-app submission</span>
+          <span class="step-tag accent">Revision system</span>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-top">
+          <div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+          <span class="step-badge">STEP 04</span>
+        </div>
+        <h3>Payment Pao</h3>
+        <p>Campaign complete hone ke 3-5 business days mein payment directly aapke account mein transfer ho jaati hai.</p>
+        <div class="step-tags">
+          <span class="step-tag accent">Secure escrow</span>
+          <span class="step-tag">UPI / Bank transfer</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ROLES COMPARISON -->
+<div class="roles-section">
+  <div class="roles-grid">
+    <div class="role-card shopkeeper">
+      <div class="role-pill shop">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Shopkeeper Journey
+      </div>
+      <h3>Apna Shop Badho</h3>
+      <p>Local influencers ke saath collaborate karke apne area mein brand awareness badhao aur footfall increase karo.</p>
+      <div class="role-steps">
+        <div class="role-step"><div class="rs-num">1</div><div><h4>Register & Setup</h4><p>Free account, business profile aur location add karo</p></div></div>
+        <div class="role-step"><div class="rs-num">2</div><div><h4>Search & Filter</h4><p>City aur niche se perfect influencer dhundo</p></div></div>
+        <div class="role-step"><div class="rs-num">3</div><div><h4>Book & Pay</h4><p>Secure booking aur escrow payment system</p></div></div>
+        <div class="role-step"><div class="rs-num">4</div><div><h4>Track Growth</h4><p>Real-time analytics aur ROI dashboard</p></div></div>
+      </div>
+    </div>
+    <div class="role-card influencer">
+      <div class="role-pill inf">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+        Influencer Journey
+      </div>
+      <h3>Paise Kamao Content Se</h3>
+      <p>Apne followers ko monetize karo. Nearby businesses ke saath collaborate karo aur consistent income earn karo.</p>
+      <div class="role-steps">
+        <div class="role-step"><div class="rs-num">1</div><div><h4>Profile Create</h4><p>Portfolio, niche aur rate card setup karo</p></div></div>
+        <div class="role-step"><div class="rs-num">2</div><div><h4>Get Discovered</h4><p>Shops aapko search karke booking request bhejenge</p></div></div>
+        <div class="role-step"><div class="rs-num">3</div><div><h4>Create Content</h4><p>Campaign complete karo aur platform pe submit karo</p></div></div>
+        <div class="role-step"><div class="rs-num">4</div><div><h4>Get Paid</h4><p>3-5 days mein secure payment directly bank mein</p></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <h2>Frequently Asked Questions</h2>
+  <p>Koi confusion? Yahan sabse common sawaalon ke jawab hain.</p>
+
+  <div class="faq-item" onclick="toggleFaq(this)">
+    <div class="faq-q"><span>InfluConnect use karna kitna costly hai?</span><svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+    <div class="faq-a"><p>Registration aur browsing bilkul free hai. InfluConnect sirf successful bookings pe 10% platform fee charge karta hai. Koi monthly subscription nahi, koi hidden charges nahi.</p></div>
+  </div>
+  <div class="faq-item" onclick="toggleFaq(this)">
+    <div class="faq-q"><span>Influencers ki authenticity kaise verify hoti hai?</span><svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+    <div class="faq-a"><p>Sare influencers ko social media profile verification, ID proof aur phone verification se guzarna padta hai. Fake followers wale accounts ko automatically detect karke remove kar diya jaata hai.</p></div>
+  </div>
+  <div class="faq-item" onclick="toggleFaq(this)">
+    <div class="faq-q"><span>Agar influencer kaam nahi karta toh kya hoga?</span><svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+    <div class="faq-a"><p>Aapka payment escrow mein secure rehta hai jab tak campaign complete nahi hota. Agar influencer deliver nahi karta, full refund guaranteed hai. Humara dispute team 48 hours mein resolve karta hai.</p></div>
+  </div>
+  <div class="faq-item" onclick="toggleFaq(this)">
+    <div class="faq-q"><span>Minimum followers kitne chahiye influencer banane ke liye?</span><svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+    <div class="faq-a"><p>Minimum 1,000 genuine followers chahiye kisi bhi platform pe. Micro-influencers (1K–10K) often better engagement rate rakhte hain compared to mega influencers. Quality over quantity!</p></div>
+  </div>
+  <div class="faq-item" onclick="toggleFaq(this)">
+    <div class="faq-q"><span>Kya platform sirf certain cities mein available hai?</span><svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+    <div class="faq-a"><p>InfluConnect poore India mein available hai. Location-based search se aap apne exact area ke influencers dhundh sakte hain — chahe bada sheher ho ya chhota qasbah.</p></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="hw-cta">
+  <h2>Abhi <span>Shuru Karo</span></h2>
+  <p>Registration free hai. Apne pehle influencer collaboration se ek step door hain aap.</p>
+  <div class="cta-btns">
+    <a href="{% url 'login' %}" class="btn-primary">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+      Free Register Karo
+    </a>
+    <a href="{% url 'influencers:influencers_list' %}" class="btn-secondary">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Influencers Explore Karo
+    </a>
+  </div>
+</section>
+
+<footer>© 2026 <span>InfluConnect</span> · Built to connect local shops with local creators.</footer>
+
+<script>
+  function switchTab(tab, btn) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  function toggleFaq(item) {
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(f => f.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+
+  // Animate stats numbers
+  function animateCount(el, target, suffix='') {
+    let current = 0;
+    const step = target / 60;
+    const timer = setInterval(() => {
+      current = Math.min(current + step, target);
+      el.innerHTML = Math.floor(current).toLocaleString() + suffix;
+      if (current >= target) clearInterval(timer);
+    }, 20);
+  }
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const nums = [
+          { el: document.querySelectorAll('.stat-num')[0], val: 2400, s: '+' },
+          { el: document.querySelectorAll('.stat-num')[1], val: 850, s: '+' },
+          { el: document.querySelectorAll('.stat-num')[2], val: 3, s: 'x' },
+          { el: document.querySelectorAll('.stat-num')[3], val: 48, s: 'hr' },
+        ];
+        nums.forEach(n => { if(n.el) animateCount(n.el, n.val, `<span>${n.s}</span>`); });
+        observer.disconnect();
+      }
+    });
+  }, { threshold: 0.3 });
+  const statsEl = document.querySelector('.hw-stats');
+  if (statsEl) observer.observe(statsEl);
+</script>
+</body>
+</html>
